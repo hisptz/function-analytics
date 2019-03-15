@@ -20,4 +20,13 @@ export class Analytics {
   getUrl() {
     return this;
   }
+  dependsOn(callback) {
+    return this;
+  }
+  process(callback) {
+    return this;
+  }
+  getResults() {
+    return this;
+  }
 }

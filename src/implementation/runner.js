@@ -1,14 +1,10 @@
-export class OrganisationUnit {
+export class Runner {
   constructor() {}
 
-  setFilter(filter) {
+  allResults(parameters) {
     return this;
   }
-
-  getUrl() {
-    return this;
-  }
-  dependsOn(callback) {
+  resolveProgress(dx) {
     return this;
   }
   process(callback) {
