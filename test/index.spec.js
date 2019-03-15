@@ -1,7 +1,7 @@
 /* global describe, it, before */
 
 import chai from 'chai';
-import {Cat, Dog} from '../lib/webpack-library-starter.js';
+import {Fn} from '../lib/function-analytics.js';
 
 chai.expect();
 
@@ -9,24 +9,19 @@ const expect = chai.expect;
 
 let lib;
 
-describe('Given an instance of my Cat library', () => {
+describe('Given an instance of Analytics library', () => {
   before(() => {
-    lib = new Cat();
+    lib = new Fn.Analytics();
+    lib.setData('dx1')
+      .setPeriod('pe1')
+      .setOrgUnit('ou1');
   });
-  describe('when I need the name', () => {
-    it('should return the name', () => {
-      expect(lib.name).to.be.equal('Cat');
-    });
-  });
-});
-
-describe('Given an instance of my Dog library', () => {
-  before(() => {
-    lib = new Dog();
-  });
-  describe('when I need the name', () => {
-    it('should return the name', () => {
-      expect(lib.name).to.be.equal('Dog');
+  describe('When I need the configurations', () => {
+    it('should return the url', () => {
+      let url = lib.getUrl()
+      expect(url.indexOf('dimension=ou:ou1') > -1).to.be.equal(true);
+      expect(url.indexOf('dimension=pe:pe1') > -1).to.be.equal(true);
+      expect(url.indexOf('dimension=dx:dx1') > -1).to.be.equal(true);
     });
   });
 });

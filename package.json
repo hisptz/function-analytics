@@ -1,8 +1,8 @@
 {
-  "name": "webpack-library-starter",
-  "version": "1.0.2",
+  "name": "function-analytics",
+  "version": "0.0.1",
   "description": "Produce universal library with webpack and es6",
-  "main": "lib/webpack-library-starter.js",
+  "main": "lib/function-analytics.js",
   "scripts": {
     "build": "webpack --env dev && webpack --env build && npm run test",
     "dev": "webpack --progress --colors --watch --env dev",
@@ -56,5 +56,8 @@
   "nyc": {
     "sourceMap": false,
     "instrument": false
+  },
+  "dependencies": {
+    "babel-plugin-transform-flow-interface-imports": "^1.0.1"
   }
 }
