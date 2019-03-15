@@ -1,7 +1,7 @@
 /* global describe, it, before */
 
 import chai from 'chai';
-import {Fn} from '../lib/function-analytics.js';
+import { Fn } from '../lib/function-analytics.js';
 
 chai.expect();
 
@@ -18,7 +18,7 @@ describe('Given an instance of Analytics library', () => {
   });
   describe('When I need the configurations', () => {
     it('should return the url', () => {
-      let url = lib.getUrl()
+      const url = lib.getUrl()
       expect(url.indexOf('dimension=ou:ou1') > -1).to.be.equal(true);
       expect(url.indexOf('dimension=pe:pe1') > -1).to.be.equal(true);
       expect(url.indexOf('dimension=dx:dx1') > -1).to.be.equal(true);
