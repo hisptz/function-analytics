@@ -2,8 +2,6 @@ import ProgressPromise from 'progress-promise';
 import axios from 'axios';
 import httpadapter from 'axios/lib/adapters/http';
 import xhradapter from 'axios/lib/adapters/xhr';
-//const ProgressPromise = require('progress-promise');
-//import { Axios } from 'axios';
 let _instance;
 
 export class Runner {
