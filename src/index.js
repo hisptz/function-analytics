@@ -1,14 +1,17 @@
-import {Analytics} from './implementation/analytics.js';
-import {SQLViewData} from './implementation/sql-view.js';
-import {OrganisationUnit} from './implementation/organisation-unit.js';
+import {Analytics} from './impl/analytics.js';
+import {SQLViewData} from './impl/sql-view.js';
+import {OrganisationUnit} from './impl/organisation-unit.js';
 import {ProgressPromise} from './promise/progress-promise.js';
-import { Runner } from './implementation/runner.js';
+import { Runner } from './core/runner.js';
 let Fn = {
   Promise: ProgressPromise,
   Analytics: Analytics,
   OrganisationUnit: OrganisationUnit,
   SQLViewData: SQLViewData,
-  Runner: Runner
+  Runner: Runner,
+  init: (config)=>{
+    Runner.initiateRunner(config);
+  }
 };
 
 export { Fn };

@@ -2,7 +2,7 @@
 // Fallback for engines that don't support Symbol
 const LISTENERS = Symbol ? Symbol() : '__listeners';
 
-export default class ProgressPromise extends Promise {
+export class ProgressPromise extends Promise {
   constructor(executor) {
     super(
       function (resolve, reject) {

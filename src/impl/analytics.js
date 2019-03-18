@@ -1,5 +1,6 @@
-export class Analytics {
-  constructor() {}
+import { Fetcher } from '../core/fetcher';
+
+export class Analytics extends Fetcher {
 
   setParameters(parameters) {
     return this;
@@ -17,16 +18,7 @@ export class Analytics {
     return this;
   }
 
-  getUrl() {
-    return this;
-  }
-  dependsOn(callback) {
-    return this;
-  }
-  process(callback) {
-    return this;
-  }
-  getResults() {
-    return this;
+  get url() {
+    return '';
   }
 }
