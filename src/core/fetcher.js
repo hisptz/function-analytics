@@ -1,16 +1,13 @@
 import { Runner } from './runner';
+import { Processor } from './processor';
 
-export class Fetcher {
-  constructor() {}
+export class Fetcher extends Processor {
+  constructor() {
+    super();
+  }
 
   get url() {
-    return '';
-  }
-  dependsOn(callback) {
-    return this;
-  }
-  process(callback) {
-    return this;
+    throw new Error('Should implement url generation');
   }
   getResults() {
     return (new Runner()).getResults(this);

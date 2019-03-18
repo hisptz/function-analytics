@@ -7,6 +7,8 @@ export class SQLViewData extends Fetcher {
   }
 
   get url() {
-    return '';
+    var url = 'sqlViews/' + this._id + '/data.json';
+
+    return url;
   }
 }

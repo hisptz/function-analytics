@@ -1,17 +1,28 @@
-import { ProgressPromise } from '../promise/progress-promise';
-import { Axios } from 'axios';
+import ProgressPromise from 'progress-promise';
+import axios from 'axios';
+import httpadapter from 'axios/lib/adapters/http';
+import xhradapter from 'axios/lib/adapters/xhr';
+//const ProgressPromise = require('progress-promise');
+//import { Axios } from 'axios';
+let _instance;
 
 export class Runner {
-  instance;
-  config;
   constructor() { }
-  static initiateRunner(config) {
+  static initiateRunner(configurations) {
     if (!Runner.instance) {
-      Runner.instance = this;
-      Runner.instance.config = config;
+      this.config = configurations;
+      _instance = this;
     }
   }
-
+  get instance() {
+    return _instance;
+  }
+  set config(configurations) {
+    this.config = configurations;
+  }
+  get config() {
+    return this.config;
+  }
   allResults(executions) {
     return Runner.instance;
   }
@@ -23,10 +34,18 @@ export class Runner {
   }
   getResults(fetcher) {
     return new ProgressPromise((resolve, reject, progress) => {
-      Axios.get(this.config.baseUrl + fetcher.url).then((results) => {
-        console.log('Results:', results);
-        resolve(results);
-      }).catch((err) => {
+      axios.request({
+        url: _instance.config.baseUrl + fetcher.url,
+        method: 'get',
+        adapter: typeof process !== 'undefined' ? httpadapter : xhradapter,
+        auth: {
+          username: _instance.config.username,
+          password: _instance.config.password
+        }
+      }).then((results) => {
+        resolve(fetcher.performProcess(results.data));
+      }, (err) => {
+        console.log('Err Results:', err);
         reject(err);
       });
     });

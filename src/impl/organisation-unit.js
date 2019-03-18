@@ -1,12 +1,7 @@
-import { Fetcher } from '../core/fetcher';
+import { IdentifiableObject } from '../core/identifiable-object';
 
-export class OrganisationUnit extends Fetcher {
-
-  setFilter(filter) {
-    return this;
-  }
-
-  get url() {
-    return '';
+export class OrganisationUnit extends IdentifiableObject {
+  get name() {
+    return 'organisationUnits';
   }
 }

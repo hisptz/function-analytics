@@ -7,21 +7,41 @@ chai.expect();
 
 const expect = chai.expect;
 
-let lib;
+Fn.init({
+  baseUrl: 'https://play.dhis2.org/2.29/api/',
+  username: 'admin',
+  password: 'district'
+});
 
-describe('Given an instance of Analytics library', () => {
-  before(() => {
-    lib = new Fn.Analytics();
-    lib.setData('dx1')
-      .setPeriod('pe1')
-      .setOrgUnit('ou1');
+describe('Given an initial instance', () => {
+  it('Check if instance is ready', () => {
+    var runner = new Fn.Runner();
+
+    expect(runner.instance !== undefined).to.be.equal(true);
   });
-  describe('When I need the configurations', () => {
-    it('should return the url', () => {
-      const url = lib.url;
-      expect(url.indexOf('dimension=ou:ou1') > -1).to.be.equal(true);
-      expect(url.indexOf('dimension=pe:pe1') > -1).to.be.equal(true);
-      expect(url.indexOf('dimension=dx:dx1') > -1).to.be.equal(true);
+  it('should return promise with analytics results', () => {
+    var analytics = new Fn.Analytics();
+
+    analytics
+      .setPeriod('2016')
+      .setOrgUnit('ImspTQPwCqd');
+    return analytics.getResults().then((results) => {
+      expect(results.headers !== undefined).to.be.equal(true);
+      expect(results.rows !== undefined).to.be.equal(true);
+      expect(results.height !== undefined).to.be.equal(true);
+      expect(results.width !== undefined).to.be.equal(true);
+    });
+  });
+  it('should return promise with sql results results', () => {
+    var sqlView = new Fn.SQLViewData('GCZ01m3pIRd');
+
+    return sqlView.getResults().then((results) => {
+      expect(results.headers !== undefined).to.be.equal(true);
+      expect(results.rows !== undefined).to.be.equal(true);
+      expect(results.height !== undefined).to.be.equal(true);
+      expect(results.width !== undefined).to.be.equal(true);
+      expect(results.title !== undefined).to.be.equal(true);
+      expect(results.subtitle !== undefined).to.be.equal(true);
     });
   });
 });

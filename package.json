@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack --env dev && webpack --env build && npm run test",
     "dev": "webpack --progress --colors --watch --env dev",
-    "test": "mocha --require babel-register --colors ./test/*.spec.js",
+    "test": "mocha --require babel-register --colors ./test/*.spec.js ./test/core/*.spec.js ./test/impl/*.spec.js",
     "test:watch": "mocha --require babel-register --colors -w ./test/*.spec.js",
     "test:cover": "cross-env NODE_ENV=test nyc mocha --require babel-register --colors test/*.js",
     "repl": "node -i -e \"$(< ./lib/webpack-library-starter.js)\""
@@ -58,6 +58,8 @@
     "instrument": false
   },
   "dependencies": {
-    "babel-plugin-transform-flow-interface-imports": "^1.0.1"
+    "axios": "^0.18.0",
+    "babel-plugin-transform-flow-interface-imports": "^1.0.1",
+    "progress-promise": "0.0.6"
   }
 }

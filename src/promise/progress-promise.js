@@ -4,17 +4,17 @@ const LISTENERS = Symbol ? Symbol() : '__listeners';
 
 export class ProgressPromise extends Promise {
   constructor(executor) {
-    super(
-      function (resolve, reject) {
-        return executor(resolve, reject, (value) => {
-          try {
-            return this[LISTENERS].forEach(listener => listener(value));
-          } catch (error) {
-            reject(error);
-            return [];
-          }
-        });
-      });
+    console.log("Here");
+    super((resolve, reject) => executor(resolve, reject,
+      // Pass method for passing progress to listener
+      value => {
+        try {
+          return this[LISTENERS].forEach(listener => listener(value));
+        } catch(error) {
+          reject(error);
+        }
+      }));
+    console.log("Here1");
     this[LISTENERS] = [];
   }
   progress(handler) {
@@ -56,7 +56,7 @@ export class ProgressPromise extends Promise {
             progress(results);
             if (results.length === length) resolve(results);
             else invokeNext();
-          }).catch(reject);;
+          }).catch(reject);
       }
       invokeNext();
     });
