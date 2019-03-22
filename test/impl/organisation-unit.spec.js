@@ -25,80 +25,80 @@ describe('Given an instance of Organisation Unit in the library', () => {
 
     it('should return the url with Case sensitive string,match anywhere', () => {
       lib = new Fn.OrganisationUnit();
-      lib.where('id', '<', 'Rp268JB6Ne4');
-      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:lt:Rp268JB6Ne4');
+      lib.where('id', 'like', 'Rp268JB6Ne4');
+      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:like:Rp268JB6Ne4');
     });
 
     it('should return the url with Case sensitive string, not match anywhere', () => {
       lib = new Fn.OrganisationUnit();
-      lib.where('id', '<', 'Rp268JB6Ne4');
-      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:lt:Rp268JB6Ne4');
+      lib.where('id', '!like', 'Rp268JB6Ne4');
+      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:!like:Rp268JB6Ne4');
     });
 
     it('should return the url with Case sensitive string, match start', () => {
       lib = new Fn.OrganisationUnit();
-      lib.where('id', '<', 'Rp268JB6Ne4');
-      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:lt:Rp268JB6Ne4');
+      lib.where('id', '$like', 'Rp268JB6Ne4');
+      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:$like:Rp268JB6Ne4');
     });
 
     it('should return the url with Case sensitive string, match end', () => {
       lib = new Fn.OrganisationUnit();
-      lib.where('id', '<', 'Rp268JB6Ne4');
-      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:lt:Rp268JB6Ne4');
+      lib.where('id', '!$like', 'Rp268JB6Ne4');
+      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:!$like:Rp268JB6Ne4');
     });
 
     it('should return the url with Case sensitive string, not match end', () => {
       lib = new Fn.OrganisationUnit();
-      lib.where('id', '<', 'Rp268JB6Ne4');
-      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:lt:Rp268JB6Ne4');
+      lib.where('id', '!like$', 'Rp268JB6Ne4');
+      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:!like$:Rp268JB6Ne4');
     });
 
     it('should return the url with Case insensitive string, match anywhere', () => {
       lib = new Fn.OrganisationUnit();
-      lib.where('id', '<', 'Rp268JB6Ne4');
-      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:lt:Rp268JB6Ne4');
+      lib.where('id', 'ilike', 'Rp268JB6Ne4');
+      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:ilike:Rp268JB6Ne4');
     });
 
     it('should return the url with Case insensitive string, not match anywhere', () => {
       lib = new Fn.OrganisationUnit();
-      lib.where('id', '<', 'Rp268JB6Ne4');
-      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:lt:Rp268JB6Ne4');
+      lib.where('id', '!ilike', 'Rp268JB6Ne4');
+      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:!ilike:Rp268JB6Ne4');
     });
 
     it('should return the url with Case insensitive string, match start', () => {
       lib = new Fn.OrganisationUnit();
-      lib.where('id', '<', 'Rp268JB6Ne4');
-      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:lt:Rp268JB6Ne4');
+      lib.where('id', '$ilike', 'Rp268JB6Ne4');
+      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:$ilike:Rp268JB6Ne4');
     });
 
     it('should return the url with Case insensitive string, not match start', () => {
       lib = new Fn.OrganisationUnit();
-      lib.where('id', '<', 'Rp268JB6Ne4');
-      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:lt:Rp268JB6Ne4');
+      lib.where('id', '!$ilike', 'Rp268JB6Ne4');
+      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:!$ilike:Rp268JB6Ne4');
     });
 
     it('should return the url with Case insensitive string, match end', () => {
       lib = new Fn.OrganisationUnit();
-      lib.where('id', '<', 'Rp268JB6Ne4');
-      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:lt:Rp268JB6Ne4');
+      lib.where('id', 'ilike$', 'Rp268JB6Ne4');
+      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:ilike$:Rp268JB6Ne4');
     });
 
     it('should return the url with Case insensitive string, not match end', () => {
       lib = new Fn.OrganisationUnit();
-      lib.where('id', '<', 'Rp268JB6Ne4');
-      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:lt:Rp268JB6Ne4');
+      lib.where('id', '!ilike$', 'Rp268JB6Ne4');
+      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:!ilike$:Rp268JB6Ne4');
     });
 
     it('should return the url with Greater than', () => {
       lib = new Fn.OrganisationUnit();
-      lib.where('id', '<', 'Rp268JB6Ne4');
-      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:lt:Rp268JB6Ne4');
+      lib.where('id', '>', 'Rp268JB6Ne4');
+      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:gt:Rp268JB6Ne4');
     });
 
     it('should return the url with Greater than or equal', () => {
       lib = new Fn.OrganisationUnit();
-      lib.where('id', '<', 'Rp268JB6Ne4');
-      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:lt:Rp268JB6Ne4');
+      lib.where('id', '>=', 'Rp268JB6Ne4');
+      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:ge:Rp268JB6Ne4');
     });
 
     it('should return the url with Less than', () => {
@@ -109,50 +109,50 @@ describe('Given an instance of Organisation Unit in the library', () => {
 
     it('should return the url with Less than or equal', () => {
       lib = new Fn.OrganisationUnit();
-      lib.where('id', '<', 'Rp268JB6Ne4');
-      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:lt:Rp268JB6Ne4');
+      lib.where('id', '<=', 'Rp268JB6Ne4');
+      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:le:Rp268JB6Ne4');
     });
 
     it('should return the url with Property is null', () => {
       lib = new Fn.OrganisationUnit();
-      lib.where('id', '<', 'Rp268JB6Ne4');
-      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:lt:Rp268JB6Ne4');
+      lib.where('id', 'null');
+      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:null');
     });
 
     it('should return the url with Property is not null', () => {
       lib = new Fn.OrganisationUnit();
-      lib.where('id', '<', 'Rp268JB6Ne4');
-      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:lt:Rp268JB6Ne4');
+      lib.where('id', '!null');
+      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:!null');
     });
 
     it('should return the url with Collection is empty', () => {
       lib = new Fn.OrganisationUnit();
-      lib.where('id', '<', 'Rp268JB6Ne4');
-      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:lt:Rp268JB6Ne4');
+      lib.where('id', 'empty');
+      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:empty');
     });
 
-    it('should return the url with Match on multiple tokens in search property', () => {
+    it('should return the url with match on multiple tokens in search property', () => {
       lib = new Fn.OrganisationUnit();
-      lib.where('id', '<', 'Rp268JB6Ne4');
-      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:lt:Rp268JB6Ne4');
+      lib.where('id', 'token');
+      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:token');
     });
 
     it('should return the url with Not match on multiple tokens in search property', () => {
       lib = new Fn.OrganisationUnit();
-      lib.where('id', '<', 'Rp268JB6Ne4');
-      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:lt:Rp268JB6Ne4');
+      lib.where('id', '!token');
+      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:!token');
     });
 
     it('should return the url with Find objects matching 1 or more values', () => {
       lib = new Fn.OrganisationUnit();
-      lib.where('id', '<', 'Rp268JB6Ne4');
-      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:lt:Rp268JB6Ne4');
+      lib.where('id', 'in', ['Rp268JB6Ne4', 'Rp268JB6Ne2']);
+      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:in:Rp268JB6Ne4,Rp268JB6Ne2');
     });
 
     it('should return the url with Find objects not matching 1 or more values', () => {
       lib = new Fn.OrganisationUnit();
-      lib.where('id', '<', 'Rp268JB6Ne4');
-      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:lt:Rp268JB6Ne4');
+      lib.where('id', '!in', ['Rp268JB6Ne4', 'Rp268JB6Ne2']);
+      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:!in:Rp268JB6Ne4,Rp268JB6Ne2');
     });
   });
 });

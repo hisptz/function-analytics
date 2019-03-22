@@ -24,6 +24,20 @@ export class IdentifiableObject extends Fetcher {
       url += 'filter=' + filter.right;
       if (filter.operator === '==') {
         url += ':eq:' + filter.left;
+      } else if (filter.operator === '<') {
+        url += ':lt:' + filter.left;
+      } else if (filter.operator === '<=') {
+        url += ':le:' + filter.left;
+      } else if (filter.operator === '>') {
+        url += ':gt:' + filter.left;
+      } else if (filter.operator === '>=') {
+        url += ':ge:' + filter.left;
+      } else if (filter.operator === '<>') {
+        url += ':!eq:' + filter.left;
+      } else if (!filter.left) {
+        url += ':' + filter.operator;
+      } else {
+        url += ':' + filter.operator + ':' + filter.left;
       }
     });
     return url;

@@ -32,6 +32,7 @@ export class Runner {
   }
   getResults(fetcher) {
     return new ProgressPromise((resolve, reject, progress) => {
+      fetcher.performPreProcess();
       axios.request({
         url: _instance.config.baseUrl + fetcher.url,
         method: 'get',
@@ -41,7 +42,7 @@ export class Runner {
           password: _instance.config.password
         }
       }).then((results) => {
-        resolve(fetcher.performProcess(results.data));
+        resolve(fetcher.performPostProcess(results.data));
       }, (err) => {
         console.log('Err Results:', err);
         reject(err);
