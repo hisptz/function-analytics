@@ -34,6 +34,8 @@ export class IdentifiableObject extends Fetcher {
         url += ':ge:' + filter.left;
       } else if (filter.operator === '<>') {
         url += ':!eq:' + filter.left;
+      } else if (filter.operator === 'in' || filter.operator === '!in') {
+        url += ':' + filter.operator + ':[' + filter.left + ']';
       } else if (!filter.left) {
         url += ':' + filter.operator;
       } else {

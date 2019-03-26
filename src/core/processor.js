@@ -7,10 +7,13 @@ export class Dependency {
 export class Processor {
   constructor() {
     this.postProcessors = [];
-    this.preProcessors = [];
+    this.dependencies = [];
+  }
+  hasDependencies() {
+    return this.dependencies.length > 0;
   }
   preProcess(dependency) {
-    this.preProcessors.push(dependency);
+    this.dependencies.push(dependency);
     return this;
   }
   postProcess(callback) {
@@ -18,15 +21,15 @@ export class Processor {
     return this;
   }
   performPreProcess() {
-    this.preProcessors.forEach((dependency) => {
-      dependency.process(dependency.processor._results);
+    this.dependencies.forEach((dependency) => {
+      console.log('dependency.processor._results:', dependency.processor._results);
+      dependency.process(dependency.processor._results, this);
     });
     return this;
   }
   performPostProcess(data) {
     this._results = data;
-    var dataToProcess = data;
-
+    let dataToProcess = data;
     this.postProcessors.forEach((callback) => {
       dataToProcess = callback(dataToProcess);
     });

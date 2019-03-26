@@ -30,23 +30,34 @@ export class Runner {
   process(callback) {
     return Runner.instance;
   }
+  _fetch(fetcher, resolve, reject) {
+    axios.request({
+      url: _instance.config.baseUrl + fetcher.url,
+      method: 'get',
+      adapter: typeof process !== 'undefined' ? httpadapter : xhradapter,
+      auth: {
+        username: _instance.config.username,
+        password: _instance.config.password
+      }
+    }).then((results) => {
+      resolve(fetcher.performPostProcess(results.data));
+    }, (err) => {
+      reject(err);
+    });
+  }
   getResults(fetcher) {
     return new ProgressPromise((resolve, reject, progress) => {
-      fetcher.performPreProcess();
-      axios.request({
-        url: _instance.config.baseUrl + fetcher.url,
-        method: 'get',
-        adapter: typeof process !== 'undefined' ? httpadapter : xhradapter,
-        auth: {
-          username: _instance.config.username,
-          password: _instance.config.password
-        }
-      }).then((results) => {
-        resolve(fetcher.performPostProcess(results.data));
-      }, (err) => {
-        console.log('Err Results:', err);
-        reject(err);
-      });
+      if (fetcher.hasDependencies()) {
+        fetcher.getDependecyFetchResults().then(() => {
+          fetcher.performPreProcess();
+          this._fetch(fetcher, resolve, reject);
+        }).catch((err) => {
+          console.log('Errrrrrrrrrr:', err);
+          reject();
+        });
+      } else {
+        this._fetch(fetcher, resolve, reject);
+      }
     });
   }
 }

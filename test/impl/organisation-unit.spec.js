@@ -146,13 +146,13 @@ describe('Given an instance of Organisation Unit in the library', () => {
     it('should return the url with Find objects matching 1 or more values', () => {
       lib = new Fn.OrganisationUnit();
       lib.where('id', 'in', ['Rp268JB6Ne4', 'Rp268JB6Ne2']);
-      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:in:Rp268JB6Ne4,Rp268JB6Ne2');
+      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:in:[Rp268JB6Ne4,Rp268JB6Ne2]');
     });
 
     it('should return the url with Find objects not matching 1 or more values', () => {
       lib = new Fn.OrganisationUnit();
       lib.where('id', '!in', ['Rp268JB6Ne4', 'Rp268JB6Ne2']);
-      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:!in:Rp268JB6Ne4,Rp268JB6Ne2');
+      expect(lib.url).to.be.equal('organisationUnits.json?filter=id:!in:[Rp268JB6Ne4,Rp268JB6Ne2]');
     });
   });
 });
