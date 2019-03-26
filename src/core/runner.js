@@ -31,15 +31,19 @@ export class Runner {
     return Runner.instance;
   }
   _fetch(fetcher, resolve, reject) {
-    axios.request({
+    const config = {
       url: _instance.config.baseUrl + fetcher.url,
       method: 'get',
-      adapter: typeof process !== 'undefined' ? httpadapter : xhradapter,
-      auth: {
+      adapter: typeof process !== 'undefined' ? httpadapter : xhradapter
+    };
+
+    if (_instance.config.username && _instance.config.password) {
+      config.auth = {
         username: _instance.config.username,
         password: _instance.config.password
-      }
-    }).then((results) => {
+      };
+    }
+    axios.request(config).then((results) => {
       resolve(fetcher.performPostProcess(results.data));
     }, (err) => {
       reject(err);
