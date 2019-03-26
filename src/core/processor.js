@@ -30,6 +30,7 @@ export class Processor {
   performPostProcess(data) {
     this._results = data;
     let dataToProcess = data;
+
     this.postProcessors.forEach((callback) => {
       dataToProcess = callback(dataToProcess);
     });
