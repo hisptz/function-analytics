@@ -22,7 +22,6 @@ export class Processor {
   }
   performPreProcess() {
     this.dependencies.forEach((dependency) => {
-      console.log('dependency.processor._results:', dependency.processor._results);
       dependency.process(dependency.processor._results, this);
     });
     return this;
