@@ -16,4 +16,7 @@ let Fn = {
   }
 };
 
+if (typeof window !== 'undefined') {
+  window.Fn = Fn;
+}
 export { Fn };
