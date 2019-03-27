@@ -10,7 +10,7 @@ export class Fetcher extends Processor {
   get url() {
     throw new Error('Should implement url generation');
   }
-  getFetchResults() {
+  get get() {
     return (new Runner()).getResults(this);
   }
   getDependecyFetchResults() {

@@ -25,7 +25,7 @@ describe('Given an initial instance', () => {
     analytics
       .setPeriod('2016')
       .setOrgUnit('ImspTQPwCqd');
-    return analytics.getFetchResults().then((results) => {
+    return analytics.get().then((results) => {
       expect(results.headers !== undefined).to.be.equal(true);
       expect(results.rows !== undefined).to.be.equal(true);
       expect(results.height !== undefined).to.be.equal(true);
@@ -35,7 +35,7 @@ describe('Given an initial instance', () => {
   it('should return promise with sql results results', () => {
     var sqlView = new Fn.SQLViewData('GCZ01m3pIRd');
 
-    return sqlView.getFetchResults().then((results) => {
+    return sqlView.get().then((results) => {
       expect(results.headers !== undefined).to.be.equal(true);
       expect(results.rows !== undefined).to.be.equal(true);
       expect(results.height !== undefined).to.be.equal(true);
@@ -65,7 +65,7 @@ describe('Given an initial instance (Dependency Test)', () => {
           .setPeriod('2016')
           .setOrgUnit(ous);
       }));
-    return analytics.getFetchResults().then((results) => {
+    return analytics.get().then((results) => {
       expect(results.headers !== undefined).to.be.equal(true);
       expect(results.rows !== undefined).to.be.equal(true);
       expect(results.height !== undefined).to.be.equal(true);
