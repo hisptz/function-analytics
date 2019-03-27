@@ -75,7 +75,7 @@ describe('Given an initial instance (Dependency Test)', () => {
 });
 
 describe('Given an initial instance (Multiple Process Test)', () => {
-  it('should return promise with analytics results (Multiple)', () => {
+  it('should return promise with multiple results (Multiple Post Processing)', () => {
     let orgunitProcessor = new Fn.OrganisationUnit();
 
     orgunitProcessor.where('id', 'in', ['Rp268JB6Ne4', 'Rp268JB6Ne2']);
@@ -94,6 +94,30 @@ describe('Given an initial instance (Multiple Process Test)', () => {
       expect(results[1].rows !== undefined).to.be.equal(true);
       expect(results[1].height !== undefined).to.be.equal(true);
       expect(results[1].width !== undefined).to.be.equal(true);
+    });
+  }).timeout(5000);
+  it('should return promise with multiple results with post processing (Multiple Post Processing)', () => {
+    let orgunitProcessor = new Fn.OrganisationUnit();
+
+    orgunitProcessor.where('id', 'in', ['Rp268JB6Ne4', 'Rp268JB6Ne2']);
+
+    let analytics = new Fn.Analytics();
+
+    analytics
+      .setPeriod('2016')
+      .setOrgUnit('Rp268JB6Ne4;Rp268JB6Ne2');
+
+    let multiProcesses = new Fn.MultiFetcher([orgunitProcessor, analytics]);
+    multiProcesses.postProcess((res) => {
+      return [res[1], res[0]];
+    });
+    return multiProcesses.get().then((results) => {
+      expect(results.length).to.be.equal(2);
+      expect(results[1].organisationUnits !== undefined).to.be.equal(true);
+      expect(results[0].headers !== undefined).to.be.equal(true);
+      expect(results[0].rows !== undefined).to.be.equal(true);
+      expect(results[0].height !== undefined).to.be.equal(true);
+      expect(results[0].width !== undefined).to.be.equal(true);
     });
   }).timeout(5000);
 });

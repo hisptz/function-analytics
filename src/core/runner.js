@@ -21,17 +21,6 @@ export class Runner {
   get config() {
     return this.config;
   }
-  all(executions) {
-    const promises = executions.map((execution) => (new Runner()).getResults(execution));
-
-    return ProgressPromise.all(promises);
-  }
-  resolveProgress(progressCallback) {
-    return Runner.instance;
-  }
-  process(callback) {
-    return Runner.instance;
-  }
   _fetch(fetcher, resolve, reject) {
     if (!_instance) {
       let error = 'Configration not set please configre function ' +
@@ -71,6 +60,18 @@ export class Runner {
       } else {
         this._fetch(fetcher, resolve, reject);
       }
+    });
+  }
+
+  getAllResults(multifetcher) {
+    return new ProgressPromise((resolve, reject, progress) => {
+      const promises = multifetcher.fetchers.map((fetcher) => (new Runner()).getResults(fetcher));
+
+      return ProgressPromise.all(promises).then((results) => {
+        resolve(multifetcher.performPostProcess(results));
+      }).catch((err) => {
+        reject(err);
+      });
     });
   }
 }
