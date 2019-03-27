@@ -21,8 +21,12 @@ export class Runner {
   get config() {
     return this.config;
   }
-  allResults(executions) {
-    return Runner.instance;
+  all(executions) {
+    const promises = executions.map((execution) => {
+      return (new Runner()).getResults(execution);
+    });
+
+    return ProgressPromise.all(promises);
   }
   resolveProgress(progressCallback) {
     return Runner.instance;
