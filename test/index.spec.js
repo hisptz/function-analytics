@@ -73,3 +73,27 @@ describe('Given an initial instance (Dependency Test)', () => {
     });
   }).timeout(5000);
 });
+
+describe('Given an initial instance (Multiple Process Test)', () => {
+  it('should return promise with analytics results (Multiple)', () => {
+    let orgunitProcessor = new Fn.OrganisationUnit();
+
+    orgunitProcessor.where('id', 'in', ['Rp268JB6Ne4', 'Rp268JB6Ne2']);
+
+    let analytics = new Fn.Analytics();
+
+    analytics
+      .setPeriod('2016')
+      .setOrgUnit('Rp268JB6Ne4;Rp268JB6Ne2');
+
+    let multiProcesses = new Fn.MultiFetcher([orgunitProcessor, analytics]);
+    return multiProcesses.get().then((results) => {
+      expect(results.length).to.be.equal(2);
+      expect(results[0].organisationUnits !== undefined).to.be.equal(true);
+      expect(results[1].headers !== undefined).to.be.equal(true);
+      expect(results[1].rows !== undefined).to.be.equal(true);
+      expect(results[1].height !== undefined).to.be.equal(true);
+      expect(results[1].width !== undefined).to.be.equal(true);
+    });
+  }).timeout(5000);
+});

@@ -22,9 +22,7 @@ export class Runner {
     return this.config;
   }
   all(executions) {
-    const promises = executions.map((execution) => {
-      return (new Runner()).getResults(execution);
-    });
+    const promises = executions.map((execution) => (new Runner()).getResults(execution));
 
     return ProgressPromise.all(promises);
   }

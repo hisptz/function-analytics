@@ -4,6 +4,7 @@ import {OrganisationUnit} from './impl/organisation-unit.js';
 import ProgressPromise from 'progress-promise';
 import { Runner } from './core/runner.js';
 import { Dependency } from './core/processor';
+import { MultiFetcher } from './core/fetcher';
 let Fn = {
   Promise: ProgressPromise,
   Analytics: Analytics,
@@ -11,6 +12,7 @@ let Fn = {
   SQLViewData: SQLViewData,
   Runner: Runner,
   Dependency: Dependency,
+  MultiFetcher: MultiFetcher,
   init: (config)=>{
     Runner.initiateRunner(config);
   }
