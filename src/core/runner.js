@@ -31,6 +31,13 @@ export class Runner {
     return Runner.instance;
   }
   _fetch(fetcher, resolve, reject) {
+    if (!_instance) {
+      let error = 'Configration not set please configre function ' +
+        'analytics eg {baseUrl:"dhis_base_url", username:"username", ' +
+        'password:"password"}';
+
+      throw Error(error);
+    }
     const config = {
       url: _instance.config.baseUrl + fetcher.url,
       method: 'get',
