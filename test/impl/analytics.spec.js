@@ -28,6 +28,7 @@ describe('Given an instance of Analytics library', () => {
     expect(url.indexOf('displayProperty=SHORTNAME') > -1).to.be.equal(true);
     expect(url.indexOf('&') > -1).to.be.equal(true);
   });
+
 });
 
 let analyticsObject;
@@ -56,6 +57,18 @@ describe('When I get the analytics object', () => {
         ['BJpjOFTE4By.lxM1zKPHql2', '201804', 'm0frOspS7JY', '49.0'], ['BJpjOFTE4By.TrmsDE6SUZI', '201807', 'm0frOspS7JY', '68.0'],
         ['BJpjOFTE4By.lxM1zKPHql2', '201805', 'm0frOspS7JY', '72.0'], ['BJpjOFTE4By.TrmsDE6SUZI', '201806', 'm0frOspS7JY', '118.0']
       ], 'height': 18, 'width': 4});
+  });
+  it('should return standardized analytics from new analytics', () => {
+    let analytics = new Fn.Analytics();
+
+    let results = analytics.standardizeAnalytics(analyticsObject)
+    expect(results.headers !== undefined).to.be.equal(true);
+    expect(results.rows !== undefined).to.be.equal(true);
+    expect(results.metaData.ouHierarchy !== undefined).to.be.equal(true);
+    expect(results.metaData.dimensions === undefined).to.be.equal(true);
+    expect(results.metaData !== undefined).to.be.equal(true);
+    expect(results.height !== undefined).to.be.equal(true);
+    expect(results.width !== undefined).to.be.equal(true);
   });
   it('should return valid analytics object', () => {
     expect(analyticsObject.headers !== undefined).to.be.equal(true);

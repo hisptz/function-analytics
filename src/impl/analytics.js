@@ -55,7 +55,7 @@ export class Analytics extends Fetcher {
     super();
     this.parameters['dimension'] = {};
     this.postProcess((data) => {
-      return new AnalyticsObject(this.standardizeAnalytics(data, oldAnalytics));
+      return this.standardizeAnalytics(data, oldAnalytics);
     });
   }
   setData(dx) {
@@ -128,7 +128,7 @@ export class Analytics extends Fetcher {
     }
     sanitizedAnalyticsObject.height = analyticsObject.height;
     sanitizedAnalyticsObject.width = analyticsObject.width;
-    return sanitizedAnalyticsObject;
+    return new AnalyticsObject(sanitizedAnalyticsObject);
   }
 
   getSanitizedAnalyticsMetadata(analyticMetadata, preferNormalStructure) {
@@ -168,7 +168,7 @@ export class Analytics extends Fetcher {
         if (!preferNormalStructure) {
           sanitizedMetadata['dimensions'] = analyticMetadata.dimensions;
         } else {
-          sanitizedMetadata.dimensions = analyticMetadata.dimensions;
+          delete sanitizedMetadata.dimensions;
           sanitizedMetadata.dx = analyticMetadata.dimensions.dx;
           sanitizedMetadata.ou = analyticMetadata.dimensions.ou;
           sanitizedMetadata.pe = analyticMetadata.dimensions.pe;
