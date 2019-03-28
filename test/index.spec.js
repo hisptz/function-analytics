@@ -28,6 +28,25 @@ describe('Given an initial instance', () => {
     return analytics.get().then((results) => {
       expect(results.headers !== undefined).to.be.equal(true);
       expect(results.rows !== undefined).to.be.equal(true);
+      expect(results.metaData !== undefined).to.be.equal(true);
+      expect(results.height !== undefined).to.be.equal(true);
+      expect(results.width !== undefined).to.be.equal(true);
+    });
+  });
+  it('should return promise with analytics results with ouHierarch', () => {
+    var analytics = new Fn.Analytics();
+
+    analytics
+      .setPeriod('2016')
+      .setOrgUnit('ImspTQPwCqd')
+      .setParameters({
+        hierarchyMeta: 'true'
+      });
+    return analytics.get().then((results) => {
+      expect(results.headers !== undefined).to.be.equal(true);
+      expect(results.rows !== undefined).to.be.equal(true);
+      expect(results.metaData.ouHierarchy !== undefined).to.be.equal(true);
+      expect(results.metaData !== undefined).to.be.equal(true);
       expect(results.height !== undefined).to.be.equal(true);
       expect(results.width !== undefined).to.be.equal(true);
     });

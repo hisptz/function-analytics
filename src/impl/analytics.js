@@ -1,11 +1,40 @@
 import { Fetcher } from '../core/fetcher';
 
+export class AnalyticsHeaders {
+  constructor(data) {
+    this._data = data;
+  }
+  get dx() {
+    return this.getHeader('dx');
+  }
+  get pe() {
+    return this.getHeader('pe');
+  }
+  get ou() {
+    return this.getHeader('ou');
+  }
+  get value() {
+    return this.getHeader('value');
+  }
+  getHeader(id) {
+    let returnHeader;
+
+    this._data.forEach((header, index) => {
+      console.log('Header:', header);
+      if (header.name === id) {
+        returnHeader = header;
+        returnHeader.index = index;
+      }
+    });
+    return returnHeader;
+  }
+}
 export class AnalyticsObject {
   constructor(data) {
     this._data = data;
   }
   get headers() {
-    return this._data.headers;
+    return new AnalyticsHeaders(this._data.headers);
   }
   get metaData() {
     return this._data.metaData;
