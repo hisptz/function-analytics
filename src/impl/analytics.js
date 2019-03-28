@@ -96,9 +96,6 @@ export class Analytics extends Fetcher {
       if (analyticsObject.rows) {
         sanitizedAnalyticsObject.rows = analyticsObject.rows;
       }
-      if (analyticsObject.ouHierarchy) {
-        sanitizedAnalyticsObject.ouHierarchy = analyticsObject.ouHierarchy;
-      }
     }
     sanitizedAnalyticsObject.height = analyticsObject.height;
     sanitizedAnalyticsObject.width = analyticsObject.width;
@@ -116,6 +113,9 @@ export class Analytics extends Fetcher {
     };
 
     if (analyticMetadata) {
+      if (analyticMetadata.ouHierarchy) {
+        sanitizedMetadata.ouHierarchy = analyticMetadata.ouHierarchy;
+      }
       /**
        * Get metadata names
        */
