@@ -1,12 +1,32 @@
 import { Fetcher } from '../core/fetcher';
 
+export class AnalyticsObject {
+  constructor(data) {
+    this._data = data;
+  }
+  get headers() {
+    return this._data.headers;
+  }
+  get metaData() {
+    return this._data.metaData;
+  }
+  get rows() {
+    return this._data.rows;
+  }
+  get height() {
+    return this._data.height;
+  }
+  get width() {
+    return this._data.width;
+  }
+}
 export class Analytics extends Fetcher {
 
   constructor(oldAnalytics = true) {
     super();
     this.parameters['dimension'] = {};
     this.postProcess((data) => {
-      return this.standardizeAnalytics(data, oldAnalytics);
+      return new AnalyticsObject(this.standardizeAnalytics(data, oldAnalytics));
     });
   }
   setData(dx) {
@@ -75,6 +95,9 @@ export class Analytics extends Fetcher {
        */
       if (analyticsObject.rows) {
         sanitizedAnalyticsObject.rows = analyticsObject.rows;
+      }
+      if (analyticsObject.ouHierarchy) {
+        sanitizedAnalyticsObject.ouHierarchy = analyticsObject.ouHierarchy;
       }
     }
     sanitizedAnalyticsObject.height = analyticsObject.height;
