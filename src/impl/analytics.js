@@ -1,8 +1,9 @@
 import { Fetcher } from '../core/fetcher';
 
-export class AnalyticsHeaders {
+export class AnalyticsHeaders extends Array {
   constructor(data) {
-    this._data = data;
+    super(...data);
+    Object.setPrototypeOf(this, Object.create(AnalyticsHeaders.prototype));
   }
   get dx() {
     return this.getHeader('dx');
@@ -19,7 +20,7 @@ export class AnalyticsHeaders {
   getHeader(id) {
     let returnHeader;
 
-    this._data.forEach((header, index) => {
+    this.forEach((header, index) => {
       if (header.name === id) {
         returnHeader = header;
         returnHeader.index = index;
