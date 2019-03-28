@@ -4,35 +4,21 @@ export class Analytics extends Fetcher {
 
   constructor(oldAnalytics = true) {
     super();
+    this.parameters['dimension'] = {};
     this.postProcess((data) => {
       return this.standardizeAnalytics(data, oldAnalytics);
     });
   }
-  setParameters(parameters) {
-    if (parameters.dx) {
-      this.setData(parameters.dx);
-    }
-    if (parameters.ou) {
-      this.setData(parameters.ou);
-    }
-    if (parameters.pe) {
-      this.setData(parameters.pe);
-    }
-    return this;
-  }
   setData(dx) {
-    this.dx = dx;
+    this.parameters['dimension']['dx'] = dx;
     return this;
   }
   setPeriod(pe) {
-    this.pe = pe;
+    this.parameters['dimension']['pe'] = pe;
     return this;
   }
   setOrgUnit(ou) {
-    this.ou = ou;
-    return this;
-  }
-  setDimension(dim) {
+    this.parameters['dimension']['ou'] = ou;
     return this;
   }
 
@@ -162,23 +148,6 @@ export class Analytics extends Fetcher {
   }
 
   get url() {
-    let url = 'analytics?';
-
-    if (this.dx) {
-      url += 'dimension=dx:' + this.dx;
-    }
-    if (this.ou) {
-      if (url.indexOf('dimension') > -1) {
-        url += '&';
-      }
-      url += 'dimension=ou:' + this.ou ;
-    }
-    if (this.pe) {
-      if (url.indexOf('dimension') > -1) {
-        url += '&';
-      }
-      url += 'dimension=pe:' + this.pe ;
-    }
-    return url;
+    return 'analytics?' + this._urlParameters;
   }
 }
