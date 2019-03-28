@@ -20,7 +20,6 @@ export class AnalyticsHeaders {
     let returnHeader;
 
     this._data.forEach((header, index) => {
-      console.log('Header:', header);
       if (header.name === id) {
         returnHeader = header;
         returnHeader.index = index;
