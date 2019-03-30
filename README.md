@@ -1,8 +1,7 @@
 # Function Analytics Library
 
-Library to aid in the development of functions
-
-![Travis](https://travis-ci.org/krasimir/webpack-library-starter.svg?branch=master)
+Library to aid in the development of functions. Built with best practices in mind from the experience on function maintenance. 
+This is to make it easy for developers to concentrate on the business logic of their functions.
 
 ## Features
 
@@ -20,7 +19,6 @@ Library to aid in the development of functions
 ### Node
 ```
 var Fn require('function-analytics').Fn;
-
 ```
 
 ## Initializing
@@ -32,7 +30,6 @@ Fn.init({
     pasword:'password', //Optional if in a DHIS app
   }
 )
-
 ```
 ## Fetch analytics 
 
