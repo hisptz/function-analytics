@@ -1,7 +1,8 @@
 # Function Analytics Library
 
 Library to aid in the development of functions. Built with best practices in mind from the experience on function maintenance. 
-This is to make it easy for developers to concentrate on the business logic of their functions.
+This is to make it easy for developers to concentrate on the business logic of their functions while also considering the best way
+to perform operations with out of the box performance execution strategy.
 
 ## Features
 
@@ -75,4 +76,26 @@ You can put together dependencies if calls depend on one another
   analytics.get().then((results) => {
       
   });
+```
+
+## Multiple Processing
+
+You can put together dependencies if calls depend on one another 
+
+```js
+  var orgunitProcessor = new Fn.OrganisationUnit();
+  
+  orgunitProcessor.where('id', 'in', ['Rp268JB6Ne4', 'Rp268JB6Ne2']);
+  
+  var analytics = new Fn.Analytics();
+  
+  analytics
+    .setPeriod('2016')
+    .setOrgUnit('Rp268JB6Ne4;Rp268JB6Ne2');
+  
+  var multiProcesses = Fn.all([orgunitProcessor, analytics]);
+  multiProcesses.postProcess((res) => {
+    return [res[1], res[0]];
+  });
+  multiProcesses.get().then((results) => {});
 ```
