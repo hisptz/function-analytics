@@ -4,23 +4,66 @@ import httpadapter from 'axios/lib/adapters/http';
 import xhradapter from 'axios/lib/adapters/xhr';
 let _instance;
 
+/**
+ * Runner represents the process which will schedule and run operations of the processes
+ */
 export class Runner {
-  constructor() { }
+  /**
+   * Initiates the runner singleton instance
+   * @param configurations
+   */
   static initiateRunner(configurations) {
     if (!Runner.instance) {
       this.config = configurations;
       _instance = this;
     }
   }
+
+  /**
+   * Get the Runner instance
+   * @returns {Runner}
+   */
   get instance() {
     return _instance;
   }
+
+  /**
+   * Set the configuration
+   * @param configurations
+   */
   set config(configurations) {
     this.config = configurations;
   }
+
+  /**
+   * Get the configurations
+   * @returns {*}
+   */
   get config() {
     return this.config;
   }
+
+  /**
+   * This callback type is called `resolveCallback`.
+   *
+   * @callback resolveCallback
+   * @param {Object} responseResult
+   */
+
+  /**
+   * This callback type is called `rejectCallback`.
+   *
+   * @callback rejectCallback
+   * @param {Error} error
+   */
+
+  /**
+   * Fetches the data from the fetcher
+   * @param {Fetcher} fetcher
+   * @param {resolveCallback} resolve
+   * @param {rejectCallback} reject
+   * @private
+   */
   _fetch(fetcher, resolve, reject) {
     if (!_instance) {
       let error = 'Configration not set please configre function ' +
@@ -47,6 +90,12 @@ export class Runner {
       reject(err);
     });
   }
+
+  /**
+   * Fetches data related to a fetcher
+   * @param {Fetcher} fetcher
+   * @returns {ProgressPromise}
+   */
   getResults(fetcher) {
     return new ProgressPromise((resolve, reject, progress) => {
       if (fetcher.hasDependencies()) {
@@ -63,6 +112,11 @@ export class Runner {
     });
   }
 
+  /**
+   * Fetches data for multiple fetchers
+   * @param {MultiFetcher} multifetcher
+   * @returns {ProgressPromise}
+   */
   getAllResults(multifetcher) {
     return new ProgressPromise((resolve, reject, progress) => {
       const promises = multifetcher.fetchers.map((fetcher) => (new Runner()).getResults(fetcher));

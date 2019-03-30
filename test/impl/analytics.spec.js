@@ -105,3 +105,52 @@ describe('When I get the analytics object', () => {
     expect(analyticsObject.headers.value.index).to.be.equal(3);
   });
 });
+
+/*
+describe('Given an instance of Analytics library', () => {
+  it('should return merged analytics', () => {
+    let analytics1 = new Fn.Analytics();
+    lib.setData('dx1')
+      .setPeriod('201901')
+      .setOrgUnit('ou1')
+      .setParameters({
+        displayProperty: 'SHORTNAME'
+      });
+    let analytics2 = new Fn.Analytics();
+    lib.setData('dx2')
+      .setPeriod('201901')
+      .setOrgUnit('ou2')
+      .setParameters({
+        displayProperty: 'SHORTNAME'
+      });
+    let results = analytics2.merge([analytics1]);
+    expect(results.length).to.be.equal(1);
+    expect(results[0].url.indexOf('dimension=pe:201901') > -1).to.be.equal(true);
+    expect(results[0].url.indexOf('dimension=dx:dx1;dx2') > -1).to.be.equal(true);
+    expect(results[0].url.indexOf('dimension=dx:ou1;ou2') > -1).to.be.equal(true);
+  });
+
+  it('should return unmerged analytics consideration', () => {
+    let analytics1 = new Fn.Analytics();
+    lib.setData('dx1')
+      .setPeriod('201901')
+      .setOrgUnit('ou1')
+      .setParameters({
+        displayProperty: 'SHORTNAME'
+      });
+    let analytics2 = new Fn.Analytics();
+    lib.setData('dx2')
+      .setPeriod('201901')
+      .setOrgUnit('LEVEL-4;ou2')
+      .setParameters({
+        displayProperty: 'SHORTNAME'
+      });
+    let results = analytics2.merge([analytics1]);
+    expect(results.length).to.be.equal(2);
+    expect(results[0].url.indexOf('dimension=pe:201901') > -1).to.be.equal(true);
+    expect(results[0].url.indexOf('dimension=dx:dx1;dx2') > -1).to.be.equal(true);
+    expect(results[0].url.indexOf('dimension=dx:ou1;ou2') > -1).to.be.equal(true);
+  });
+
+});
+*/

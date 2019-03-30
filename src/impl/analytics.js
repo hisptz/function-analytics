@@ -1,22 +1,62 @@
 import { Fetcher } from '../core/fetcher';
 
+/**
+ * This represents the Analytics header
+ *
+ */
+export class AnalyticsHeader {}
+/**
+ * This represents the Analytics Headers
+ *
+ * @extends Array
+ */
 export class AnalyticsHeaders extends Array {
   constructor(data) {
     super(...data);
     Object.setPrototypeOf(this, Object.create(AnalyticsHeaders.prototype));
   }
+
+  /**
+   * Gets the data analytics header
+   *
+   * @returns {AnalyticsHeader}
+   */
   get dx() {
     return this.getHeader('dx');
   }
+
+  /**
+   * Gets the period analytics header
+   *
+   * @returns {AnalyticsHeader}
+   */
   get pe() {
     return this.getHeader('pe');
   }
+
+  /**
+   * Gets the organisation unit analytics header
+   *
+   * @returns {AnalyticsHeader}
+   */
   get ou() {
     return this.getHeader('ou');
   }
+
+  /**
+   * Gets the value analytics header
+   *
+   * @returns {AnalyticsHeader}
+   */
   get value() {
     return this.getHeader('value');
   }
+
+  /**
+   * Gets the header of a parameter
+   * @param id
+   * @returns {AnalyticsHeader}
+   */
   getHeader(id) {
     let returnHeader;
 
@@ -29,28 +69,80 @@ export class AnalyticsHeaders extends Array {
     return returnHeader;
   }
 }
+
+/**
+ * This represents the Analytics Results
+ *
+ */
 export class AnalyticsObject {
-  constructor(data) {
-    this._data = data;
+
+  /**
+   * Creates ana Analytics Object
+   *
+   * @param {Object} - DHIS Analytics object
+   */
+  constructor(analyticsObject) {
+    this._data = analyticsObject;
   }
+
+  /**
+   * Gets the Analytics Headers Array
+   *
+   * @returns {AnalyticsHeaders}
+   */
   get headers() {
     return new AnalyticsHeaders(this._data.headers);
   }
+
+  /**
+   * Gets the Analytics Metadata Object
+   *
+   * @returns {*|metaData|{dimensions, names, dx, pe, ou, co}|{ouHierarchy, items, dimensions}}
+   */
   get metaData() {
     return this._data.metaData;
   }
+
+  /**
+   * Gets the rows of the analytics object
+   *
+   * @returns {Array}
+   */
   get rows() {
     return this._data.rows;
   }
+
+  /**
+   * Gets the Analytics height
+   *
+   * @returns {number}
+   */
   get height() {
     return this._data.height;
   }
+
+  /**
+   * Gets the Analytics width
+   *
+   * @returns {number}
+   */
   get width() {
     return this._data.width;
   }
 }
+
+/**
+ * This represents the Analytics Fetcher for processing analytics calls
+ *
+ * @extends Fetcher
+ */
 export class Analytics extends Fetcher {
 
+  /**
+   * Creates an analytics fethcer
+   *
+   * @param oldAnalytics - Whether the structure to be returned should be old or new.
+   */
   constructor(oldAnalytics = true) {
     super();
     this.parameters['dimension'] = {};
@@ -58,19 +150,44 @@ export class Analytics extends Fetcher {
       return this.standardizeAnalytics(data, oldAnalytics);
     });
   }
+
+  /**
+   * Sets the data for the fetch
+   * @param dx
+   * @returns {Analytics}
+   */
   setData(dx) {
     this.parameters['dimension']['dx'] = dx;
     return this;
   }
+
+  /**
+   * Sets the period for the fetch
+   * @param pe
+   * @returns {Analytics}
+   */
   setPeriod(pe) {
     this.parameters['dimension']['pe'] = pe;
     return this;
   }
+
+  /**
+   * Sets the organisation unit for the fetching of the analytics
+   * @param ou
+   * @returns {Analytics}
+   */
   setOrgUnit(ou) {
     this.parameters['dimension']['ou'] = ou;
     return this;
   }
 
+  /**
+   * Standardizes the analytics object
+   *
+   * @param analyticsObject - The analytics object
+   * @param preferNormalStructure - Whether to prefer the old or new analytics structure
+   * @returns {AnalyticsObject}
+   */
   standardizeAnalytics(analyticsObject, preferNormalStructure = true) {
     // if Serverside Event clustering do nothing
     if (analyticsObject.count) {
@@ -131,6 +248,13 @@ export class Analytics extends Fetcher {
     return new AnalyticsObject(sanitizedAnalyticsObject);
   }
 
+  /**
+   * Standardizes the analytics metadata object
+   *
+   * @param analyticMetadata - The analytics metadata object
+   * @param preferNormalStructure - Whether to prefer the old or new analytics structure
+   * @returns {Object}
+   */
   getSanitizedAnalyticsMetadata(analyticMetadata, preferNormalStructure) {
     let sanitizedMetadata = {
       dimensions: {},
@@ -199,6 +323,10 @@ export class Analytics extends Fetcher {
     return sanitizedMetadata;
   }
 
+  /**
+   * Gets the url for fetching
+   * @returns {string}
+   */
   get url() {
     return 'analytics?' + this._urlParameters;
   }
