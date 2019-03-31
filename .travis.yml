@@ -1,5 +1,27 @@
 language: node_js
 node_js:
-  - "node"
-  - "7"
-  - "6"
+  - '10'
+
+branches:
+  only:
+    - master
+    - develop
+
+cache:
+  directories:
+    - ./node_modules
+
+install:
+  - pushd $TRAVIS_BUILD_DIR
+  - npm install
+
+script:
+  - npm run build
+
+notifications:
+  email:
+    recipients:
+      - rajeyw@gmail.com
+    on_failure: always
+    on_success: always
+  slack: hisptz:2UQgrRwNrI14ohefnnPyzms7
