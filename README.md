@@ -1,4 +1,6 @@
-[![Build Status](https://travis-ci.org/hisptz/function-analytics.svg?branch=develop)](https://travis-ci.org/hisptz/function-analytics)
+[![Build Status](https://travis-ci.org/hisptz/function-analytics.svg?branch=develop)](https://travis-ci.org/hisptz/function-analytics) [![Greenkeeper badge](https://badges.greenkeeper.io/hisptz/function-analytics.svg)](https://greenkeeper.io/)
+[![Maintainability](https://api.codeclimate.com/v1/badges/18d9239d0ecb464fbea6/maintainability)](https://codeclimate.com/github/hisptz/function-analytics/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/18d9239d0ecb464fbea6/test_coverage)](https://codeclimate.com/github/hisptz/function-analytics/test_coverage)
 
 # Function Analytics Library
 
@@ -72,7 +74,8 @@ orgunitProcessor.where('id', 'in', ['Rp268JB6Ne4', 'Rp268JB6Ne2']);
 var analytics = new Fn.Analytics();
 
 analytics.preProcess(
-  new Fn.Dependency(orgunitProcessor, (data, analyticsProcessor) => { // Adds dependency
+  new Fn.Dependency(orgunitProcessor, (data, analyticsProcessor) => {
+    // Adds dependency
     let ous = data.organisationUnits
       .map(organisationUnit => {
         return organisationUnit.id;

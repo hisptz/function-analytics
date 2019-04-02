@@ -18,7 +18,7 @@ export class IdentifiableObject extends Fetcher {
   }
 
   get url() {
-    var url = this.name + '.json?';
+    var url = this._urlParameters;
 
     this._filters.forEach((filter) => {
       url += 'filter=' + filter.right;
@@ -42,6 +42,6 @@ export class IdentifiableObject extends Fetcher {
         url += ':' + filter.operator + ':' + filter.left;
       }
     });
-    return url;
+    return this.name + '.json?' + url;
   }
 }
