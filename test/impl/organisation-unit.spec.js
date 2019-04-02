@@ -154,5 +154,18 @@ describe('Given an instance of Organisation Unit in the library', () => {
       lib.where('id', '!in', ['Rp268JB6Ne4', 'Rp268JB6Ne2']);
       expect(lib.url).to.be.equal('organisationUnits.json?filter=id:!in:[Rp268JB6Ne4,Rp268JB6Ne2]');
     });
+    it('should return the url with Equality and Parameters', () => {
+      lib = new Fn.OrganisationUnit();
+      lib.where('level', '==', '4')
+        .where('path', 'like', 'Rp268JB6Ne4')
+        .setParameters({
+          'paging': 'false',
+          'fields': 'id,organisationUnitGroups[id]'
+        })
+      expect(lib.url.indexOf('filter=path:like:Rp268JB6Ne4') > -1).to.be.equal(true);
+      expect(lib.url.indexOf('filter=level:eq:4') > -1).to.be.equal(true);
+      expect(lib.url.indexOf('paging=false') > -1).to.be.equal(true);
+      expect(lib.url.indexOf('fields=id,organisationUnitGroups[id]') > -1).to.be.equal(true);
+    });
   });
 });

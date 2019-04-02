@@ -32,7 +32,7 @@ describe('Given an initial instance', () => {
       expect(results.height !== undefined).to.be.equal(true);
       expect(results.width !== undefined).to.be.equal(true);
     });
-  });
+  }).timeout(5000);
   it('should return promise with analytics results with ouHierarch', () => {
     var analytics = new Fn.Analytics();
 
@@ -50,7 +50,7 @@ describe('Given an initial instance', () => {
       expect(results.height !== undefined).to.be.equal(true);
       expect(results.width !== undefined).to.be.equal(true);
     });
-  });
+  }).timeout(5000);
   it('should return promise with sql results results', () => {
     var sqlView = new Fn.SQLViewData('GCZ01m3pIRd');
 
@@ -62,7 +62,7 @@ describe('Given an initial instance', () => {
       expect(results.title !== undefined).to.be.equal(true);
       expect(results.subtitle !== undefined).to.be.equal(true);
     });
-  });
+  }).timeout(5000);
 });
 
 describe('Given an initial instance (Dependency Test)', () => {
