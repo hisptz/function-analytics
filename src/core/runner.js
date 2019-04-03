@@ -97,6 +97,9 @@ export class Runner {
    * @returns {ProgressPromise}
    */
   getResults(fetcher) {
+    if(fetcher._fetchers) { // If is a multifetcher
+      return this.getAllResults(fetcher);
+    }
     return new ProgressPromise((resolve, reject, progress) => {
       if (fetcher.hasDependencies()) {
         fetcher.getDependecyFetchResults().then(() => {
