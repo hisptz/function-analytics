@@ -31,6 +31,7 @@ describe('Given an instance of Event Analytics library', () => {
     expect(url.indexOf('dimension=pe:pe1') > -1).to.be.equal(true);
     expect(url.indexOf('dimension=dx:dx1') > -1).to.be.equal(true);
     expect(url.indexOf('dimension=dim') > -1).to.be.equal(true);
+    expect(url.indexOf('dimension=dim:') > -1).to.be.equal(false);
     expect(url.indexOf('displayProperty=NAME') > -1).to.be.equal(true);
     expect(url.indexOf('&') > -1).to.be.equal(true);
   });

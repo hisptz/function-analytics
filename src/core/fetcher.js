@@ -35,7 +35,11 @@ export class Fetcher extends Processor {
           if (url !== '') {
             url += '&';
           }
-          url += key + '=' + key2 + ':' + this.parameters[key][key2];
+          if (this.parameters[key][key2] === '') {
+            url += key + '=' + key2;
+          } else {
+            url += key + '=' + key2 + ':' + this.parameters[key][key2];
+          }
         });
       }
     });
