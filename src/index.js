@@ -1,4 +1,5 @@
 import {Analytics, AnalyticsObject, AnalyticsHeaders} from './impl/analytics.js';
+import {EventAnalytics} from './impl/event-analytics.js';
 import {SQLViewData} from './impl/sql-view.js';
 import {OrganisationUnit} from './impl/organisation-unit.js';
 import ProgressPromise from 'progress-promise';
@@ -18,6 +19,7 @@ import { MultiFetcher } from './core/multi-fetcher';
 let Fn = {
   Promise: ProgressPromise,
   Analytics: Analytics,
+  EventAnalytics: EventAnalytics,
   AnalyticsObject: AnalyticsObject,
   AnalyticsHeaders: AnalyticsHeaders,
   OrganisationUnit: OrganisationUnit,
