@@ -24,14 +24,14 @@ export class Fetcher extends Processor {
   get _urlParameters() {
     let url = '';
 
-    Object.keys(this.parameters).forEach((key) => {
+    Object.keys(this.parameters).forEach(key => {
       if (url !== '') {
         url += '&';
       }
       if (typeof this.parameters[key] === 'string') {
         url += key + '=' + this.parameters[key];
       } else {
-        Object.keys(this.parameters[key]).forEach((key2) => {
+        Object.keys(this.parameters[key]).forEach(key2 => {
           if (url !== '') {
             url += '&';
           }
@@ -55,7 +55,7 @@ export class Fetcher extends Processor {
    * @returns {ProgressPromise}
    */
   get() {
-    return (new Runner()).getResults(this);
+    return new Runner().getResults(this);
   }
 
   /**
@@ -64,7 +64,7 @@ export class Fetcher extends Processor {
    * @returns {Fetcher}
    */
   setParameters(parameters) {
-    Object.keys(parameters).forEach((key) => {
+    Object.keys(parameters).forEach(key => {
       this.parameters[key] = parameters[key];
     });
     return this;
@@ -75,8 +75,8 @@ export class Fetcher extends Processor {
    * @returns {ProgressPromise}
    */
   getDependecyFetchResults() {
-    const promises = this.dependencies.map((dependency) => {
-      return (new Runner()).getResults(dependency.processor);
+    const promises = this.dependencies.map(dependency => {
+      return new Runner().getResults(dependency.processor);
     });
 
     return ProgressPromise.all(promises);

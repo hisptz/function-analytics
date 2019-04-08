@@ -75,7 +75,6 @@ export class AnalyticsHeaders extends Array {
  *
  */
 export class AnalyticsObject {
-
   /**
    * Creates ana Analytics Object
    *
@@ -137,7 +136,6 @@ export class AnalyticsObject {
  * @extends Fetcher
  */
 export class Analytics extends Fetcher {
-
   /**
    * Creates an analytics fethcer
    *
@@ -146,7 +144,7 @@ export class Analytics extends Fetcher {
   constructor(oldAnalytics = true) {
     super();
     this.parameters['dimension'] = {};
-    this.postProcess((data) => {
+    this.postProcess(data => {
       return this.standardizeAnalytics(data, oldAnalytics);
     });
   }
@@ -157,7 +155,7 @@ export class Analytics extends Fetcher {
    * @returns {Analytics}
    */
   setData(dx) {
-    this.parameters['dimension']['dx'] = dx;
+    this.setDimension('dx', dx);
     return this;
   }
 
@@ -167,7 +165,7 @@ export class Analytics extends Fetcher {
    * @returns {Analytics}
    */
   setPeriod(pe) {
-    this.parameters['dimension']['pe'] = pe;
+    this.setDimension('pe', pe);
     return this;
   }
 
@@ -177,7 +175,17 @@ export class Analytics extends Fetcher {
    * @returns {Analytics}
    */
   setOrgUnit(ou) {
-    this.parameters['dimension']['ou'] = ou;
+    this.setDimension('ou', ou);
+    return this;
+  }
+
+  /**
+   * Sets the dimension for the fetching of the analytics
+   * @param {dim, value}
+   * @returns {Analytics}
+   */
+  setDimension(dim, value) {
+    this.parameters['dimension'][dim] = value ? value : '';
     return this;
   }
 
@@ -207,12 +215,11 @@ export class Analytics extends Fetcher {
     };
 
     if (analyticsObject) {
-
       /**
        * Check headers
        */
       if (analyticsObject.headers) {
-        analyticsObject.headers.forEach(function (header) {
+        analyticsObject.headers.forEach((header) => {
           try {
             let newHeader = header;
 
@@ -228,7 +235,10 @@ export class Analytics extends Fetcher {
        */
       if (analyticsObject.metaData) {
         try {
-          let sanitizedMetadata = this.getSanitizedAnalyticsMetadata(analyticsObject.metaData, preferNormalStructure);
+          let sanitizedMetadata = this.getSanitizedAnalyticsMetadata(
+            analyticsObject.metaData,
+            preferNormalStructure
+          );
 
           sanitizedAnalyticsObject.metaData = sanitizedMetadata;
         } catch (e) {
@@ -275,11 +285,11 @@ export class Analytics extends Fetcher {
       if (analyticMetadata.names) {
         sanitizedMetadata.names = analyticMetadata.names;
       } else if (analyticMetadata.items) {
-
         let metadataNames = {};
 
         for (let metadataItemKey in analyticMetadata.items) {
-          metadataNames[metadataItemKey] = analyticMetadata.items[metadataItemKey].name;
+          metadataNames[metadataItemKey] =
+            analyticMetadata.items[metadataItemKey].name;
         }
 
         sanitizedMetadata['names'] = metadataNames;
@@ -304,7 +314,8 @@ export class Analytics extends Fetcher {
         for (let metadataKey in analyticMetadata.dimensions) {
           if (analyticMetadata.hasOwnProperty(metadataKey)) {
             if (metadataKey !== 'names') {
-              metadataDimensions[metadataKey] = analyticMetadata.dimensions[metadataKey];
+              metadataDimensions[metadataKey] =
+                analyticMetadata.dimensions[metadataKey];
             }
           }
         }
