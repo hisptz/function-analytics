@@ -104,6 +104,20 @@ describe('When I get the analytics object', () => {
     expect(analyticsObject.headers.value.column).to.be.equal('Value');
     expect(analyticsObject.headers.value.index).to.be.equal(3);
   });
+
+  it('should return valid new metadata with new structure', () => {
+    var analyticsData = {"metaData": {"items": {"201808": {"name": "August 2018"}, "201807": {"name": "July 2018"}, "201809": {"name": "September 2018"}, "201804": {"name": "April 2018"}, "201903": {"name": "March 2019"}, "201902": {"name": "February 2019"}, "201806": {"name": "June 2018"}, "lgZ6HfZaj3f": {"name": "Arusha City Council"}, "ou": {"name": "Organisation unit"}, "201805": {"name": "May 2018"}, "201811": {"name": "November 2018"}, "201810": {"name": "October 2018"}, "201901": {"name": "January 2019"}, "201812": {"name": "December 2018"}, "pe": {"name": "Period"}}, "dimensions": {"pe": ["201804", "201805", "201806", "201807", "201808", "201809", "201810", "201811", "201812", "201901", "201902", "201903"], "ou": ["lgZ6HfZaj3f"], "co": []}}, "rows": [], "height": 0, "width": 0};
+    var analytics = new Fn.Analytics();
+    var standardizedAnalytics = analytics.standardizeAnalytics(
+      analyticsData,
+      false
+    );
+    expect(standardizedAnalytics.headers.length).to.be.equal(0);
+    expect(standardizedAnalytics.metaData.dimensions.pe.length).to.be.equal(12);
+    expect(standardizedAnalytics.metaData.dimensions.ou.length).to.be.equal(1);
+    expect(standardizedAnalytics.metaData.items.ou.name).to.be.equal('Organisation unit');
+    expect(standardizedAnalytics.metaData.items.pe.name).to.be.equal('Period');
+  });
 });
 
 /*

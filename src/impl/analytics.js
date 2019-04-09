@@ -266,71 +266,54 @@ export class Analytics extends Fetcher {
    * @returns {Object}
    */
   getSanitizedAnalyticsMetadata(analyticMetadata, preferNormalStructure) {
-    let sanitizedMetadata = {
-      dimensions: {},
-      names: {},
-      dx: [],
-      pe: [],
-      ou: [],
-      co: []
-    };
+    let sanitizedMetadata = {};
 
     if (analyticMetadata) {
       if (analyticMetadata.ouHierarchy) {
         sanitizedMetadata.ouHierarchy = analyticMetadata.ouHierarchy;
       }
-      /**
-       * Get metadata names
-       */
-      if (analyticMetadata.names) {
-        sanitizedMetadata.names = analyticMetadata.names;
-      } else if (analyticMetadata.items) {
-        let metadataNames = {};
-
-        for (let metadataItemKey in analyticMetadata.items) {
-          metadataNames[metadataItemKey] =
-            analyticMetadata.items[metadataItemKey].name;
+      if (preferNormalStructure) { // Get old structure
+        sanitizedMetadata.names = {};
+        if (analyticMetadata.names) {
+          sanitizedMetadata.names = analyticMetadata.names;
+        } else if (analyticMetadata.items) {
+          Object.keys(analyticMetadata.items).forEach(nameKey => {
+            sanitizedMetadata.names[nameKey] = analyticMetadata.items[nameKey].name;
+          });
         }
 
-        sanitizedMetadata['names'] = metadataNames;
-      }
-
-      /**
-       * Get metadata dimensions
-       */
-      if (analyticMetadata.dimensions) {
-        if (!preferNormalStructure) {
-          sanitizedMetadata['dimensions'] = analyticMetadata.dimensions;
-        } else {
-          delete sanitizedMetadata.dimensions;
-          sanitizedMetadata.dx = analyticMetadata.dimensions.dx;
-          sanitizedMetadata.ou = analyticMetadata.dimensions.ou;
-          sanitizedMetadata.pe = analyticMetadata.dimensions.pe;
-          sanitizedMetadata.co = analyticMetadata.dimensions.co;
-        }
-      } else {
-        let metadataDimensions = {};
-
-        for (let metadataKey in analyticMetadata.dimensions) {
-          if (analyticMetadata.hasOwnProperty(metadataKey)) {
-            if (metadataKey !== 'names') {
-              metadataDimensions[metadataKey] =
-                analyticMetadata.dimensions[metadataKey];
+        if (analyticMetadata.dimensions) {
+          Object.keys(analyticMetadata.dimensions).forEach(
+            nameKey => {
+              sanitizedMetadata[nameKey] =
+                analyticMetadata.dimensions[nameKey];
             }
-          }
+          );
+        }
+      } else { // Get new structure
+        sanitizedMetadata.items = {};
+        if (analyticMetadata.items) {
+          sanitizedMetadata.items = analyticMetadata.items;
+        } else if (analyticMetadata.names) {
+          Object.keys(analyticMetadata.items).forEach(nameKey => {
+            analyticMetadata.items[nameKey] = {
+              name: analyticMetadata.names[nameKey]
+            };
+          });
         }
 
-        if (!preferNormalStructure) {
-          sanitizedMetadata['dimensions'] = metadataDimensions;
+        if (!analyticMetadata.dimensions) {
+          sanitizedMetadata.dimensions = {};
+          Object.keys(analyticMetadata).forEach(nameKey => {
+            if (['names', 'items', 'dimensions'].indexOf(nameKey) === -1) {
+              sanitizedMetadata.dimensions[nameKey] = analyticMetadata[nameKey];
+            }
+          });
         } else {
-          sanitizedMetadata.dx = metadataDimensions.dx;
-          sanitizedMetadata.ou = metadataDimensions.ou;
-          sanitizedMetadata.pe = metadataDimensions.pe;
-          sanitizedMetadata.co = metadataDimensions.co;
+          sanitizedMetadata.dimensions = analyticMetadata.dimensions;
         }
       }
     }
-
     return sanitizedMetadata;
   }
 
