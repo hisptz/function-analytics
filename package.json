@@ -4,12 +4,13 @@
   "description": "Produce universal library with webpack and es6",
   "main": "lib/function-analytics.js",
   "scripts": {
-    "build": "npm run test && webpack --env dev && webpack --env build",
+    "build": "npm run test && webpack --env dev && webpack --env build --fix",
     "dev": "webpack --progress --colors --watch --env dev",
     "test": "mocha --require babel-register --colors ./test/*.spec.js ./test/core/*.spec.js ./test/impl/*.spec.js",
     "test:watch": "mocha --require babel-register --colors -w ./test/*.spec.js",
     "test:cover": "cross-env NODE_ENV=test nyc mocha --require babel-register --colors test/*.js",
-    "repl": "node -i -e \"$(< ./lib/webpack-library-starter.js)\""
+    "repl": "node -i -e \"$(< ./lib/webpack-library-starter.js)\"",
+    "generate-docs": "node_modules/.bin/jsdoc -c jsdoc.json"
   },
   "repository": {
     "type": "git",
@@ -47,8 +48,8 @@
     "eslint-loader": "^2.0.0",
     "jsdom": "14.0.0",
     "jsdom-global": "3.0.2",
-    "mocha": "^6.0.2",
-    "nyc": "^13.1.0",
+    "mocha": "^6.1.2",
+    "nyc": "^13.3.0",
     "uglifyjs-webpack-plugin": "^2.1.2",
     "webpack": "^4.12.2",
     "webpack-cli": "^3.0.8",
@@ -61,6 +62,8 @@
   "dependencies": {
     "axios": "^0.18.0",
     "babel-plugin-transform-flow-interface-imports": "^1.0.1",
+    "docdash": "^1.1.0",
+    "jsdoc": "^3.5.5",
     "progress-promise": "0.0.6"
   }
 }
