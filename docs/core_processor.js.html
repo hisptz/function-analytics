@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>Home - Documentation</title>
+    <title>core/processor.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -31,99 +31,107 @@
 
 <div id="main">
     
+    <h1 class="page-title">core/processor.js</h1>
+    
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * This callback type is called `processCallback`.
+ *
+ * @callback processCallback
+ * @param {Object} result
+ */
 
+/**
+ * Represents a process dependency
+ */
+export class Dependency {
+  /**
+   * Creates a dependency instance
+   * @param {Processor} processor
+   * @param {processCallback} process
+   */
+  constructor(processor, process) {
+    this.processor = processor;
+    this.process = process;
+  }
+}
 
-    <section class="package">
-        <h3> </h3>		
+/**
+ * This is the representation of the processor
+ */
+export class Processor {
+  /**
+   * Creates a processor
+   */
+  constructor() {
+    this.postProcessors = [];
+    this.dependencies = [];
+  }
+
+  /**
+   * Checks if processor has dependencies
+   * @returns {boolean}
+   */
+  hasDependencies() {
+    return this.dependencies.length > 0;
+  }
+
+  /**
+   * Adds dependency to the processor
+   * @param {Dependency} dependency
+   * @returns {Processor}
+   */
+  preProcess(dependency) {
+    this.dependencies.push(dependency);
+    return this;
+  }
+
+  /**
+   * Adds callback process the output process
+   * @param callback
+   * @returns {Processor}
+   */
+  postProcess(callback) {
+    this.postProcessors.push(callback);
+    return this;
+  }
+
+  /**
+   * Performs pre process
+   * @returns {Processor}
+   */
+  performPreProcess() {
+    this.dependencies.forEach((dependency) => {
+      dependency.process(dependency.processor._results, this);
+    });
+    return this;
+  }
+
+  /**
+   * Performs post process after the process has ended
+   * @param {Object} data
+   * @returns {Object}
+   */
+  performPostProcess(data) {
+    this._results = data;
+    let dataToProcess = data;
+
+    this.postProcessors.forEach((callback) => {
+      dataToProcess = callback(dataToProcess);
+    });
+    return dataToProcess;
+  }
+}
+</code></pre>
+        </article>
     </section>
-
-
-
-
-
-
-
-
-
-    
-
-
-
-    <section class="readme">
-        <article><h1>Fn</h1><p><a href="https://travis-ci.org/hisptz/function-analytics"><img src="https://travis-ci.org/hisptz/function-analytics.svg?branch=develop" alt="Build Status"></a> <a href="https://greenkeeper.io/"><img src="https://badges.greenkeeper.io/hisptz/function-analytics.svg" alt="Greenkeeper badge"></a>
-<a href="https://codeclimate.com/github/hisptz/function-analytics/maintainability"><img src="https://api.codeclimate.com/v1/badges/18d9239d0ecb464fbea6/maintainability" alt="Maintainability"></a>
-<a href="https://codeclimate.com/github/hisptz/function-analytics/test_coverage"><img src="https://api.codeclimate.com/v1/badges/18d9239d0ecb464fbea6/test_coverage" alt="Test Coverage"></a></p>
-<h1>Function Analytics Library</h1><p>Library to aid in the development of functions. Built with best practices in mind from the experience on function maintenance.
-This is to make it easy for developers to concentrate on the business logic of their functions while also considering the best way
-to perform operations with out of the box performance execution strategy.</p>
-<h2>Features</h2><ul>
-<li>Fetching data for analytics.</li>
-<li>Fetching DHIS Identifiable objects.</li>
-<li>Perform execution of functions with optimization</li>
-</ul>
-<h2>Getting started</h2><h3>Browser</h3><pre class="prettyprint source"><code>&lt;script src=&quot;https://raw.githack.com/hisptz/function-analytics/master/lib/function-analytics.min.js&quot;>&lt;/script></code></pre><h3>Node</h3><pre class="prettyprint source"><code>var Fn require('function-analytics').Fn;</code></pre><h2>Initializing</h2><pre class="prettyprint source lang-js"><code>Fn.init({
-  baseUrl: 'api_url_to_dhis_server',
-  username: 'username', //Optional if in a DHIS app
-  pasword: 'password' //Optional if in a DHIS app
-});</code></pre><h2>Fetch analytics</h2><p>You can fetch analytic with a few lines of code</p>
-<pre class="prettyprint source lang-js"><code>new Fn.Analytics()
-  .setData('dx')
-  .setOrgUnit('ou')
-  .setPeriod('pe')
-  .get()
-  .progress(function(value) {
-    // Do something with the progress value
-  })
-  .postProcess(function(analyticsObject) {
-    // This adds post processing after fetching is done
-    var ouHeader = analyticsObject.headers.ou; // Gets the ou header
-    var ouIndex = ouHeader.index; // Gets the index of organisation unit header
-    return analyticsObject;
-  })
-  .then(function(analyticsObject) {
-    //The result after fetching and processing with the post process callback
-  });</code></pre><h2>Dependency</h2><p>You can put together dependencies if calls depend on one another</p>
-<pre class="prettyprint source lang-js"><code>var orgunitProcessor = new Fn.OrganisationUnit(); // Example of an organisation fethcer
-
-orgunitProcessor.where('id', 'in', ['Rp268JB6Ne4', 'Rp268JB6Ne2']);
-
-var analytics = new Fn.Analytics();
-
-analytics.preProcess(
-  new Fn.Dependency(orgunitProcessor, (data, analyticsProcessor) => {
-    // Adds dependency
-    let ous = data.organisationUnits
-      .map(organisationUnit => {
-        return organisationUnit.id;
-      })
-      .join(';');
-
-    analyticsProcessor.setPeriod('2016').setOrgUnit(ous);
-  })
-);
-analytics.get().then(results => {});</code></pre><h2>Multiple Processing</h2><p>You can put together dependencies if calls depend on one another</p>
-<pre class="prettyprint source lang-js"><code>var orgunitProcessor = new Fn.OrganisationUnit();
-
-orgunitProcessor.where('id', 'in', ['Rp268JB6Ne4', 'Rp268JB6Ne2']);
-
-var analytics = new Fn.Analytics();
-
-analytics.setPeriod('2016').setOrgUnit('Rp268JB6Ne4;Rp268JB6Ne2');
-
-var multiProcesses = Fn.all([orgunitProcessor, analytics]);
-multiProcesses.postProcess(res => {
-  return [res[1], res[0]];
-});
-multiProcesses.get().then(results => {});</code></pre></article>
-    </section>
-
-
 
 
 
