@@ -171,8 +171,8 @@ export class Analytics extends Fetcher {
 
   /**
    * Sets the organisation unit for the fetching of the analytics
-   * @param ou
-   * @returns {Analytics}
+   * @param {string} ou - Organisation unit
+   * @returns {Analytics} Analytics results
    */
   setOrgUnit(ou) {
     this.setDimension('ou', ou);
@@ -181,7 +181,8 @@ export class Analytics extends Fetcher {
 
   /**
    * Sets the dimension for the fetching of the analytics
-   * @param {dim, value}
+   * @param {string} dim - Dynamic Dimension identifier
+   * @param {string} value - Dynamic dimension options identifiers
    * @returns {Analytics}
    */
   setDimension(dim, value) {
