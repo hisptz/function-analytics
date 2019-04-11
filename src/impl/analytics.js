@@ -12,8 +12,8 @@ export class AnalyticsHeader {}
  */
 export class AnalyticsHeaders extends Array {
   constructor(data) {
-    super(...data);
-    Object.setPrototypeOf(this, Object.create(AnalyticsHeaders.prototype));
+     super(...data);
+     Object.setPrototypeOf(this, Object.create(AnalyticsHeaders.prototype));
   }
 
   /**
