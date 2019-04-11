@@ -85,4 +85,10 @@ export class Fetcher extends Processor {
 
     return ProgressPromise.all(promises);
   }
+  _encode64(buff) {
+    return btoa(new Uint8Array(buff).reduce((s, b) => s + String.fromCharCode(b), ''));
+  }
+  hash() {
+    return this.url;
+  }
 }
