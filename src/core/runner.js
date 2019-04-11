@@ -102,7 +102,7 @@ export class Runner {
       return this.getAllResults(fetcher);
     }
     let hashed = fetcher.hash();
-    //console.log('Hashed:', _instance.cache);
+
     if (!_instance.cache[hashed]) {
       _instance.cache[hashed] = new ProgressPromise(
         (resolve, reject, progress) => {
