@@ -166,6 +166,9 @@ describe('Given an instance of Organisation Unit in the library', () => {
       expect(lib.url.indexOf('filter=level:eq:4') > -1).to.be.equal(true);
       expect(lib.url.indexOf('paging=false') > -1).to.be.equal(true);
       expect(lib.url.indexOf('fields=id,organisationUnitGroups[id]') > -1).to.be.equal(true);
+      expect(
+        lib.url.split("&").length
+      ).to.be.equal(4);
     });
   });
 });

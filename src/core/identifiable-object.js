@@ -21,6 +21,9 @@ export class IdentifiableObject extends Fetcher {
     var url = this._urlParameters;
 
     this._filters.forEach((filter) => {
+      if (url !== '') {
+        url += '&';
+      }
       url += 'filter=' + filter.right;
       if (filter.operator === '==') {
         url += ':eq:' + filter.left;
@@ -42,6 +45,7 @@ export class IdentifiableObject extends Fetcher {
         url += ':' + filter.operator + ':' + filter.left;
       }
     });
+    console.log(this.name + '.json?' + url);
     return this.name + '.json?' + url;
   }
 }
