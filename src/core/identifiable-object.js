@@ -1,6 +1,15 @@
 import { Fetcher } from '../core/fetcher';
 
+/**
+ * Represents Identifiable Object
+ *@extends Fetcher
+ */
 export class IdentifiableObject extends Fetcher {
+
+  /**
+   * Creates a fethcer
+   * @constructor
+   */
   constructor() {
     super();
     this._filters = [];
@@ -8,6 +17,14 @@ export class IdentifiableObject extends Fetcher {
   get name() {
     throw Error('Object name not implemented');
   }
+
+  /**
+   * Sets the where clause for filtering of data
+   * @param {string} right - Right expression
+   * @param {string} operator - Expression operator
+   * @param {string|array} left - Right expression
+   * @returns {IdentifiableObject} IdentifiableObject Identifiable object with where clause appended
+   */
   where(right, operator, left) {
     this._filters.push({
       right: right,
