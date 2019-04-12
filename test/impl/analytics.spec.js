@@ -117,6 +117,8 @@ describe('When I get the analytics object', () => {
     expect(standardizedAnalytics.metaData.dimensions.ou.length).to.be.equal(1);
     expect(standardizedAnalytics.metaData.items.ou.name).to.be.equal('Organisation unit');
     expect(standardizedAnalytics.metaData.items.pe.name).to.be.equal('Period');
+
+    expect(standardizedAnalytics.metaData.ou === undefined).to.be.equal(true);
   });
 });
 

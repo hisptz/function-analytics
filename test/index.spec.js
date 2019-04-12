@@ -51,6 +51,24 @@ describe('Given an initial instance', () => {
       expect(results.width !== undefined).to.be.equal(true);
     });
   }).timeout(5000);
+  it('should return promise with analytics results with ouHierarch(Test Caching)', () => {
+    var analytics = new Fn.Analytics();
+
+    analytics
+      .setPeriod('2016')
+      .setOrgUnit('ImspTQPwCqd')
+      .setParameters({
+        hierarchyMeta: 'true'
+      });
+    return analytics.get().then(results => {
+      expect(results.headers !== undefined).to.be.equal(true);
+      expect(results.rows !== undefined).to.be.equal(true);
+      expect(results.metaData.ouHierarchy !== undefined).to.be.equal(true);
+      expect(results.metaData !== undefined).to.be.equal(true);
+      expect(results.height !== undefined).to.be.equal(true);
+      expect(results.width !== undefined).to.be.equal(true);
+    });
+  }).timeout(5000);
   it('should return promise with sql results results', () => {
     var sqlView = new Fn.SQLViewData('GCZ01m3pIRd');
 

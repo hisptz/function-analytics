@@ -15,6 +15,7 @@ export class Runner {
   static initiateRunner(configurations) {
     if (!Runner.instance) {
       this.config = configurations;
+      this.cache = {};
       _instance = this;
     }
   }
@@ -100,19 +101,29 @@ export class Runner {
     if (fetcher._fetchers) { // If is a multifetcher
       return this.getAllResults(fetcher);
     }
-    return new ProgressPromise((resolve, reject, progress) => {
-      if (fetcher.hasDependencies()) {
-        fetcher.getDependecyFetchResults().then(() => {
-          fetcher.performPreProcess();
-          this._fetch(fetcher, resolve, reject);
-        }).catch((err) => {
-          console.log('Errrrrrrrrrr:', err);
-          reject();
-        });
-      } else {
-        this._fetch(fetcher, resolve, reject);
-      }
-    });
+    let hashed = fetcher.hash();
+
+    if (!_instance.cache[hashed]) {
+      _instance.cache[hashed] = new ProgressPromise(
+        (resolve, reject, progress) => {
+          if (fetcher.hasDependencies()) {
+            fetcher
+              .getDependecyFetchResults()
+              .then(() => {
+                fetcher.performPreProcess();
+                this._fetch(fetcher, resolve, reject);
+              })
+              .catch(err => {
+                console.log('Errrrrrrrrrr:', err);
+                reject();
+              });
+          } else {
+            this._fetch(fetcher, resolve, reject);
+          }
+        }
+      );
+    }
+    return _instance.cache[hashed];
   }
 
   /**
