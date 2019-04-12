@@ -45,7 +45,6 @@ export class IdentifiableObject extends Fetcher {
         url += ':' + filter.operator + ':' + filter.left;
       }
     });
-    console.log(this.name + '.json?' + url);
     return this.name + '.json?' + url;
   }
 }
