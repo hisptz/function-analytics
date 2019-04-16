@@ -26,7 +26,7 @@ to perform operations with out of the box performance execution strategy.
 ### Node
 
 ```
-var Fn require('function-analytics').Fn;
+var Fn = require('function-analytics').Fn;
 ```
 
 ## Initializing
@@ -48,15 +48,15 @@ new Fn.Analytics()
   .setData('dx')
   .setOrgUnit('ou')
   .setPeriod('pe')
-  .get()
-  .progress(function(value) {
-    // Do something with the progress value
-  })
   .postProcess(function(analyticsObject) {
     // This adds post processing after fetching is done
     var ouHeader = analyticsObject.headers.ou; // Gets the ou header
     var ouIndex = ouHeader.index; // Gets the index of organisation unit header
     return analyticsObject;
+  })
+  .get()
+  .progress(function(value) {
+    // Do something with the progress value
   })
   .then(function(analyticsObject) {
     //The result after fetching and processing with the post process callback
@@ -68,42 +68,45 @@ new Fn.Analytics()
 You can put together dependencies if calls depend on one another
 
 ```js
-var orgunitProcessor = new Fn.OrganisationUnit(); // Example of an organisation fethcer
+var orgunit = new Fn.OrganisationUnit(); // Example of an organisation fetcher
 
-orgunitProcessor.where('id', 'in', ['Rp268JB6Ne4', 'Rp268JB6Ne2']);
-
-var analytics = new Fn.Analytics();
-
-analytics.preProcess(
-  new Fn.Dependency(orgunitProcessor, (data, analyticsProcessor) => {
+orgunit.where('id', 'in', ['Rp268JB6Ne4', 'Rp268JB6Ne2']);
+//Declare business process to run after orgunit results
+var bussinessAfterOrgunitProcess = (orgUnitResult, analytics) => {
     // Adds dependency
-    let ous = data.organisationUnits
+    let ous = orgUnitResult.organisationUnits
       .map(organisationUnit => {
         return organisationUnit.id;
       })
       .join(';');
 
-    analyticsProcessor.setPeriod('2016').setOrgUnit(ous);
-  })
+    analytics.setPeriod('2016').setOrgUnit(ous);
+  }
+var analytics = new Fn.Analytics();
+
+analytics.preProcess(
+  new Fn.Dependency(orgunit, bussinessAfterOrgunitProcess)
 );
 analytics.get().then(results => {});
 ```
 
 ## Multiple Processing
 
-You can put together dependencies if calls depend on one another
+You can invoke multiple processes
 
 ```js
-var orgunitProcessor = new Fn.OrganisationUnit();
+var orgunit = new Fn.OrganisationUnit();
 
-orgunitProcessor.where('id', 'in', ['Rp268JB6Ne4', 'Rp268JB6Ne2']);
+orgunit.where('id', 'in', ['Rp268JB6Ne4', 'Rp268JB6Ne2']);
 
 var analytics = new Fn.Analytics();
 
 analytics.setPeriod('2016').setOrgUnit('Rp268JB6Ne4;Rp268JB6Ne2');
 
-var multiProcesses = Fn.all([orgunitProcessor, analytics]);
+var multiProcesses = Fn.all([orgunit, analytics]);
 multiProcesses.postProcess(res => {
+  //res[0] is from orgunit
+  //res[1] is from analytics
   return [res[1], res[0]];
 });
 multiProcesses.get().then(results => {});
