@@ -1,5 +1,5 @@
 {
-  "name": "@hisptz/function-analytics",
+  "name": "function-analytics",
   "version": "1.0.0-beta.1",
   "description": "Produce universal library with webpack and es6",
   "main": "lib/function-analytics.js",
@@ -11,7 +11,7 @@
     "test:cover": "cross-env NODE_ENV=test nyc mocha --require babel-register --colors test/*.js",
     "repl": "node -i -e \"$(< ./lib/webpack-library-starter.js)\"",
     "generate-docs": "node_modules/.bin/jsdoc -c jsdoc.json",
-    "publish": "npm run build && cp package.json lib/ && cd lib && npm publish --access public"
+    "publish": "npm run build && cd lib && npm publish --access public"
   },
   "repository": {
     "type": "git",
@@ -44,6 +44,7 @@
     "babel-preset-env": "^7.0.0-beta.3",
     "babel-register": "^7.0.0-beta.3",
     "chai": "^4.1.2",
+    "clean-webpack-plugin": "^2.0.1",
     "copy-webpack-plugin": "^5.0.2",
     "cross-env": "^5.2.0",
     "docdash": "^1.1.0",
