@@ -1,16 +1,17 @@
-import {Analytics, AnalyticsObject, AnalyticsHeaders} from './impl/analytics.js';
-import {EventAnalytics} from './impl/event-analytics.js';
+import {Analytics} from './impl/analytics/analytics.js';
+import {AnalyticsResult } from './impl/analytics/analytics-result';
+import {EventAnalytics} from './impl/analytics/event-analytics.js';
 import {SQLViewData} from './impl/sql-view.js';
-import {OrganisationUnit} from './impl/organisation-unit.js';
 import ProgressPromise from 'progress-promise';
 import { Runner } from './core/runner.js';
 import { Dependency } from './core/processor';
 import { MultiFetcher } from './core/multi-fetcher';
+import {IdentifiableObject} from './core/identifiable-object.js';
 
 /**
  * This is the main holder for the functionalities of the function
  * @type {{Promise: ProgressPromise, Analytics: Analytics,
-  *   AnalyticsObject: AnalyticsObject, AnalyticsHeaders: AnalyticsHeaders,
+  *   AnalyticsResult: AnalyticsResult,
   *   OrganisationUnit: OrganisationUnit, SQLViewData: SQLViewData,
   *   Runner: Runner, Dependency: Dependency, MultiFetcher: MultiFetcher,
   *   all: (function(Fetcher[])), init: (function(*=))}
@@ -20,9 +21,8 @@ let Fn = {
   Promise: ProgressPromise,
   Analytics: Analytics,
   EventAnalytics: EventAnalytics,
-  AnalyticsObject: AnalyticsObject,
-  AnalyticsHeaders: AnalyticsHeaders,
-  OrganisationUnit: OrganisationUnit,
+  AnalyticsResult: AnalyticsResult,
+  IdentifiableObject: IdentifiableObject,
   SQLViewData: SQLViewData,
   Runner: Runner,
   Dependency: Dependency,
@@ -35,7 +35,7 @@ let Fn = {
    * @example
    * Fn.all([new Fn.Analytics(), new Fn.OrganisationUnit()]);
    */
-  all: (fetchers) => {
+  all: fetchers => {
     return new MultiFetcher(fetchers);
   },
   /**
@@ -46,7 +46,7 @@ let Fn = {
    * @example
    * Fn.all({baseUrl:''});
    */
-  init: (config)=>{
+  init: config => {
     Runner.initiateRunner(config);
   }
 };

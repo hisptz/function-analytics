@@ -1,12 +1,13 @@
 import { Fetcher } from '../core/fetcher';
 
 export class IdentifiableObject extends Fetcher {
-  constructor() {
+  constructor(objectName) {
     super();
     this._filters = [];
+    this.objectName = objectName;
   }
   get name() {
-    throw Error('Object name not implemented');
+    return this.objectName;
   }
   where(right, operator, left) {
     this._filters.push({
