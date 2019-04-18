@@ -4,7 +4,7 @@
   "description": "Produce universal library with webpack and es6",
   "main": "lib/function-analytics.js",
   "scripts": {
-    "build": "npm run test && webpack --env dev && webpack --env build --fix",
+    "build": "npm run test && webpack --env dev && webpack --env build --fix && npm run docs",
     "dev": "webpack --progress --colors --watch --env dev",
     "test": "mocha --require babel-register --colors ./test/*.spec.js ./test/core/*.spec.js ./test/impl/*.spec.js",
     "test:watch": "mocha --require babel-register --colors -w ./test/*.spec.js",
