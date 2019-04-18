@@ -5,7 +5,7 @@ import {SQLViewData} from './impl/sql-view.js';
 // import ProgressPromise from 'progress-promise';
 import {ProgressPromise} from './core/progress-promise';
 import { Runner } from './core/runner.js';
-import { Dependency } from './core/process';
+import { Dependency } from './core/dependency';
 import { MultiFetcher } from './core/multi-fetcher';
 import {IdentifiableObject} from './core/identifiable-object.js';
 

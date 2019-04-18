@@ -1,26 +1,4 @@
 /**
- * This callback type is called `processCallback`.
- *
- * @callback processCallback
- * @param {Object} result
- */
-
-/**
- * Represents a process dependency
- */
-export class Dependency {
-  /**
-   * Creates a dependency instance
-   * @param {Process} processor
-   * @param {processCallback} process
-   */
-  constructor(processor, process) {
-    this.processor = processor;
-    this.process = process;
-  }
-}
-
-/**
  * This is the representation of the processor
  */
 export class Process {
@@ -88,7 +66,7 @@ export class Process {
    */
   performPreProcess() {
     this.dependencies.forEach(dependency => {
-      dependency.process(dependency.processor._results, this);
+      dependency.processCallback(dependency.process._results, this);
     });
     return this;
   }

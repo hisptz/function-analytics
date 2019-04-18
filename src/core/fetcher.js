@@ -80,7 +80,7 @@ export class Fetcher extends Process {
    */
   getDependecyFetchResults() {
     const promises = this.dependencies.map(dependency => {
-      return new Runner().getResults(dependency.processor);
+      return new Runner().getResults(dependency.process);
     });
 
     return ProgressPromise.all(promises);
