@@ -48,17 +48,15 @@ new Fn.Analytics()
   .setData('dx')
   .setOrgUnit('ou')
   .setPeriod('pe')
-  .postProcess(function(analyticsObject) {
+  .postProcess(function(analyticsResult) {
     // This adds post processing after fetching is done
-    var ouHeader = analyticsObject.headers.ou; // Gets the ou header
-    var ouIndex = ouHeader.index; // Gets the index of organisation unit header
-    return analyticsObject;
+    return analyticsResult;
   })
   .get()
   .progress(function(value) {
     // Do something with the progress value
   })
-  .then(function(analyticsObject) {
+  .then(function(analyticsResult) {
     //The result after fetching and processing with the post process callback
   });
 ```
@@ -68,7 +66,7 @@ new Fn.Analytics()
 You can put together dependencies if calls depend on one another
 
 ```js
-var orgunit = new Fn.OrganisationUnit(); // Example of an organisation fetcher
+var orgunit = new Fn.IdentifiableObject('organisationUnits'); // Example of an organisation fetcher
 
 orgunit.where('id', 'in', ['Rp268JB6Ne4', 'Rp268JB6Ne2']);
 //Declare business process to run after orgunit results
@@ -95,7 +93,7 @@ analytics.get().then(results => {});
 You can invoke multiple processes
 
 ```js
-var orgunit = new Fn.OrganisationUnit();
+var orgunit = new Fn.IdentifiableObject('organisationUnits');
 
 orgunit.where('id', 'in', ['Rp268JB6Ne4', 'Rp268JB6Ne2']);
 

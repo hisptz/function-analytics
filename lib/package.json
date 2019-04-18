@@ -1,6 +1,6 @@
 {
   "name": "@hisptz/function-analytics",
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0-beta.3",
   "description": "Produce universal library with webpack and es6",
   "main": "lib/function-analytics.js",
   "scripts": {
