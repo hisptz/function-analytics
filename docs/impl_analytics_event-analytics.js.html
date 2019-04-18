@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>core/fetcher.js - Documentation</title>
+    <title>impl/analytics/event-analytics.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -31,7 +31,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">core/fetcher.js</h1>
+    <h1 class="page-title">impl/analytics/event-analytics.js</h1>
     
 
     
@@ -41,98 +41,29 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { Runner } from './runner';
-import { Process } from './process';
-import ProgressPromise from 'progress-promise';
+            <pre class="prettyprint source linenums"><code>import { Analytics } from './analytics';
 
 /**
- * Represents the fetcher process
- *@extends Process
+ * This represents the Event Analytics Fetcher for processing analytics calls
+ *
+ * @extends Fetcher
  */
-export class Fetcher extends Process {
+export class EventAnalytics extends Analytics {
   /**
-   * Creates a fethcer
-   * @constructor
+   * Sets the Program for the fetch
+   * @param program
+   * @returns {EventAnalytics}
    */
-  constructor() {
-    super();
-    this.parameters = {};
-  }
-
-  /**
-   * Gets the URL Parameters
-   * @returns {string}
-   * @private
-   */
-  get _urlParameters() {
-    let url = '';
-
-    Object.keys(this.parameters).forEach(key => {
-      if (url !== '') {
-        url += '&amp;';
-      }
-      if (typeof this.parameters[key] === 'string') {
-        url += key + '=' + this.parameters[key];
-      } else {
-        Object.keys(this.parameters[key]).forEach(key2 => {
-          if (url !== '') {
-            url += '&amp;';
-          }
-          if (this.parameters[key][key2] === '') {
-            url += key + '=' + key2;
-          } else {
-            url += key + '=' + key2 + ':' + this.parameters[key][key2];
-          }
-        });
-      }
-    });
-    return url;
-  }
-
-  /**
-   * Gets the url
-   * @throws Implementation Error
-   */
-  get url() {
-    throw new Error('Should implement url generation');
-  }
-
-  /**
-   * Gets the running process started
-   * @returns {ProgressPromise}
-   */
-  get() {
-    return new Runner().getResults(this);
-  }
-
-  /**
-   * Set paremeters
-   * @param {Object} parameters
-   * @returns {Fetcher}
-   */
-  setParameters(parameters) {
-    Object.keys(parameters).forEach(key => {
-      this.parameters[key] = parameters[key];
-    });
+  setProgram(program) {
+    this.program = program;
     return this;
   }
-
   /**
-   * Get Dependency results
-   * @returns {ProgressPromise}
+   * Gets the url for fetching
+   * @returns {string}
    */
-  getDependecyFetchResults() {
-    const promises = this.dependencies.map(dependency => {
-      return new Runner().getResults(dependency.processor);
-    });
-
-    return ProgressPromise.all(promises);
-  }
-  _encode64(buff) {
-    return btoa(new Uint8Array(buff).reduce((s, b) => s + String.fromCharCode(b), ''));
-  }
-  hash() {
-    return this.url;
+  get url() {
+    return 'analytics/events/query/' + this.program + '?' + this._urlParameters;
   }
 }
 </code></pre>

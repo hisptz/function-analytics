@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>core/fetcher.js - Documentation</title>
+    <title>core/progress-promise.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -31,7 +31,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">core/fetcher.js</h1>
+    <h1 class="page-title">core/progress-promise.js</h1>
     
 
     
@@ -41,98 +41,91 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { Runner } from './runner';
-import { Process } from './process';
-import ProgressPromise from 'progress-promise';
+            <pre class="prettyprint source linenums"><code>'use strict';
+// Fallback for engines that don't support Symbol
+const LISTENERS = Symbol ? Symbol() : '__listeners';
 
 /**
- * Represents the fetcher process
- *@extends Process
+ * Represents Progress Promise
+ * @extends Promise
  */
-export class Fetcher extends Process {
-  /**
-   * Creates a fethcer
-   * @constructor
-   */
-  constructor() {
-    super();
-    this.parameters = {};
-  }
-
-  /**
-   * Gets the URL Parameters
-   * @returns {string}
-   * @private
-   */
-  get _urlParameters() {
-    let url = '';
-
-    Object.keys(this.parameters).forEach(key => {
-      if (url !== '') {
-        url += '&amp;';
-      }
-      if (typeof this.parameters[key] === 'string') {
-        url += key + '=' + this.parameters[key];
-      } else {
-        Object.keys(this.parameters[key]).forEach(key2 => {
-          if (url !== '') {
-            url += '&amp;';
+export class ProgressPromise extends Promise {
+  constructor(executor) {
+    super((resolve, reject) =>
+      executor(
+        resolve,
+        reject,
+        // Pass method for passing progress to listener
+        value => {
+          try {
+            return this[LISTENERS].forEach(listener => listener(value));
+          } catch (error) {
+            reject(error);
           }
-          if (this.parameters[key][key2] === '') {
-            url += key + '=' + key2;
-          } else {
-            url += key + '=' + key2 + ':' + this.parameters[key][key2];
-          }
-        });
-      }
-    });
-    return url;
+          return undefined;
+        }
+      )
+    );
+    this[LISTENERS] = [];
   }
-
   /**
-   * Gets the url
-   * @throws Implementation Error
+   *
+   * @param {callback} handler
    */
-  get url() {
-    throw new Error('Should implement url generation');
-  }
-
-  /**
-   * Gets the running process started
-   * @returns {ProgressPromise}
-   */
-  get() {
-    return new Runner().getResults(this);
-  }
-
-  /**
-   * Set paremeters
-   * @param {Object} parameters
-   * @returns {Fetcher}
-   */
-  setParameters(parameters) {
-    Object.keys(parameters).forEach(key => {
-      this.parameters[key] = parameters[key];
-    });
+  progress(handler) {
+    if (typeof handler !== 'function') {
+      throw new Error('PROGRESS_REQUIRES_FUNCTION');
+    }
+    this[LISTENERS].push(handler);
     return this;
   }
-
   /**
-   * Get Dependency results
-   * @returns {ProgressPromise}
+   *
+   * @param {*} promises
    */
-  getDependecyFetchResults() {
-    const promises = this.dependencies.map(dependency => {
-      return new Runner().getResults(dependency.processor);
-    });
+  static all(promises) {
+    const results = new Array(promises.length);
+    const length = promises.length;
+    let resolveCount = 0;
 
-    return ProgressPromise.all(promises);
+    return new ProgressPromise((resolve, reject, progress) => {
+      promises.forEach((promise, index) => {
+        promise
+          .then(result => {
+            results[index] = result;
+            results.proportion = ++resolveCount / length;
+            progress(results);
+            if (resolveCount === length) resolve(results);
+          })
+          .catch(reject);
+      });
+    });
   }
-  _encode64(buff) {
-    return btoa(new Uint8Array(buff).reduce((s, b) => s + String.fromCharCode(b), ''));
-  }
-  hash() {
-    return this.url;
+  /**
+   *
+   * @param {*} inputs
+   * @param {*} handler
+   */
+  static sequence(inputs, handler) {
+    const results = [];
+    const length = inputs.length;
+    let resolveCount = 0;
+
+    return new ProgressPromise((resolve, reject, progress) => {
+      function invokeNext() {
+        handler
+          .call(null, inputs[results.length])
+          .then(result => {
+            results.push(result);
+            results.proportion = ++resolveCount / length;
+            progress(results);
+            if (results.length === length) resolve(results);
+            else invokeNext();
+          })
+          .catch(reject);
+      }
+      invokeNext();
+    });
   }
 }
 </code></pre>

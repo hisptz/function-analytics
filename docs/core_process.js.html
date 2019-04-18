@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>core/fetcher.js - Documentation</title>
+    <title>core/process.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -31,7 +31,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">core/fetcher.js</h1>
+    <h1 class="page-title">core/process.js</h1>
     
 
     
@@ -41,98 +41,114 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { Runner } from './runner';
-import { Process } from './process';
-import ProgressPromise from 'progress-promise';
+            <pre class="prettyprint source linenums"><code>/**
+ * This callback type is called `processCallback`.
+ *
+ * @callback processCallback
+ * @param {Object} result
+ */
 
 /**
- * Represents the fetcher process
- *@extends Process
+ * Represents a process dependency
  */
-export class Fetcher extends Process {
+export class Dependency {
   /**
-   * Creates a fethcer
-   * @constructor
+   * Creates a dependency instance
+   * @param {Process} processor
+   * @param {processCallback} process
+   */
+  constructor(processor, process) {
+    this.processor = processor;
+    this.process = process;
+  }
+}
+
+/**
+ * This is the representation of the processor
+ */
+export class Process {
+  /**
+   * Creates a processor
    */
   constructor() {
-    super();
-    this.parameters = {};
+    this.postProcessors = [];
+    this.dependencies = [];
   }
 
   /**
-   * Gets the URL Parameters
-   * @returns {string}
-   * @private
+   * Checks if processor has dependencies
+   * @returns {boolean}
    */
-  get _urlParameters() {
-    let url = '';
-
-    Object.keys(this.parameters).forEach(key => {
-      if (url !== '') {
-        url += '&amp;';
-      }
-      if (typeof this.parameters[key] === 'string') {
-        url += key + '=' + this.parameters[key];
-      } else {
-        Object.keys(this.parameters[key]).forEach(key2 => {
-          if (url !== '') {
-            url += '&amp;';
-          }
-          if (this.parameters[key][key2] === '') {
-            url += key + '=' + key2;
-          } else {
-            url += key + '=' + key2 + ':' + this.parameters[key][key2];
-          }
-        });
-      }
-    });
-    return url;
+  hasDependencies() {
+    return this.dependencies.length > 0;
   }
 
   /**
-   * Gets the url
-   * @throws Implementation Error
+   * Adds dependency to the processor
+   * @param {Dependency} dependency
+   * @deprecated Use addPreProcess
+   * @returns {Process}
    */
-  get url() {
-    throw new Error('Should implement url generation');
+  preProcess(dependency) {
+    this.dependencies.push(dependency);
+    return this;
   }
 
   /**
-   * Gets the running process started
-   * @returns {ProgressPromise}
+   * Adds dependency to the processor
+   * @param {Dependency} dependency
+   * @returns {Process}
    */
-  get() {
-    return new Runner().getResults(this);
+  addPreProcess(dependency) {
+    this.dependencies.push(dependency);
+    return this;
   }
 
   /**
-   * Set paremeters
-   * @param {Object} parameters
-   * @returns {Fetcher}
+   * Adds callback process the output process
+   * @param callback
+   * @deprecated Use addPostProcess
+   * @returns {Process}
    */
-  setParameters(parameters) {
-    Object.keys(parameters).forEach(key => {
-      this.parameters[key] = parameters[key];
+  postProcess(callback) {
+    this.postProcessors.push(callback);
+    return this;
+  }
+
+  /**
+   * Adds callback process the output process
+   * @param callback
+   * @returns {Process}
+   */
+  addPostProcess(callback) {
+    this.postProcessors.push(callback);
+    return this;
+  }
+
+  /**
+   * Performs pre process
+   * @returns {Process}
+   */
+  performPreProcess() {
+    this.dependencies.forEach(dependency => {
+      dependency.process(dependency.processor._results, this);
     });
     return this;
   }
 
   /**
-   * Get Dependency results
-   * @returns {ProgressPromise}
+   * Performs post process after the process has ended
+   * @param {Object} data
+   * @returns {Object}
    */
-  getDependecyFetchResults() {
-    const promises = this.dependencies.map(dependency => {
-      return new Runner().getResults(dependency.processor);
-    });
+  performPostProcess(data) {
+    this._results = data;
+    let dataToProcess = data;
 
-    return ProgressPromise.all(promises);
-  }
-  _encode64(buff) {
-    return btoa(new Uint8Array(buff).reduce((s, b) => s + String.fromCharCode(b), ''));
-  }
-  hash() {
-    return this.url;
+    this.postProcessors.forEach(callback => {
+      dataToProcess = callback(dataToProcess);
+    });
+    return dataToProcess;
   }
 }
 </code></pre>
