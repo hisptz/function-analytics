@@ -48,7 +48,7 @@
     "copy-webpack-plugin": "^5.0.2",
     "cross-env": "^5.2.0",
     "docdash": "^1.1.0",
-    "documentation": "^9.3.1",
+    "documentation": "^10.0.0",
     "eslint": "^5.0.1",
     "eslint-loader": "^2.0.0",
     "jsdoc": "^3.5.5",
