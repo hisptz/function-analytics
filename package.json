@@ -56,6 +56,7 @@
     "jsdom-global": "3.0.2",
     "mocha": "^6.1.2",
     "nyc": "^14.0.0",
+    "progress-promise": "0.0.6",
     "uglifyjs-webpack-plugin": "^2.1.2",
     "webpack": "^4.12.2",
     "webpack-cli": "^3.0.8",
