@@ -62,7 +62,7 @@
     <h2>Constructor</h2>
     
 
-    <h4 class="name" id="Analytics"><span class="type-signature"></span>new Analytics<span class="signature">(oldAnalytics)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Analytics"><span class="type-signature"></span>new Analytics<span class="signature">(version)</span><span class="type-signature"></span></h4>
 
     
 
@@ -154,7 +154,7 @@
 
         <tr>
             
-                <td class="name"><code>oldAnalytics</code></td>
+                <td class="name"><code>version</code></td>
             
 
             <td class="type">
@@ -166,12 +166,12 @@
             
                 <td class="default">
                 
-                    <code>true</code>
+                    <code>25</code>
                 
                 </td>
             
 
-            <td class="description last"><p>Whether the structure to be returned should be old or new.</p></td>
+            <td class="description last"><p>The version of dhis analytics structure to use</p></td>
         </tr>
 
     
@@ -239,7 +239,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="impl_analytics_analytics.js.html">impl/analytics/analytics.js</a>, <a href="impl_analytics_analytics.js.html#line195">line 195</a>
+        <a href="impl_analytics_analytics.js.html">impl/analytics/analytics.js</a>, <a href="impl_analytics_analytics.js.html#line219">line 219</a>
     </li></ul></dd>
     
 
@@ -838,7 +838,7 @@
 
     
 
-    <h4 class="name" id="getSanitizedAnalyticsMetadata"><span class="type-signature"></span>getSanitizedAnalyticsMetadata<span class="signature">(analyticMetadata, preferNormalStructure)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    <h4 class="name" id="getSanitizedAnalyticsMetadata"><span class="type-signature"></span>getSanitizedAnalyticsMetadata<span class="signature">(analyticMetadata, version)</span><span class="type-signature"> &rarr; {Object}</span></h4>
 
     
 
@@ -850,7 +850,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="impl_analytics_analytics.js.html">impl/analytics/analytics.js</a>, <a href="impl_analytics_analytics.js.html#line139">line 139</a>
+        <a href="impl_analytics_analytics.js.html">impl/analytics/analytics.js</a>, <a href="impl_analytics_analytics.js.html#line153">line 153</a>
     </li></ul></dd>
     
 
@@ -946,7 +946,7 @@
 
         <tr>
             
-                <td class="name"><code>preferNormalStructure</code></td>
+                <td class="name"><code>version</code></td>
             
 
             <td class="type">
@@ -957,7 +957,7 @@
 
             
 
-            <td class="description last"><p>Whether to prefer the old or new analytics structure</p></td>
+            <td class="description last"><p>The version of dhis analytics structure to use</p></td>
         </tr>
 
     
@@ -1713,7 +1713,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="impl_analytics_analytics.js.html">impl/analytics/analytics.js</a>, <a href="impl_analytics_analytics.js.html#line27">line 27</a>
+        <a href="impl_analytics_analytics.js.html">impl/analytics/analytics.js</a>, <a href="impl_analytics_analytics.js.html#line34">line 34</a>
     </li></ul></dd>
     
 
@@ -1862,7 +1862,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="impl_analytics_analytics.js.html">impl/analytics/analytics.js</a>, <a href="impl_analytics_analytics.js.html#line58">line 58</a>
+        <a href="impl_analytics_analytics.js.html">impl/analytics/analytics.js</a>, <a href="impl_analytics_analytics.js.html#line65">line 65</a>
     </li></ul></dd>
     
 
@@ -2039,7 +2039,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="impl_analytics_analytics.js.html">impl/analytics/analytics.js</a>, <a href="impl_analytics_analytics.js.html#line47">line 47</a>
+        <a href="impl_analytics_analytics.js.html">impl/analytics/analytics.js</a>, <a href="impl_analytics_analytics.js.html#line54">line 54</a>
     </li></ul></dd>
     
 
@@ -2356,7 +2356,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="impl_analytics_analytics.js.html">impl/analytics/analytics.js</a>, <a href="impl_analytics_analytics.js.html#line37">line 37</a>
+        <a href="impl_analytics_analytics.js.html">impl/analytics/analytics.js</a>, <a href="impl_analytics_analytics.js.html#line44">line 44</a>
     </li></ul></dd>
     
 
@@ -2493,7 +2493,7 @@
 
     
 
-    <h4 class="name" id="standardizeAnalytics"><span class="type-signature"></span>standardizeAnalytics<span class="signature">(analyticsObject, preferNormalStructure)</span><span class="type-signature"> &rarr; {<a href="AnalyticsResult.html">AnalyticsResult</a>}</span></h4>
+    <h4 class="name" id="standardizeAnalytics"><span class="type-signature"></span>standardizeAnalytics<span class="signature">(analyticsObject, version)</span><span class="type-signature"> &rarr; {<a href="AnalyticsResult.html">AnalyticsResult</a>}</span></h4>
 
     
 
@@ -2505,7 +2505,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="impl_analytics_analytics.js.html">impl/analytics/analytics.js</a>, <a href="impl_analytics_analytics.js.html#line70">line 70</a>
+        <a href="impl_analytics_analytics.js.html">impl/analytics/analytics.js</a>, <a href="impl_analytics_analytics.js.html#line77">line 77</a>
     </li></ul></dd>
     
 
@@ -2607,7 +2607,7 @@
 
         <tr>
             
-                <td class="name"><code>preferNormalStructure</code></td>
+                <td class="name"><code>version</code></td>
             
 
             <td class="type">
@@ -2619,12 +2619,12 @@
             
                 <td class="default">
                 
-                    <code>true</code>
+                    <code>25</code>
                 
                 </td>
             
 
-            <td class="description last"><p>Whether to prefer the old or new analytics structure</p></td>
+            <td class="description last"><p>The version of dhis analytics structure to use</p></td>
         </tr>
 
     
@@ -2687,7 +2687,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Apr 18 2019 09:43:15 GMT+0300 (East Africa Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Apr 18 2019 10:00:43 GMT+0300 (East Africa Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
