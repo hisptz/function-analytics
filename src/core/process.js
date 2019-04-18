@@ -11,7 +11,7 @@
 export class Dependency {
   /**
    * Creates a dependency instance
-   * @param {Processor} processor
+   * @param {Process} processor
    * @param {processCallback} process
    */
   constructor(processor, process) {
@@ -23,7 +23,7 @@ export class Dependency {
 /**
  * This is the representation of the processor
  */
-export class Processor {
+export class Process {
   /**
    * Creates a processor
    */
@@ -43,7 +43,8 @@ export class Processor {
   /**
    * Adds dependency to the processor
    * @param {Dependency} dependency
-   * @returns {Processor}
+   * @deprecated Use addPreProcess
+   * @returns {Process}
    */
   preProcess(dependency) {
     this.dependencies.push(dependency);
@@ -51,9 +52,20 @@ export class Processor {
   }
 
   /**
+   * Adds dependency to the processor
+   * @param {Dependency} dependency
+   * @returns {Process}
+   */
+  addPreProcess(dependency) {
+    this.dependencies.push(dependency);
+    return this;
+  }
+
+  /**
    * Adds callback process the output process
    * @param callback
-   * @returns {Processor}
+   * @deprecated Use addPostProcess
+   * @returns {Process}
    */
   postProcess(callback) {
     this.postProcessors.push(callback);
@@ -61,11 +73,21 @@ export class Processor {
   }
 
   /**
+   * Adds callback process the output process
+   * @param callback
+   * @returns {Process}
+   */
+  addPostProcess(callback) {
+    this.postProcessors.push(callback);
+    return this;
+  }
+
+  /**
    * Performs pre process
-   * @returns {Processor}
+   * @returns {Process}
    */
   performPreProcess() {
-    this.dependencies.forEach((dependency) => {
+    this.dependencies.forEach(dependency => {
       dependency.process(dependency.processor._results, this);
     });
     return this;
@@ -80,7 +102,7 @@ export class Processor {
     this._results = data;
     let dataToProcess = data;
 
-    this.postProcessors.forEach((callback) => {
+    this.postProcessors.forEach(callback => {
       dataToProcess = callback(dataToProcess);
     });
     return dataToProcess;

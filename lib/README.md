@@ -111,3 +111,4 @@ multiProcesses.postProcess(res => {
 });
 multiProcesses.get().then(results => {});
 ```
+For detailed documentation please visit [our documentation](https://hisptz.github.io/function-analytics/).

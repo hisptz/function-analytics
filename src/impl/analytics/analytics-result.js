@@ -1,3 +1,5 @@
+import {Row} from './row';
+
 /**
  * This represents the Analytics Results
  *
@@ -36,7 +38,12 @@ export class AnalyticsResult {
    * @returns {Array}
    */
   get rows() {
-    return this._data.rows;
+    let rows = [];
+
+    this._data.rows.forEach((row) => {
+      rows.push(new Row(row, this.headers, this.metaData));
+    });
+    return rows;
   }
 
   /**

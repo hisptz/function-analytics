@@ -213,6 +213,126 @@ describe('When I get the analytics object', () => {
   });
 });
 
+let analyticsResult;
+describe('Given an instance of Analytics library', () => {
+  before(() => {
+    analyticsResult = new Fn.AnalyticsResult({
+      headers: [
+        {
+          name: 'dx',
+          column: 'Data',
+          valueType: 'TEXT',
+          type: 'java.lang.String',
+          hidden: false,
+          meta: true
+        },
+        {
+          name: 'pe',
+          column: 'Period',
+          valueType: 'TEXT',
+          type: 'java.lang.String',
+          hidden: false,
+          meta: true
+        },
+        {
+          name: 'ou',
+          column: 'Organisation unit',
+          valueType: 'TEXT',
+          type: 'java.lang.String',
+          hidden: false,
+          meta: true
+        },
+        {
+          name: 'value',
+          column: 'Value',
+          valueType: 'NUMBER',
+          type: 'java.lang.Double',
+          hidden: false,
+          meta: false
+        }
+      ],
+      metaData: {
+        ouHierarchy: { m0frOspS7JY: '' },
+        items: {
+          '201808': { name: 'August 2018' },
+          '201807': { name: 'July 2018' },
+          'BJpjOFTE4By.lxM1zKPHql2': {
+            name: 'Artemether / Lumefantrine Oral (ALU) - Stockout < 1 week'
+          },
+          '201809': { name: 'September 2018' },
+          '201804': { name: 'April 2018' },
+          '201803': { name: 'March 2018' },
+          '201902': { name: 'February 2019' },
+          '201806': { name: 'June 2018' },
+          ou: { name: 'Organisation unit' },
+          '201805': { name: 'May 2018' },
+          '201811': { name: 'November 2018' },
+          '201810': { name: 'October 2018' },
+          '201901': { name: 'January 2019' },
+          '201812': { name: 'December 2018' },
+          dx: { name: 'Data' },
+          pe: { name: 'Period' },
+          m0frOspS7JY: { name: 'MOH - Tanzania' },
+          'BJpjOFTE4By.TrmsDE6SUZI': {
+            name:
+              'Artemether / Lumefantrine Oral (ALU) - Stockout > 4 weeks'
+          },
+          'BJpjOFTE4By.BQrHxULahIt': {
+            name:
+              'Artemether / Lumefantrine Oral (ALU) - Stockout 1-4 weeks'
+          }
+        },
+        dimensions: {
+          dx: [
+            'BJpjOFTE4By.lxM1zKPHql2',
+            'BJpjOFTE4By.BQrHxULahIt',
+            'BJpjOFTE4By.TrmsDE6SUZI'
+          ],
+          pe: [
+            '201803',
+            '201804',
+            '201805',
+            '201806',
+            '201807',
+            '201808',
+            '201809',
+            '201810',
+            '201811',
+            '201812',
+            '201901',
+            '201902'
+          ],
+          ou: ['m0frOspS7JY'],
+          co: []
+        }
+      },
+      rows: [
+        ['BJpjOFTE4By.BQrHxULahIt', '201803', 'm0frOspS7JY', '64.0']
+      ],
+      height: 18,
+      width: 4
+    });
+  });
+  it('should return row', () => {
+    const url = lib.url;
+    expect(analyticsResult.rows[0].pe !== undefined).to.be.equal(true);
+    expect(analyticsResult.rows[0].pe.id).to.be.equal('201803');
+    expect(analyticsResult.rows[0].pe.name).to.be.equal('March 2018');
+    expect(analyticsResult.rows[0].dx !== undefined).to.be.equal(true);
+    expect(analyticsResult.rows[0].dx.id).to.be.equal(
+      'BJpjOFTE4By.BQrHxULahIt'
+    );
+    expect(analyticsResult.rows[0].dx.name).to.be.equal(
+      'Artemether / Lumefantrine Oral (ALU) - Stockout 1-4 weeks'
+    );
+    expect(analyticsResult.rows[0].ou !== undefined).to.be.equal(true);
+    expect(analyticsResult.rows[0].ou.id).to.be.equal('m0frOspS7JY');
+    expect(analyticsResult.rows[0].ou.name).to.be.equal('MOH - Tanzania');
+    expect(analyticsResult.rows[0].ou.path).to.be.equal('');
+
+    expect(analyticsResult.rows[0].value).to.be.equal('64.0');
+  });
+});
 /*
 describe('Given an instance of Analytics library', () => {
   it('should return merged analytics', () => {

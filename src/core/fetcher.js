@@ -1,12 +1,12 @@
 import { Runner } from './runner';
-import { Processor } from './processor';
+import { Process } from './process';
 import ProgressPromise from 'progress-promise';
 
 /**
  * Represents the fetcher process
- *@extends Processor
+ *@extends Process
  */
-export class Fetcher extends Processor {
+export class Fetcher extends Process {
   /**
    * Creates a fethcer
    * @constructor
