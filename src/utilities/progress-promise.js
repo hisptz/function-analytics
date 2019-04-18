@@ -1,4 +1,3 @@
-'use strict';
 // Fallback for engines that don't support Symbol
 const LISTENERS = Symbol ? Symbol() : '__listeners';
 

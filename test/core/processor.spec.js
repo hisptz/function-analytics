@@ -1,8 +1,8 @@
 /* global describe, it, before */
 
 import chai from 'chai';
-import { Process } from '../../src/core/process';
-import {Dependency} from '../../src/core/dependency';
+import {Process} from '../../src/utilities/process';
+import {Dependency} from '../../src/utilities/dependency';
 
 chai.expect();
 

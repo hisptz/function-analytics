@@ -1,5 +1,5 @@
-import { Fetcher } from '../../core/fetcher';
-import { AnalyticsResult } from './analytics-result';
+import { Fetcher } from '../utilities/fetcher';
+import { AnalyticsResult } from '../result/analytics-result';
 /**
  * This represents the Analytics Fetcher for processing analytics calls
  *

@@ -1,13 +1,12 @@
-import {Analytics} from './impl/analytics/analytics.js';
-import {AnalyticsResult } from './impl/analytics/analytics-result';
-import {EventAnalytics} from './impl/analytics/event-analytics.js';
-import {SQLViewData} from './impl/sql-view.js';
-// import ProgressPromise from 'progress-promise';
-import {ProgressPromise} from './core/progress-promise';
-import { Runner } from './core/runner.js';
-import { Dependency } from './core/dependency';
-import { MultiFetcher } from './core/multi-fetcher';
-import {IdentifiableObject} from './core/identifiable-object.js';
+import {Analytics} from './model/analytics.js';
+import {AnalyticsResult } from './result/analytics-result';
+import {EventAnalytics} from './model/event-analytics';
+import {SQLViewData} from './model/sql-view.js';
+import {ProgressPromise} from './utilities/progress-promise';
+import {Runner} from './utilities/runner.js';
+import {Dependency} from './utilities/dependency';
+import {MultiFetcher} from './utilities/multi-fetcher';
+import {IdentifiableObject} from './model/identifiable-object.js';
 
 /**
  * This is the main holder for the functionalities of the function

@@ -1,4 +1,4 @@
-import { Fetcher } from '../core/fetcher';
+import { Fetcher } from '../utilities/fetcher';
 
 /**
  * Represents Identifiable Object
