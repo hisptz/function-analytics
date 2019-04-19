@@ -9,7 +9,7 @@ export class SQLViewData extends Fetcher {
 
   /**
    * Creates the SQLViewData Instance
-   * @param id
+   * @param {string} id - The Sql View identifier
    */
   constructor(id) {
     super();
@@ -18,10 +18,10 @@ export class SQLViewData extends Fetcher {
   }
 
   /**
-   * Sets the dimension for the fetching of the analytics
-   * @param {string} dim - Dynamic Dimension identifier
-   * @param {string} value - Dynamic dimension options identifiers
-   * @returns {Analytics}
+   * Sets the variable for the fetching of the sql view data
+   * @param {string} variable - Variable identifier
+   * @param {string} value - Value of the variable identifier
+   * @returns {SQLViewData} - Object of the sql view
    */
   setVariable(variable, value) {
     this.parameters['var'][variable] = value ? value : '';

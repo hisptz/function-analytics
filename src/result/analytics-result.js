@@ -49,7 +49,7 @@ export class AnalyticsResult {
   /**
    * Gets the Analytics height
    *
-   * @returns {number}
+   * @returns {number} - The number of rows
    */
   get height() {
     return this._data.height;

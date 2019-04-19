@@ -6,7 +6,9 @@ export class Row {
   /**
    * Creates ana Analytics Object
    *
-   * @param {Object} - DHIS Analytics object
+   * @param {Array} row - The analytics row
+   * @param {Array} headers - The analytics headers
+   * @param {Object} metaData - The analytics metadata
    */
   constructor(row, headers, metaData) {
     this.row = row;
@@ -15,12 +17,13 @@ export class Row {
   }
 
   /**
-   * Gets the Analytics Headers Array
-   *
-   * @returns {Array} - DHIS Analytics headers
+   * Gets the dimension details of the analytics row
+   * @param {string} id - The id of the dimension
+   * @returns {Object|{id,name,path}} - The data object with name and id
    */
   dimension(id) {
-    var i = -1, name = '';
+    var i = -1,
+      name = '';
 
     this.headers.forEach((header, index) => {
       if (header.name === id) {
@@ -42,36 +45,36 @@ export class Row {
   }
 
   /**
-   * Gets the rows of the analytics object
+   * Gets the data details of the analytics row
    *
-   * @returns {Array}
+   * @returns {Object|{id,name}} - The data object with name and id
    */
   get dx() {
     return this.dimension('dx');
   }
 
   /**
-   * Gets the rows of the analytics object
+   * Gets the period details of the analytics row
    *
-   * @returns {Array}
+   * @returns {Object|{id,name}} - The period object
    */
   get pe() {
     return this.dimension('pe');
   }
 
   /**
-   * Gets the rows of the analytics object
+   * Gets the organisation unit details of the analytics row
    *
-   * @returns {Array}
+   * @returns {Object|{id,name,path}} - The organisation unit object
    */
   get ou() {
     return this.dimension('ou');
   }
 
   /**
-   * Gets the rows of the analytics object
+   * Gets the value in a row
    *
-   * @returns {Array}
+   * @returns {string} - The value
    */
   get value() {
     return this.dimension('value').id;

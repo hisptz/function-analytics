@@ -15,21 +15,27 @@ to perform operations with out of the box performance execution strategy.
 - Fetching DHIS Identifiable objects.
 - Perform execution of functions with optimization
 
-## Getting started
+## Quickstart Guide
 
-### Browser
+### Install
 
+Start with adding d2 to your project:
+
+`npm install @iapps/function-analytics`
+
+After installing you will be able to import the library into your project by using the files in the `lib` folder:
+
+```js
+// Using ES2015 imports
+import {Fn} from '@iapps/function-analytics';
+
+// Using CommonJS imports
+var Fn = require('@iapps/function-analytics').Fn;
 ```
-<script src="https://raw.githack.com/hisptz/function-analytics/master/lib/function-analytics.min.js"></script>
-```
 
-### Node
+## Initializing the library
 
-```
-var Fn = require('function-analytics').Fn;
-```
-
-## Initializing
+To be able to use d2 you will first need to initialise the library. This is required to let the library know where it should load its data from.
 
 ```js
 Fn.init({
@@ -109,4 +115,5 @@ multiProcesses.postProcess(res => {
 });
 multiProcesses.get().then(results => {});
 ```
-For detailed documentation please visit [our documentation](https://hisptz.github.io/function-analytics/).
+
+For detailed documentation please visit the [documentation](https://hisptz.github.io/function-analytics/) page.

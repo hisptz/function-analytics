@@ -4,6 +4,7 @@
 export class Process {
   /**
    * Creates a processor
+   * @constructor
    */
   constructor() {
     this.postProcessors = [];
@@ -12,7 +13,7 @@ export class Process {
 
   /**
    * Checks if processor has dependencies
-   * @returns {boolean}
+   * @returns {boolean} - Boolean value of the result
    */
   hasDependencies() {
     return this.dependencies.length > 0;
@@ -20,7 +21,7 @@ export class Process {
 
   /**
    * Adds dependency to the processor
-   * @param {Dependency} dependency
+   * @param {Dependency} dependency - The
    * @deprecated Use addPreProcess
    * @returns {Process}
    */

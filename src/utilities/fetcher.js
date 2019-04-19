@@ -64,8 +64,8 @@ export class Fetcher extends Process {
 
   /**
    * Set paremeters
-   * @param {Object} parameters
-   * @returns {Fetcher}
+   * @param {Object} parameters - The parameters to be passed to the url
+   * @returns {Fetcher} - Object of the fetcher
    */
   setParameters(parameters) {
     Object.keys(parameters).forEach(key => {

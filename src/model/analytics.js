@@ -1,15 +1,18 @@
 import { Fetcher } from '../utilities/fetcher';
 import { AnalyticsResult } from '../result/analytics-result';
 /**
- * This represents the Analytics Fetcher for processing analytics calls
- *
+ * @description
+ * This represents the Analytics Fetcher for processing for making Web API calls
+ * @example
+ * const analytics = Fn.Analytics();
  * @extends Fetcher
  */
 export class Analytics extends Fetcher {
   /**
+   * @description
    * Creates an analytics fethcer
    *
-   * @param version - The version of dhis analytics structure to use
+   * @param {Number} version - The version of dhis analytics structure to use
    */
   constructor(version = 25) {
     super();
@@ -28,8 +31,8 @@ export class Analytics extends Fetcher {
 
   /**
    * Sets the data for the fetch
-   * @param dx
-   * @returns {Analytics}
+   * @param {string} dx The id of the data to get
+   * @returns {Analytics} - Object with the analytics interaction properties
    */
   setData(dx) {
     this.setDimension('dx', dx);
@@ -38,8 +41,8 @@ export class Analytics extends Fetcher {
 
   /**
    * Sets the period for the fetch
-   * @param pe
-   * @returns {Analytics}
+   * @param {string} pe The id of the period to get data from
+   * @returns {Analytics} Object with the analytics interaction properties
    */
   setPeriod(pe) {
     this.setDimension('pe', pe);
@@ -49,7 +52,7 @@ export class Analytics extends Fetcher {
   /**
    * Sets the organisation unit for the fetching of the analytics
    * @param {string} ou - Organisation unit
-   * @returns {Analytics} Analytics results
+   * @returns {Analytics} Object with the analytics interaction properties
    */
   setOrgUnit(ou) {
     this.setDimension('ou', ou);
@@ -60,7 +63,7 @@ export class Analytics extends Fetcher {
    * Sets the dimension for the fetching of the analytics
    * @param {string} dim - Dynamic Dimension identifier
    * @param {string} value - Dynamic dimension options identifiers
-   * @returns {Analytics}
+   * @returns {Analytics} Object with the analytics interaction properties
    */
   setDimension(dim, value) {
     this.parameters['dimension'][dim] = value ? value : '';
@@ -70,9 +73,9 @@ export class Analytics extends Fetcher {
   /**
    * Standardizes the analytics object
    *
-   * @param analyticsObject - The analytics object
-   * @param version - The version of dhis analytics structure to use
-   * @returns {AnalyticsResult}
+   * @param {Object} analyticsObject - The analytics object
+   * @param {Number} version - The version of dhis analytics structure to use
+   * @returns {AnalyticsResult} - Object with the analytics results
    */
   standardizeAnalytics(analyticsObject, version = 25) {
     if (typeof version === 'boolean') {
@@ -146,9 +149,9 @@ export class Analytics extends Fetcher {
   /**
    * Standardizes the analytics metadata object
    *
-   * @param analyticMetadata - The analytics metadata object
-   * @param version - The version of dhis analytics structure to use
-   * @returns {Object}
+   * @param {Object} analyticMetadata - The analytics metadata object
+   * @param {Number} version - The version of dhis analytics structure to use
+   * @returns {Object} - Object with the analytics metadata
    */
   getSanitizedAnalyticsMetadata(analyticMetadata, version) {
     let sanitizedMetadata = {};

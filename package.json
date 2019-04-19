@@ -6,9 +6,9 @@
   "scripts": {
     "build": "npm run test && webpack --env dev && webpack --env build --fix && npm run docs",
     "dev": "webpack --progress --colors --watch --env dev",
-    "test": "mocha --require babel-register --colors ./test/*.spec.js ./test/core/*.spec.js ./test/impl/*.spec.js",
+    "test": "mocha --require babel-register --colors test/**/**/*.spec.js",
     "test:watch": "mocha --require babel-register --colors -w ./test/*.spec.js",
-    "test:cover": "cross-env NODE_ENV=test nyc mocha --require babel-register --colors test/*.js",
+    "test:cover": "cross-env NODE_ENV=test nyc mocha --require babel-register --colors test/**/**/*.js",
     "repl": "node -i -e \"$(< ./lib/webpack-library-starter.js)\"",
     "publish": "npm run build && cd lib && npm publish --access public",
     "docs": "node_modules/.bin/jsdoc -c jsdoc.json"
