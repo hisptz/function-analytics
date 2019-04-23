@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>core/identifiable-object.js - Documentation</title>
+    <title>impl/analytics/event-analytics.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -31,7 +31,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">core/identifiable-object.js</h1>
+    <h1 class="page-title">impl/analytics/event-analytics.js</h1>
     
 
     
@@ -41,72 +41,29 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { Fetcher } from '../core/fetcher';
+            <pre class="prettyprint source linenums"><code>import { Analytics } from './analytics';
 
 /**
- * Represents Identifiable Object
- *@extends Fetcher
+ * This represents the Event Analytics Fetcher for processing analytics calls
+ *
+ * @extends Fetcher
  */
-export class IdentifiableObject extends Fetcher {
-
+export class EventAnalytics extends Analytics {
   /**
-   * Creates a fethcer
-   * @constructor
+   * Sets the Program for the fetch
+   * @param program
+   * @returns {EventAnalytics}
    */
-  constructor(objectName) {
-    super();
-    this._filters = [];
-    this.objectName = objectName;
-  }
-  get name() {
-    return this.objectName;
-  }
-
-  /**
-   * Sets the where clause for filtering of data
-   * @param {string} right - Right expression
-   * @param {string} operator - Expression operator
-   * @param {string|array} left - Right expression
-   * @returns {IdentifiableObject} IdentifiableObject Identifiable object with where clause appended
-   */
-  where(right, operator, left) {
-    this._filters.push({
-      right: right,
-      operator: operator,
-      left: left
-    });
+  setProgram(program) {
+    this.program = program;
     return this;
   }
-
+  /**
+   * Gets the url for fetching
+   * @returns {string}
+   */
   get url() {
-    var url = this._urlParameters;
-
-    this._filters.forEach((filter) => {
-      if (url !== '') {
-        url += '&amp;';
-      }
-      url += 'filter=' + filter.right;
-      if (filter.operator === '==') {
-        url += ':eq:' + filter.left;
-      } else if (filter.operator === '&lt;') {
-        url += ':lt:' + filter.left;
-      } else if (filter.operator === '&lt;=') {
-        url += ':le:' + filter.left;
-      } else if (filter.operator === '>') {
-        url += ':gt:' + filter.left;
-      } else if (filter.operator === '>=') {
-        url += ':ge:' + filter.left;
-      } else if (filter.operator === '&lt;>') {
-        url += ':!eq:' + filter.left;
-      } else if (filter.operator === 'in' || filter.operator === '!in') {
-        url += ':' + filter.operator + ':[' + filter.left + ']';
-      } else if (!filter.left) {
-        url += ':' + filter.operator;
-      } else {
-        url += ':' + filter.operator + ':' + filter.left;
-      }
-    });
-    return this.name + '.json?' + url;
+    return 'analytics/events/query/' + this.program + '?' + this._urlParameters;
   }
 }
 </code></pre>

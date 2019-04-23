@@ -1,12 +1,12 @@
 import { Runner } from './runner';
-import { Processor } from './processor';
+import { Process } from './process';
 import ProgressPromise from 'progress-promise';
 
 /**
  * Represents the fetcher process
- *@extends Processor
+ *@extends Process
  */
-export class Fetcher extends Processor {
+export class Fetcher extends Process {
   /**
    * Creates a fethcer
    * @constructor
@@ -64,8 +64,8 @@ export class Fetcher extends Processor {
 
   /**
    * Set paremeters
-   * @param {Object} parameters
-   * @returns {Fetcher}
+   * @param {Object} parameters - The parameters to be passed to the url
+   * @returns {Fetcher} - Object of the fetcher
    */
   setParameters(parameters) {
     Object.keys(parameters).forEach(key => {
@@ -80,7 +80,7 @@ export class Fetcher extends Processor {
    */
   getDependecyFetchResults() {
     const promises = this.dependencies.map(dependency => {
-      return new Runner().getResults(dependency.processor);
+      return new Runner().getResults(dependency.process);
     });
 
     return ProgressPromise.all(promises);

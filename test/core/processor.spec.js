@@ -1,17 +1,18 @@
 /* global describe, it, before */
 
 import chai from 'chai';
-import { Dependency, Processor } from '../../src/core/processor';
+import {Process} from '../../src/utilities/process';
+import {Dependency} from '../../src/utilities/dependency';
 
 chai.expect();
 
 const expect = chai.expect;
 
-describe('Given an instance of Processor', () => {
+describe('Given an instance of Process', () => {
   describe('When I perform a pre-process', () => {
     it('should return vale equal or less than 100', () => {
-      let processor1 = new Processor()
-      let lib = new Processor();
+      let processor1 = new Process()
+      let lib = new Process();
 
       lib.preProcess(
         new Dependency(
@@ -34,7 +35,7 @@ describe('Given an instance of Processor', () => {
   });
   describe('When I perform a post-process', () => {
     it('should return vale equal or less than 100', () => {
-      let lib = new Processor();
+      let lib = new Process();
 
       lib.postProcess((data)=>{
         if (parseFloat(data[0]) > 100) {

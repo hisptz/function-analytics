@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>core/identifiable-object.js - Documentation</title>
+    <title>impl/analytics/analytics.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -31,7 +31,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">core/identifiable-object.js</h1>
+    <h1 class="page-title">impl/analytics/analytics.js</h1>
     
 
     
@@ -41,72 +41,216 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { Fetcher } from '../core/fetcher';
-
+            <pre class="prettyprint source linenums"><code>import { Fetcher } from '../../core/fetcher';
+import { AnalyticsResult } from './analytics-result';
 /**
- * Represents Identifiable Object
- *@extends Fetcher
+ * This represents the Analytics Fetcher for processing analytics calls
+ *
+ * @extends Fetcher
  */
-export class IdentifiableObject extends Fetcher {
-
+export class Analytics extends Fetcher {
   /**
-   * Creates a fethcer
-   * @constructor
+   * Creates an analytics fethcer
+   *
+   * @param version - The version of dhis analytics structure to use
    */
-  constructor(objectName) {
+  constructor(version = 25) {
     super();
-    this._filters = [];
-    this.objectName = objectName;
-  }
-  get name() {
-    return this.objectName;
+    if (typeof version === 'boolean') {
+      if (version) {
+        version = 25;
+      } else {
+        version = 26;
+      }
+    }
+    this.parameters['dimension'] = {};
+    this.postProcess(data => {
+      return this.standardizeAnalytics(data, version);
+    });
   }
 
   /**
-   * Sets the where clause for filtering of data
-   * @param {string} right - Right expression
-   * @param {string} operator - Expression operator
-   * @param {string|array} left - Right expression
-   * @returns {IdentifiableObject} IdentifiableObject Identifiable object with where clause appended
+   * Sets the data for the fetch
+   * @param dx
+   * @returns {Analytics}
    */
-  where(right, operator, left) {
-    this._filters.push({
-      right: right,
-      operator: operator,
-      left: left
-    });
+  setData(dx) {
+    this.setDimension('dx', dx);
     return this;
   }
 
-  get url() {
-    var url = this._urlParameters;
+  /**
+   * Sets the period for the fetch
+   * @param pe
+   * @returns {Analytics}
+   */
+  setPeriod(pe) {
+    this.setDimension('pe', pe);
+    return this;
+  }
 
-    this._filters.forEach((filter) => {
-      if (url !== '') {
-        url += '&amp;';
-      }
-      url += 'filter=' + filter.right;
-      if (filter.operator === '==') {
-        url += ':eq:' + filter.left;
-      } else if (filter.operator === '&lt;') {
-        url += ':lt:' + filter.left;
-      } else if (filter.operator === '&lt;=') {
-        url += ':le:' + filter.left;
-      } else if (filter.operator === '>') {
-        url += ':gt:' + filter.left;
-      } else if (filter.operator === '>=') {
-        url += ':ge:' + filter.left;
-      } else if (filter.operator === '&lt;>') {
-        url += ':!eq:' + filter.left;
-      } else if (filter.operator === 'in' || filter.operator === '!in') {
-        url += ':' + filter.operator + ':[' + filter.left + ']';
-      } else if (!filter.left) {
-        url += ':' + filter.operator;
+  /**
+   * Sets the organisation unit for the fetching of the analytics
+   * @param {string} ou - Organisation unit
+   * @returns {Analytics} Analytics results
+   */
+  setOrgUnit(ou) {
+    this.setDimension('ou', ou);
+    return this;
+  }
+
+  /**
+   * Sets the dimension for the fetching of the analytics
+   * @param {string} dim - Dynamic Dimension identifier
+   * @param {string} value - Dynamic dimension options identifiers
+   * @returns {Analytics}
+   */
+  setDimension(dim, value) {
+    this.parameters['dimension'][dim] = value ? value : '';
+    return this;
+  }
+
+  /**
+   * Standardizes the analytics object
+   *
+   * @param analyticsObject - The analytics object
+   * @param version - The version of dhis analytics structure to use
+   * @returns {AnalyticsResult}
+   */
+  standardizeAnalytics(analyticsObject, version = 25) {
+    if (typeof version === 'boolean') {
+      if (version) {
+        version = 25;
       } else {
-        url += ':' + filter.operator + ':' + filter.left;
+        version = 26;
       }
-    });
-    return this.name + '.json?' + url;
+    }
+    // if Serverside Event clustering do nothing
+    if (analyticsObject.count) {
+      return analyticsObject;
+    }
+    let sanitizedAnalyticsObject = {
+      headers: [],
+      metaData: {
+        dimensions: {},
+        names: {},
+        dx: [],
+        pe: [],
+        ou: [],
+        co: []
+      },
+      rows: []
+    };
+
+    if (analyticsObject) {
+      /**
+       * Check headers
+       */
+      if (analyticsObject.headers) {
+        analyticsObject.headers.forEach(header => {
+          try {
+            let newHeader = header;
+
+            sanitizedAnalyticsObject.headers.push(newHeader);
+          } catch (e) {
+            console.warn('Invalid header object');
+          }
+        });
+      }
+
+      /**
+       * Check metaData
+       */
+      if (analyticsObject.metaData) {
+        try {
+          let sanitizedMetadata = this.getSanitizedAnalyticsMetadata(
+            analyticsObject.metaData,
+            version
+          );
+
+          sanitizedAnalyticsObject.metaData = sanitizedMetadata;
+        } catch (e) {
+          console.warn('Invalid metadata object');
+        }
+      }
+
+      /**
+       * Check rows
+       */
+      if (analyticsObject.rows) {
+        sanitizedAnalyticsObject.rows = analyticsObject.rows;
+      }
+    }
+    sanitizedAnalyticsObject.height = analyticsObject.height;
+    sanitizedAnalyticsObject.width = analyticsObject.width;
+    return new AnalyticsResult(sanitizedAnalyticsObject);
+  }
+
+  /**
+   * Standardizes the analytics metadata object
+   *
+   * @param analyticMetadata - The analytics metadata object
+   * @param version - The version of dhis analytics structure to use
+   * @returns {Object}
+   */
+  getSanitizedAnalyticsMetadata(analyticMetadata, version) {
+    let sanitizedMetadata = {};
+
+    if (analyticMetadata) {
+      if (analyticMetadata.ouHierarchy) {
+        sanitizedMetadata.ouHierarchy = analyticMetadata.ouHierarchy;
+      }
+      if (version &lt; 26) {
+        // Get old structure
+        sanitizedMetadata.names = {};
+        if (analyticMetadata.names) {
+          sanitizedMetadata.names = analyticMetadata.names;
+        } else if (analyticMetadata.items) {
+          Object.keys(analyticMetadata.items).forEach(nameKey => {
+            sanitizedMetadata.names[nameKey] =
+              analyticMetadata.items[nameKey].name;
+          });
+        }
+
+        if (analyticMetadata.dimensions) {
+          Object.keys(analyticMetadata.dimensions).forEach(nameKey => {
+            sanitizedMetadata[nameKey] = analyticMetadata.dimensions[nameKey];
+          });
+        }
+      } else {
+        // Get new structure
+        sanitizedMetadata.items = {};
+        if (analyticMetadata.items) {
+          sanitizedMetadata.items = analyticMetadata.items;
+        } else if (analyticMetadata.names) {
+          Object.keys(analyticMetadata.items).forEach(nameKey => {
+            analyticMetadata.items[nameKey] = {
+              name: analyticMetadata.names[nameKey]
+            };
+          });
+        }
+
+        if (!analyticMetadata.dimensions) {
+          sanitizedMetadata.dimensions = {};
+          Object.keys(analyticMetadata).forEach(nameKey => {
+            if (['names', 'items', 'dimensions'].indexOf(nameKey) === -1) {
+              sanitizedMetadata.dimensions[nameKey] = analyticMetadata[nameKey];
+            }
+          });
+        } else {
+          sanitizedMetadata.dimensions = analyticMetadata.dimensions;
+        }
+      }
+    }
+    return sanitizedMetadata;
+  }
+
+  /**
+   * Gets the url for fetching
+   * @returns {string}
+   */
+  get url() {
+    return 'analytics?' + this._urlParameters;
   }
 }
 </code></pre>

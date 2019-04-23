@@ -4,6 +4,8 @@ const webpack = require('webpack');
 const path = require('path');
 const env = require('yargs').argv.env; // use --env with webpack 2
 const pkg = require('./package.json');
+const CopyPlugin = require('copy-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 let libraryName = pkg.name;
 
@@ -29,6 +31,14 @@ const config = {
     umdNamedDefine: true,
     globalObject: "typeof self !== 'undefined' ? self : this"
   },
+  plugins: [
+    new CleanWebpackPlugin(),
+    new CopyPlugin([
+      { from: 'src/package.json', to: '' },
+      { from: '*.md', to: '', flatten: true },
+      { from: 'LICENSE', to: '' }
+    ])
+  ],
   module: {
     rules: [
       {

@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>core/identifiable-object.js - Documentation</title>
+    <title>impl/analytics/row.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -31,7 +31,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">core/identifiable-object.js</h1>
+    <h1 class="page-title">impl/analytics/row.js</h1>
     
 
     
@@ -41,72 +41,83 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { Fetcher } from '../core/fetcher';
-
-/**
- * Represents Identifiable Object
- *@extends Fetcher
+            <pre class="prettyprint source linenums"><code>/**
+ * This represents the Analytics Results
+ *
  */
-export class IdentifiableObject extends Fetcher {
-
+export class Row {
   /**
-   * Creates a fethcer
-   * @constructor
+   * Creates ana Analytics Object
+   *
+   * @param {Object} - DHIS Analytics object
    */
-  constructor(objectName) {
-    super();
-    this._filters = [];
-    this.objectName = objectName;
-  }
-  get name() {
-    return this.objectName;
+  constructor(row, headers, metaData) {
+    this.row = row;
+    this.headers = headers;
+    this.metaData = metaData;
   }
 
   /**
-   * Sets the where clause for filtering of data
-   * @param {string} right - Right expression
-   * @param {string} operator - Expression operator
-   * @param {string|array} left - Right expression
-   * @returns {IdentifiableObject} IdentifiableObject Identifiable object with where clause appended
+   * Gets the Analytics Headers Array
+   *
+   * @returns {Array} - DHIS Analytics headers
    */
-  where(right, operator, left) {
-    this._filters.push({
-      right: right,
-      operator: operator,
-      left: left
+  dimension(id) {
+    var i = -1, name = '';
+
+    this.headers.forEach((header, index) => {
+      if (header.name === id) {
+        i = index;
+      }
     });
-    return this;
+    if (this.metaData.names) {
+      name = this.metaData.names[this.row[i]];
+    } else if (this.metaData.items) {
+      name = this.metaData.items[this.row[i]] ? this.metaData.items[this.row[i]].name : undefined;
+    }
+    return {
+      id: this.row[i],
+      name: name,
+      path:
+        this.metaData.ouHierarchy &amp;&amp;
+        this.metaData.ouHierarchy[this.row[i]] !== undefined ? this.metaData.ouHierarchy[this.row[i]] : undefined
+    };
   }
 
-  get url() {
-    var url = this._urlParameters;
+  /**
+   * Gets the rows of the analytics object
+   *
+   * @returns {Array}
+   */
+  get dx() {
+    return this.dimension('dx');
+  }
 
-    this._filters.forEach((filter) => {
-      if (url !== '') {
-        url += '&amp;';
-      }
-      url += 'filter=' + filter.right;
-      if (filter.operator === '==') {
-        url += ':eq:' + filter.left;
-      } else if (filter.operator === '&lt;') {
-        url += ':lt:' + filter.left;
-      } else if (filter.operator === '&lt;=') {
-        url += ':le:' + filter.left;
-      } else if (filter.operator === '>') {
-        url += ':gt:' + filter.left;
-      } else if (filter.operator === '>=') {
-        url += ':ge:' + filter.left;
-      } else if (filter.operator === '&lt;>') {
-        url += ':!eq:' + filter.left;
-      } else if (filter.operator === 'in' || filter.operator === '!in') {
-        url += ':' + filter.operator + ':[' + filter.left + ']';
-      } else if (!filter.left) {
-        url += ':' + filter.operator;
-      } else {
-        url += ':' + filter.operator + ':' + filter.left;
-      }
-    });
-    return this.name + '.json?' + url;
+  /**
+   * Gets the rows of the analytics object
+   *
+   * @returns {Array}
+   */
+  get pe() {
+    return this.dimension('pe');
+  }
+
+  /**
+   * Gets the rows of the analytics object
+   *
+   * @returns {Array}
+   */
+  get ou() {
+    return this.dimension('ou');
+  }
+
+  /**
+   * Gets the rows of the analytics object
+   *
+   * @returns {Array}
+   */
+  get value() {
+    return this.dimension('value').id;
   }
 }
 </code></pre>

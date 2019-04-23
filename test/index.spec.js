@@ -85,7 +85,7 @@ describe('Given an initial instance', () => {
 
 describe('Given an initial instance (Dependency Test)', () => {
   it('should return promise with analytics results (Dependency)', () => {
-    let orgunitProcessor = new Fn.OrganisationUnit();
+    let orgunitProcessor = new Fn.IdentifiableObject('organisationUnits');
 
     orgunitProcessor.where('id', 'in', ['Rp268JB6Ne4', 'Rp268JB6Ne2']);
 
@@ -113,7 +113,7 @@ describe('Given an initial instance (Dependency Test)', () => {
 
 describe('Given an initial instance (Multiple Process Test)', () => {
   it('should return promise with multiple results (Multiple Post Processing)', () => {
-    let orgunitProcessor = new Fn.OrganisationUnit();
+    let orgunitProcessor = new Fn.IdentifiableObject('organisationUnits');
 
     orgunitProcessor.where('id', 'in', ['Rp268JB6Ne4', 'Rp268JB6Ne2']);
 
@@ -134,7 +134,7 @@ describe('Given an initial instance (Multiple Process Test)', () => {
     });
   }).timeout(5000);
   it('should return promise with multiple results with post processing (Multiple Post Processing)', () => {
-    let orgunitProcessor = new Fn.OrganisationUnit();
+    let orgunitProcessor = new Fn.IdentifiableObject('organisationUnits');
 
     orgunitProcessor.where('id', 'in', ['Rp268JB6Ne4', 'Rp268JB6Ne2']);
 
@@ -159,7 +159,7 @@ describe('Given an initial instance (Multiple Process Test)', () => {
   }).timeout(5000);
 
   it('should return promise with multiple results with post processing within another multiple process (Multiple Post Processing)', () => {
-    let orgunitProcessor = new Fn.OrganisationUnit();
+    let orgunitProcessor = new Fn.IdentifiableObject('organisationUnits');
 
     orgunitProcessor.where('id', 'in', ['Rp268JB6Ne4', 'Rp268JB6Ne2']);
 
@@ -174,7 +174,7 @@ describe('Given an initial instance (Multiple Process Test)', () => {
       return [res[1], res[0]];
     });
 
-    let orgunitProcessor2 = new Fn.OrganisationUnit();
+    let orgunitProcessor2 = new Fn.IdentifiableObject('organisationUnits');
 
     orgunitProcessor2.where('id', 'in', ['Rp268JB6Ne4', 'Rp268JB6Ne2']);
 

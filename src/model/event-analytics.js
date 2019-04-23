@@ -3,13 +3,13 @@ import { Analytics } from './analytics';
 /**
  * This represents the Event Analytics Fetcher for processing analytics calls
  *
- * @extends Fetcher
+ * @extends Analytics
  */
 export class EventAnalytics extends Analytics {
   /**
    * Sets the Program for the fetch
-   * @param program
-   * @returns {EventAnalytics}
+   * @param {string} program - The id of the program
+   * @returns {EventAnalytics} - Object with the event analytics
    */
   setProgram(program) {
     this.program = program;

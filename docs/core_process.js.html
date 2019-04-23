@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>core/identifiable-object.js - Documentation</title>
+    <title>core/process.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -31,7 +31,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">core/identifiable-object.js</h1>
+    <h1 class="page-title">core/process.js</h1>
     
 
     
@@ -41,72 +41,92 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { Fetcher } from '../core/fetcher';
-
-/**
- * Represents Identifiable Object
- *@extends Fetcher
+            <pre class="prettyprint source linenums"><code>/**
+ * This is the representation of the processor
  */
-export class IdentifiableObject extends Fetcher {
-
+export class Process {
   /**
-   * Creates a fethcer
-   * @constructor
+   * Creates a processor
    */
-  constructor(objectName) {
-    super();
-    this._filters = [];
-    this.objectName = objectName;
-  }
-  get name() {
-    return this.objectName;
+  constructor() {
+    this.postProcessors = [];
+    this.dependencies = [];
   }
 
   /**
-   * Sets the where clause for filtering of data
-   * @param {string} right - Right expression
-   * @param {string} operator - Expression operator
-   * @param {string|array} left - Right expression
-   * @returns {IdentifiableObject} IdentifiableObject Identifiable object with where clause appended
+   * Checks if processor has dependencies
+   * @returns {boolean}
    */
-  where(right, operator, left) {
-    this._filters.push({
-      right: right,
-      operator: operator,
-      left: left
+  hasDependencies() {
+    return this.dependencies.length > 0;
+  }
+
+  /**
+   * Adds dependency to the processor
+   * @param {Dependency} dependency
+   * @deprecated Use addPreProcess
+   * @returns {Process}
+   */
+  preProcess(dependency) {
+    this.dependencies.push(dependency);
+    return this;
+  }
+
+  /**
+   * Adds dependency to the processor
+   * @param {Dependency} dependency
+   * @returns {Process}
+   */
+  addPreProcess(dependency) {
+    this.dependencies.push(dependency);
+    return this;
+  }
+
+  /**
+   * Adds callback process the output process
+   * @param callback
+   * @deprecated Use addPostProcess
+   * @returns {Process}
+   */
+  postProcess(callback) {
+    this.postProcessors.push(callback);
+    return this;
+  }
+
+  /**
+   * Adds callback process the output process
+   * @param callback
+   * @returns {Process}
+   */
+  addPostProcess(callback) {
+    this.postProcessors.push(callback);
+    return this;
+  }
+
+  /**
+   * Performs pre process
+   * @returns {Process}
+   */
+  performPreProcess() {
+    this.dependencies.forEach(dependency => {
+      dependency.processCallback(dependency.process._results, this);
     });
     return this;
   }
 
-  get url() {
-    var url = this._urlParameters;
+  /**
+   * Performs post process after the process has ended
+   * @param {Object} data
+   * @returns {Object}
+   */
+  performPostProcess(data) {
+    this._results = data;
+    let dataToProcess = data;
 
-    this._filters.forEach((filter) => {
-      if (url !== '') {
-        url += '&amp;';
-      }
-      url += 'filter=' + filter.right;
-      if (filter.operator === '==') {
-        url += ':eq:' + filter.left;
-      } else if (filter.operator === '&lt;') {
-        url += ':lt:' + filter.left;
-      } else if (filter.operator === '&lt;=') {
-        url += ':le:' + filter.left;
-      } else if (filter.operator === '>') {
-        url += ':gt:' + filter.left;
-      } else if (filter.operator === '>=') {
-        url += ':ge:' + filter.left;
-      } else if (filter.operator === '&lt;>') {
-        url += ':!eq:' + filter.left;
-      } else if (filter.operator === 'in' || filter.operator === '!in') {
-        url += ':' + filter.operator + ':[' + filter.left + ']';
-      } else if (!filter.left) {
-        url += ':' + filter.operator;
-      } else {
-        url += ':' + filter.operator + ':' + filter.left;
-      }
+    this.postProcessors.forEach(callback => {
+      dataToProcess = callback(dataToProcess);
     });
-    return this.name + '.json?' + url;
+    return dataToProcess;
   }
 }
 </code></pre>

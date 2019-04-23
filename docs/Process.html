@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>Global - Documentation</title>
+    <title>Process - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -31,7 +31,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Global</h1>
+    <h1 class="page-title">Process</h1>
     
 
     
@@ -44,8 +44,10 @@
 <header>
     
         <h2>
-        
+        Process
         </h2>
+        
+            <div class="class-description"><p>This is the representation of the processor</p></div>
         
     
 </header>
@@ -56,8 +58,24 @@
         
             
 
+    
+    <h2>Constructor</h2>
+    
+
+    <h4 class="name" id="Process"><span class="type-signature"></span>new Process<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
 <dl class="details">
 
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utilities_process.js.html">utilities/process.js</a>, <a href="utilities_process.js.html#line4">line 4</a>
+    </li></ul></dd>
     
 
     
@@ -94,9 +112,38 @@
 
 
 
-            
 
-            
+<div class="description">
+    <p>Creates a processor</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         
         </div>
     
@@ -114,12 +161,18 @@
     
 
     
-        <h3 class="subsection-title">Members</h3>
+
+    
+        <h3 class="subsection-title">Methods</h3>
 
         
             
-<h4 class="name" id="Fn"><span class="type-signature"></span>Fn<span class="type-signature"> :Object</span></h4>
 
+    
+
+    <h4 class="name" id="addPostProcess"><span class="type-signature"></span>addPostProcess<span class="signature">(callback)</span><span class="type-signature"> &rarr; {<a href="Process.html">Process</a>}</span></h4>
+
+    
 
 
 
@@ -129,7 +182,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line20">line 20</a>
+        <a href="utilities_process.js.html">utilities/process.js</a>, <a href="utilities_process.js.html#line59">line 59</a>
     </li></ul></dd>
     
 
@@ -169,40 +222,369 @@
 
 
 <div class="description">
-    <p>This is the main holder for the functionalities of the function</p>
+    <p>Adds callback process the output process</p>
 </div>
 
 
 
-    <h5>Type:</h5>
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Process.html">Process</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="addPreProcess"><span class="type-signature"></span>addPreProcess<span class="signature">(dependency)</span><span class="type-signature"> &rarr; {<a href="Process.html">Process</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utilities_process.js.html">utilities/process.js</a>, <a href="utilities_process.js.html#line38">line 38</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    <p>Adds dependency to the processor</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>dependency</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Dependency.html">Dependency</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Process.html">Process</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="hasDependencies"><span class="type-signature"></span>hasDependencies<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utilities_process.js.html">utilities/process.js</a>, <a href="utilities_process.js.html#line18">line 18</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    <p>Checks if processor has dependencies</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
     <ul>
-        <li>
+<li>Boolean value of the result</li>
+</ul>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
             
-<span class="param-type">Object</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-
-        
-    
 
     
 
-    
-        <h3 class="subsection-title">Type Definitions</h3>
-
-        
-                
-
-    
-
-    <h4 class="name" id="processCallback"><span class="type-signature"></span>processCallback<span class="signature">(result)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="performPostProcess"><span class="type-signature"></span>performPostProcess<span class="signature">(data)</span><span class="type-signature"> &rarr; {Object}</span></h4>
 
     
 
@@ -214,7 +596,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utilities_dependency.js.html">utilities/dependency.js</a>, <a href="utilities_dependency.js.html#line1">line 1</a>
+        <a href="utilities_process.js.html">utilities/process.js</a>, <a href="utilities_process.js.html#line80">line 80</a>
     </li></ul></dd>
     
 
@@ -254,7 +636,7 @@
 
 
 <div class="description">
-    <p>This callback type is called <code>processCallback</code>.</p>
+    <p>Performs post process after the process has ended</p>
 </div>
 
 
@@ -292,7 +674,7 @@
 
         <tr>
             
-                <td class="name"><code>result</code></td>
+                <td class="name"><code>data</code></td>
             
 
             <td class="type">
@@ -330,15 +712,33 @@
 
 
 
+<h5>Returns:</h5>
+
+        
 
 
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
 
-            
-                
+
+    </dd>
+</dl>
 
     
 
-    <h4 class="name" id="rejectCallback"><span class="type-signature"></span>rejectCallback<span class="signature">(error)</span><span class="type-signature"></span></h4>
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="performPreProcess"><span class="type-signature"></span>performPreProcess<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Process.html">Process</a>}</span></h4>
 
     
 
@@ -350,7 +750,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utilities_runner.js.html">utilities/runner.js</a>, <a href="utilities_runner.js.html#line54">line 54</a>
+        <a href="utilities_process.js.html">utilities/process.js</a>, <a href="utilities_process.js.html#line68">line 68</a>
     </li></ul></dd>
     
 
@@ -390,7 +790,7 @@
 
 
 <div class="description">
-    <p>This callback type is called <code>rejectCallback</code>.</p>
+    <p>Performs pre process</p>
 </div>
 
 
@@ -403,78 +803,47 @@
 
 
 
-    <h5>Parameters:</h5>
-    
 
-<table class="params">
-    <thead>
-    <tr>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
         
-        <th>Name</th>
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
         
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>error</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Error</span>
+<span class="param-type"><a href="Process.html">Process</a></span>
 
 
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            
-                
+    </dd>
+</dl>
 
     
 
-    <h4 class="name" id="resolveCallback"><span class="type-signature"></span>resolveCallback<span class="signature">(responseResult)</span><span class="type-signature"></span></h4>
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="postProcess"><span class="type-signature"></span>postProcess<span class="signature">(callback)</span><span class="type-signature"> &rarr; {<a href="Process.html">Process</a>}</span></h4>
 
     
 
@@ -486,7 +855,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utilities_runner.js.html">utilities/runner.js</a>, <a href="utilities_runner.js.html#line47">line 47</a>
+        <a href="utilities_process.js.html">utilities/process.js</a>, <a href="utilities_process.js.html#line49">line 49</a>
     </li></ul></dd>
     
 
@@ -504,6 +873,8 @@
 
     
 
+    
+        <dt class="important tag-deprecated">Deprecated:</dt><dd><ul class="dummy"><li>Use addPostProcess</li></ul></dd>
     
 
     
@@ -526,7 +897,7 @@
 
 
 <div class="description">
-    <p>This callback type is called <code>resolveCallback</code>.</p>
+    <p>Adds callback process the output process</p>
 </div>
 
 
@@ -564,15 +935,10 @@
 
         <tr>
             
-                <td class="name"><code>responseResult</code></td>
+                <td class="name"><code>callback</code></td>
             
 
             <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
             
             </td>
 
@@ -602,10 +968,186 @@
 
 
 
+<h5>Returns:</h5>
 
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Process.html">Process</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="preProcess"><span class="type-signature"></span>preProcess<span class="signature">(dependency)</span><span class="type-signature"> &rarr; {<a href="Process.html">Process</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utilities_process.js.html">utilities/process.js</a>, <a href="utilities_process.js.html#line28">line 28</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <dt class="important tag-deprecated">Deprecated:</dt><dd><ul class="dummy"><li>Use addPreProcess</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    <p>Adds dependency to the processor</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>dependency</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Dependency.html">Dependency</a></span>
 
 
             
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Process.html">Process</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+    
+
     
 
     

@@ -1,158 +1,38 @@
-import { Fetcher } from '../core/fetcher';
-
+import { Fetcher } from '../utilities/fetcher';
+import { AnalyticsResult } from '../result/analytics-result';
 /**
- * This represents the Analytics header
- *
- */
-export class AnalyticsHeader {}
-/**
- * This represents the Analytics Headers
- *
- * @extends Array
- */
-export class AnalyticsHeaders extends Array {
-  constructor(data) {
-    super(...data);
-    Object.setPrototypeOf(this, Object.create(AnalyticsHeaders.prototype));
-  }
-
-  /**
-   * Gets the data analytics header
-   *
-   * @returns {AnalyticsHeader}
-   */
-  get dx() {
-    return this.getHeader('dx');
-  }
-
-  /**
-   * Gets the period analytics header
-   *
-   * @returns {AnalyticsHeader}
-   */
-  get pe() {
-    return this.getHeader('pe');
-  }
-
-  /**
-   * Gets the organisation unit analytics header
-   *
-   * @returns {AnalyticsHeader}
-   */
-  get ou() {
-    return this.getHeader('ou');
-  }
-
-  /**
-   * Gets the value analytics header
-   *
-   * @returns {AnalyticsHeader}
-   */
-  get value() {
-    return this.getHeader('value');
-  }
-
-  /**
-   * Gets the header of a parameter
-   * @param id
-   * @returns {AnalyticsHeader}
-   */
-  getHeader(id) {
-    let returnHeader;
-
-    this.forEach((header, index) => {
-      if (header.name === id) {
-        returnHeader = header;
-        returnHeader.index = index;
-      }
-    });
-    return returnHeader;
-  }
-}
-
-/**
- * This represents the Analytics Results
- *
- */
-export class AnalyticsObject {
-  /**
-   * Creates ana Analytics Object
-   *
-   * @param {Object} - DHIS Analytics object
-   */
-  constructor(analyticsObject) {
-    this._data = analyticsObject;
-  }
-
-  /**
-   * Gets the Analytics Headers Array
-   *
-   * @returns {AnalyticsHeaders}
-   */
-  get headers() {
-    return new AnalyticsHeaders(this._data.headers);
-  }
-
-  /**
-   * Gets the Analytics Metadata Object
-   *
-   * @returns {*|metaData|{dimensions, names, dx, pe, ou, co}|{ouHierarchy, items, dimensions}}
-   */
-  get metaData() {
-    return this._data.metaData;
-  }
-
-  /**
-   * Gets the rows of the analytics object
-   *
-   * @returns {Array}
-   */
-  get rows() {
-    return this._data.rows;
-  }
-
-  /**
-   * Gets the Analytics height
-   *
-   * @returns {number}
-   */
-  get height() {
-    return this._data.height;
-  }
-
-  /**
-   * Gets the Analytics width
-   *
-   * @returns {number}
-   */
-  get width() {
-    return this._data.width;
-  }
-}
-
-/**
- * This represents the Analytics Fetcher for processing analytics calls
- *
+ * @description
+ * This represents the Analytics Fetcher for processing for making Web API calls
+ * @example
+ * const analytics = Fn.Analytics();
  * @extends Fetcher
  */
 export class Analytics extends Fetcher {
   /**
+   * @description
    * Creates an analytics fethcer
    *
-   * @param oldAnalytics - Whether the structure to be returned should be old or new.
+   * @param {Number} version - The version of dhis analytics structure to use
    */
-  constructor(oldAnalytics = true) {
+  constructor(version = 25) {
     super();
+    if (typeof version === 'boolean') {
+      if (version) {
+        version = 25;
+      } else {
+        version = 26;
+      }
+    }
     this.parameters['dimension'] = {};
     this.postProcess(data => {
-      return this.standardizeAnalytics(data, oldAnalytics);
+      return this.standardizeAnalytics(data, version);
     });
   }
 
   /**
    * Sets the data for the fetch
-   * @param dx
-   * @returns {Analytics}
+   * @param {string} dx The id of the data to get
+   * @returns {Analytics} - Object with the analytics interaction properties
    */
   setData(dx) {
     this.setDimension('dx', dx);
@@ -161,8 +41,8 @@ export class Analytics extends Fetcher {
 
   /**
    * Sets the period for the fetch
-   * @param pe
-   * @returns {Analytics}
+   * @param {string} pe The id of the period to get data from
+   * @returns {Analytics} Object with the analytics interaction properties
    */
   setPeriod(pe) {
     this.setDimension('pe', pe);
@@ -172,7 +52,7 @@ export class Analytics extends Fetcher {
   /**
    * Sets the organisation unit for the fetching of the analytics
    * @param {string} ou - Organisation unit
-   * @returns {Analytics} Analytics results
+   * @returns {Analytics} Object with the analytics interaction properties
    */
   setOrgUnit(ou) {
     this.setDimension('ou', ou);
@@ -183,7 +63,7 @@ export class Analytics extends Fetcher {
    * Sets the dimension for the fetching of the analytics
    * @param {string} dim - Dynamic Dimension identifier
    * @param {string} value - Dynamic dimension options identifiers
-   * @returns {Analytics}
+   * @returns {Analytics} Object with the analytics interaction properties
    */
   setDimension(dim, value) {
     this.parameters['dimension'][dim] = value ? value : '';
@@ -193,11 +73,18 @@ export class Analytics extends Fetcher {
   /**
    * Standardizes the analytics object
    *
-   * @param analyticsObject - The analytics object
-   * @param preferNormalStructure - Whether to prefer the old or new analytics structure
-   * @returns {AnalyticsObject}
+   * @param {Object} analyticsObject - The analytics object
+   * @param {Number} version - The version of dhis analytics structure to use
+   * @returns {AnalyticsResult} - Object with the analytics results
    */
-  standardizeAnalytics(analyticsObject, preferNormalStructure = true) {
+  standardizeAnalytics(analyticsObject, version = 25) {
+    if (typeof version === 'boolean') {
+      if (version) {
+        version = 25;
+      } else {
+        version = 26;
+      }
+    }
     // if Serverside Event clustering do nothing
     if (analyticsObject.count) {
       return analyticsObject;
@@ -220,7 +107,7 @@ export class Analytics extends Fetcher {
        * Check headers
        */
       if (analyticsObject.headers) {
-        analyticsObject.headers.forEach((header) => {
+        analyticsObject.headers.forEach(header => {
           try {
             let newHeader = header;
 
@@ -238,7 +125,7 @@ export class Analytics extends Fetcher {
         try {
           let sanitizedMetadata = this.getSanitizedAnalyticsMetadata(
             analyticsObject.metaData,
-            preferNormalStructure
+            version
           );
 
           sanitizedAnalyticsObject.metaData = sanitizedMetadata;
@@ -256,42 +143,42 @@ export class Analytics extends Fetcher {
     }
     sanitizedAnalyticsObject.height = analyticsObject.height;
     sanitizedAnalyticsObject.width = analyticsObject.width;
-    return new AnalyticsObject(sanitizedAnalyticsObject);
+    return new AnalyticsResult(sanitizedAnalyticsObject);
   }
 
   /**
    * Standardizes the analytics metadata object
    *
-   * @param analyticMetadata - The analytics metadata object
-   * @param preferNormalStructure - Whether to prefer the old or new analytics structure
-   * @returns {Object}
+   * @param {Object} analyticMetadata - The analytics metadata object
+   * @param {Number} version - The version of dhis analytics structure to use
+   * @returns {Object} - Object with the analytics metadata
    */
-  getSanitizedAnalyticsMetadata(analyticMetadata, preferNormalStructure) {
+  getSanitizedAnalyticsMetadata(analyticMetadata, version) {
     let sanitizedMetadata = {};
 
     if (analyticMetadata) {
       if (analyticMetadata.ouHierarchy) {
         sanitizedMetadata.ouHierarchy = analyticMetadata.ouHierarchy;
       }
-      if (preferNormalStructure) { // Get old structure
+      if (version < 26) {
+        // Get old structure
         sanitizedMetadata.names = {};
         if (analyticMetadata.names) {
           sanitizedMetadata.names = analyticMetadata.names;
         } else if (analyticMetadata.items) {
           Object.keys(analyticMetadata.items).forEach(nameKey => {
-            sanitizedMetadata.names[nameKey] = analyticMetadata.items[nameKey].name;
+            sanitizedMetadata.names[nameKey] =
+              analyticMetadata.items[nameKey].name;
           });
         }
 
         if (analyticMetadata.dimensions) {
-          Object.keys(analyticMetadata.dimensions).forEach(
-            nameKey => {
-              sanitizedMetadata[nameKey] =
-                analyticMetadata.dimensions[nameKey];
-            }
-          );
+          Object.keys(analyticMetadata.dimensions).forEach(nameKey => {
+            sanitizedMetadata[nameKey] = analyticMetadata.dimensions[nameKey];
+          });
         }
-      } else { // Get new structure
+      } else {
+        // Get new structure
         sanitizedMetadata.items = {};
         if (analyticMetadata.items) {
           sanitizedMetadata.items = analyticMetadata.items;

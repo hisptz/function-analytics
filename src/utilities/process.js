@@ -1,31 +1,10 @@
 /**
- * This callback type is called `processCallback`.
- *
- * @callback processCallback
- * @param {Object} result
- */
-
-/**
- * Represents a process dependency
- */
-export class Dependency {
-  /**
-   * Creates a dependency instance
-   * @param {Processor} processor
-   * @param {processCallback} process
-   */
-  constructor(processor, process) {
-    this.processor = processor;
-    this.process = process;
-  }
-}
-
-/**
  * This is the representation of the processor
  */
-export class Processor {
+export class Process {
   /**
    * Creates a processor
+   * @constructor
    */
   constructor() {
     this.postProcessors = [];
@@ -34,7 +13,7 @@ export class Processor {
 
   /**
    * Checks if processor has dependencies
-   * @returns {boolean}
+   * @returns {boolean} - Boolean value of the result
    */
   hasDependencies() {
     return this.dependencies.length > 0;
@@ -42,8 +21,9 @@ export class Processor {
 
   /**
    * Adds dependency to the processor
-   * @param {Dependency} dependency
-   * @returns {Processor}
+   * @param {Dependency} dependency - The
+   * @deprecated Use addPreProcess
+   * @returns {Process}
    */
   preProcess(dependency) {
     this.dependencies.push(dependency);
@@ -51,9 +31,20 @@ export class Processor {
   }
 
   /**
+   * Adds dependency to the processor
+   * @param {Dependency} dependency
+   * @returns {Process}
+   */
+  addPreProcess(dependency) {
+    this.dependencies.push(dependency);
+    return this;
+  }
+
+  /**
    * Adds callback process the output process
    * @param callback
-   * @returns {Processor}
+   * @deprecated Use addPostProcess
+   * @returns {Process}
    */
   postProcess(callback) {
     this.postProcessors.push(callback);
@@ -61,12 +52,22 @@ export class Processor {
   }
 
   /**
+   * Adds callback process the output process
+   * @param callback
+   * @returns {Process}
+   */
+  addPostProcess(callback) {
+    this.postProcessors.push(callback);
+    return this;
+  }
+
+  /**
    * Performs pre process
-   * @returns {Processor}
+   * @returns {Process}
    */
   performPreProcess() {
-    this.dependencies.forEach((dependency) => {
-      dependency.process(dependency.processor._results, this);
+    this.dependencies.forEach(dependency => {
+      dependency.processCallback(dependency.process._results, this);
     });
     return this;
   }
@@ -80,7 +81,7 @@ export class Processor {
     this._results = data;
     let dataToProcess = data;
 
-    this.postProcessors.forEach((callback) => {
+    this.postProcessors.forEach(callback => {
       dataToProcess = callback(dataToProcess);
     });
     return dataToProcess;
