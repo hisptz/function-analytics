@@ -1,7 +1,9 @@
 # Fn
+
 [![Build Status](https://travis-ci.org/hisptz/function-analytics.svg?branch=develop)](https://travis-ci.org/hisptz/function-analytics) [![Greenkeeper badge](https://badges.greenkeeper.io/hisptz/function-analytics.svg)](https://greenkeeper.io/)
 [![Maintainability](https://api.codeclimate.com/v1/badges/18d9239d0ecb464fbea6/maintainability)](https://codeclimate.com/github/hisptz/function-analytics/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/18d9239d0ecb464fbea6/test_coverage)](https://codeclimate.com/github/hisptz/function-analytics/test_coverage)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 # Function Analytics Library
 
@@ -27,7 +29,7 @@ After installing you will be able to import the library into your project by usi
 
 ```js
 // Using ES2015 imports
-import {Fn} from '@iapps/function-analytics';
+import { Fn } from '@iapps/function-analytics';
 
 // Using CommonJS imports
 var Fn = require('@iapps/function-analytics').Fn;
@@ -77,20 +79,18 @@ var orgunit = new Fn.IdentifiableObject('organisationUnits'); // Example of an o
 orgunit.where('id', 'in', ['Rp268JB6Ne4', 'Rp268JB6Ne2']);
 //Declare business process to run after orgunit results
 var bussinessAfterOrgunitProcess = (orgUnitResult, analytics) => {
-    // Adds dependency
-    let ous = orgUnitResult.organisationUnits
-      .map(organisationUnit => {
-        return organisationUnit.id;
-      })
-      .join(';');
+  // Adds dependency
+  let ous = orgUnitResult.organisationUnits
+    .map(organisationUnit => {
+      return organisationUnit.id;
+    })
+    .join(';');
 
-    analytics.setPeriod('2016').setOrgUnit(ous);
-  }
+  analytics.setPeriod('2016').setOrgUnit(ous);
+};
 var analytics = new Fn.Analytics();
 
-analytics.preProcess(
-  new Fn.Dependency(orgunit, bussinessAfterOrgunitProcess)
-);
+analytics.preProcess(new Fn.Dependency(orgunit, bussinessAfterOrgunitProcess));
 analytics.get().then(results => {});
 ```
 
