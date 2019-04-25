@@ -1,8 +1,8 @@
 # Fn
 
-[![Build Status](https://travis-ci.org/hisptz/function-analytics.svg?branch=develop)](https://travis-ci.org/hisptz/function-analytics) [![Greenkeeper badge](https://badges.greenkeeper.io/hisptz/function-analytics.svg)](https://greenkeeper.io/)
-[![Maintainability](https://api.codeclimate.com/v1/badges/18d9239d0ecb464fbea6/maintainability)](https://codeclimate.com/github/hisptz/function-analytics/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/18d9239d0ecb464fbea6/test_coverage)](https://codeclimate.com/github/hisptz/function-analytics/test_coverage)
+[![Build Status](https://travis-ci.org/interactive-apps/function-analytics.svg?branch=develop)](https://travis-ci.org/interactive-apps/function-analytics) [![Greenkeeper badge](https://badges.greenkeeper.io/interactive-apps/function-analytics.svg)](https://greenkeeper.io/)
+[![Maintainability](https://api.codeclimate.com/v1/badges/18d9239d0ecb464fbea6/maintainability)](https://codeclimate.com/github/interactive-apps/function-analytics/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/18d9239d0ecb464fbea6/test_coverage)](https://codeclimate.com/github/interactive-apps/function-analytics/test_coverage)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 # Function Analytics Library
@@ -116,4 +116,4 @@ multiProcesses.postProcess(res => {
 multiProcesses.get().then(results => {});
 ```
 
-For detailed documentation please visit the [documentation](https://hisptz.github.io/function-analytics/) page.
+For detailed documentation please visit the [documentation](https://interactive-apps.github.io/function-analytics/) page.
