@@ -7,15 +7,35 @@
 
 # Function Analytics Library
 
-Library to aid in the development of functions. Built with best practices in mind from the experience on function maintenance.
-This is to make it easy for developers to concentrate on the business logic of their functions while also considering the best way
-to perform operations with out of the box performance execution strategy.
+Javascript Library based on microservice design pattern to support and improve the development of function indicators. Built with best practices in mind from the experience of writing function indicators with on [function maintenance app](https://play.dhis2.org/2.31.3/api/apps/Function-Maintanance-2/index.html#/).
+
+For details on function maintenance visit it's [source codes](https://github.com/interactive-apps/function-maintenance), for online documentations visit [https://interactive-apps.github.io/function-analytics/](https://interactive-apps.github.io/function-analytics/), visit it's [source codes here](https://github.com/interactive-apps/function-analytics).
+
+Function analytics makes it easy for developers to focus on the business logic of their functions indicator while also considering the best way to perform analytics operations with out of the box performance execution strategy.
 
 ## Features
 
 - Fetching data for analytics.
 - Fetching DHIS Identifiable objects.
 - Perform execution of functions with optimization
+
+## Advantages of function analytics
+1. Lighter functions size and overhead on datastore storage
+2. Easier and faster chores on maintenance/upgrading of functions(only logic)
+3. Easier and faster debugging(only logic), all services and utilities outsourced to function analytics
+4. Easier performance improvements and shipping of code fixes(fix once enjoy everywhere), through iterative improvement of analytics library
+5. Room for unit testing across multiple scenarios(instead of going to server/network we can simulate returned results and automate lot of scenarios and bring logic tests of codes ASAP, minimize chances of failures)
+6. Room for improving efficiency with local storage and shared resources(within d2 abstraction)
+7. Extension and re-use of d2 library and process, improving on existing foundation, with less work and have cheat sheet doc of available methods right there in the editor.
+8. Makes room for focusing on excel like UI and ux, extending d2 with excel like function library re-usable on-demand via function expressions
+9. Minimal and shorter syntax, logic, promises and ajax error failures and better try and catch workflow, as user won't write any ajax
+10. Much less knowledge/learning-curve needed to write functions(no need to know dhis2 api or ajax promises)
+11. No more dependency necessary to any framework(jQuery, etc...), as majority of needed utilities are abstracted in function analytics
+12. Sets a center stage for functions to be viable for back-end microservice computation, easily invoked in backend with any server utilities and programs
+13. Allows easier stress and time-lag testing of functions in case of huge volume of selections, and anticipate impacts of functions long before they're put to production
+14. Potential support for code completion during development as entire library is right there for use(making development even easier)
+15. Room for porting of javascript implementation to postgres procedures and other language implementation that can be transpiled for execution in backend with any other technologies other than javascript
+
 
 ## Quickstart Guide
 
