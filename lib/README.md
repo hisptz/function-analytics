@@ -1,15 +1,17 @@
 # Fn
 
-[![Build Status](https://travis-ci.org/hisptz/function-analytics.svg?branch=develop)](https://travis-ci.org/hisptz/function-analytics) [![Greenkeeper badge](https://badges.greenkeeper.io/hisptz/function-analytics.svg)](https://greenkeeper.io/)
-[![Maintainability](https://api.codeclimate.com/v1/badges/18d9239d0ecb464fbea6/maintainability)](https://codeclimate.com/github/hisptz/function-analytics/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/18d9239d0ecb464fbea6/test_coverage)](https://codeclimate.com/github/hisptz/function-analytics/test_coverage)
+[![Build Status](https://travis-ci.org/interactive-apps/function-analytics.svg?branch=develop)](https://travis-ci.org/interactive-apps/function-analytics) [![Greenkeeper badge](https://badges.greenkeeper.io/interactive-apps/function-analytics.svg)](https://greenkeeper.io/)
+[![Maintainability](https://api.codeclimate.com/v1/badges/18d9239d0ecb464fbea6/maintainability)](https://codeclimate.com/github/interactive-apps/function-analytics/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/18d9239d0ecb464fbea6/test_coverage)](https://codeclimate.com/github/interactive-apps/function-analytics/test_coverage)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 # Function Analytics Library
 
-Library to aid in the development of functions. Built with best practices in mind from the experience on function maintenance.
-This is to make it easy for developers to concentrate on the business logic of their functions while also considering the best way
-to perform operations with out of the box performance execution strategy.
+Javascript Library based on micro-service design pattern to support and improve the development of function indicators. Built with best practices in mind from the experience of writing function indicators with on [function maintenance app](https://play.dhis2.org/2.31.3/api/apps/Function-Maintanance-2/index.html#/).
+
+For details on function maintenance visit it's [source codes](https://github.com/interactive-apps/function-maintenance), for online documentations visit [https://interactive-apps.github.io/function-analytics/](https://interactive-apps.github.io/function-analytics/), visit it's [source codes here](https://github.com/interactive-apps/function-analytics).
+
+Function analytics makes it easy for developers to focus on the business logic of their functions indicator while also considering the best way to perform analytics operations with out of the box performance execution strategy.
 
 ## Features
 
@@ -116,4 +118,29 @@ multiProcesses.postProcess(res => {
 multiProcesses.get().then(results => {});
 ```
 
-For detailed documentation please visit the [documentation](https://hisptz.github.io/function-analytics/) page.
+## Microservice Architecture
+![](https://lh3.googleusercontent.com/xNrhIlfv2WVT8z9tC0D1LzGaTWCjatL1SPadkGyld2SMND0ySjcYQ9fvRNBtSAD0Q5WhC7-3eLPOaZCfjrC_uqNg9-xwdj4bKt5a3k6gsezq0ULuGG21sJKKsYUrNvl8snbWg-9ICM1PIzOCOqePR1v6ihQu6EimcA5OffKZ0-cbDDFgbvZRr0Rab-nrRayXJjTi_1JIvLIByCFdDkmiKm3wDduIkGxI5jET3cm_1cHIuE3QvIDaBgnP44Y-Dy4alyq8MZMDLnj7pJlK9_pmCxwUG9dfuXMC6x90WWYjXDE_UsfjpXqc8CR6QBdvXX5RD5ByfwjTlMJjeqEVo2tiLM-VUm-NJ6XdnT1fFwvnokQ-ENGTmotf8PR1m3cOF3N3hBC1OPhV7bv2cooF_gAFwsIeGYKxOXeky7Mkg48sqMv5VcnoVN1TfrOGQah2L9-04q9bFv6No8li6tj8aYpCvtfgYx3E8Vv0CpCk83_v_ilrRJDl7LEl3j_rejoCEtSECrMNivXUyG2FpXtdSAeEkiZuvzMVEKE2yznrO0drYUfBIcL-cT-VQb5wLPkAGQzfxOyKd2-yIrnrRLQ90bsza1JKipxMonZhGXq7dIQ=w1299-h738)
+
+With microservice architecture, function indicators have been designed to be a collection of loosely coupled services,which alows continous delivery and deployment of service, re-usable accross dhis2 instances and implementations.
+
+Functions analytics microservice design has been implemented to run on both client-side as well as service server side implementation.
+
+## Advantages of function analytics
+1. Lighter functions size and overhead on datastore storage
+2. Easier and faster chores on maintenance/upgrading of functions(only logic)
+3. Easier and faster debugging(only logic), all services and utilities outsourced to function analytics
+4. Easier performance improvements and shipping of code fixes(fix once enjoy everywhere), through iterative improvement of analytics library
+5. Room for unit testing across multiple scenarios(instead of going to server/network we can simulate returned results and automate lot of scenarios and bring logic tests of codes ASAP, minimize chances of failures)
+6. Room for improving efficiency with local storage and shared resources(within d2 abstraction)
+7. Extension and re-use of d2 library and process, improving on existing foundation, with less work and have cheat sheet doc of available methods right there in the editor.
+8. Makes room for focusing on excel like UI and ux, extending d2 with excel like function library re-usable on-demand via function expressions
+9. Minimal and shorter syntax, logic, promises and ajax error failures and better try and catch workflow, as user won't write any ajax
+10. Much less knowledge/learning-curve needed to write functions(no need to know dhis2 api or ajax promises)
+11. No more dependency necessary to any framework(jQuery, etc...), as majority of needed utilities are abstracted in function analytics
+12. Sets a center stage for functions to be viable for back-end microservice computation, easily invoked in backend with any server utilities and programs
+13. Allows easier stress and time-lag testing of functions in case of huge volume of selections, and anticipate impacts of functions long before they're put to production
+14. Potential support for code completion during development as entire library is right there for use(making development even easier)
+15. Room for porting of javascript implementation to postgres procedures and other language implementation that can be transpiled for execution in backend with any other technologies other than javascript
+
+
+For detailed documentation please visit the [documentation](https://interactive-apps.github.io/function-analytics/) page.
