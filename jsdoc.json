@@ -5,6 +5,7 @@
     "source": {
         "include": [
             "src/",
+            "tutorials/",
             "README.md"
         ],
         "includePattern": ".js$",
@@ -21,5 +22,21 @@
     "templates": {
         "cleverLinks": false,
         "monospaceLinks": false
+    },
+    "docdash": {
+        "sort": true,
+        "search": true,
+        "typedefs": true,
+        "navLevel": 2, 
+        "sectionOrder": [
+            "Classes",
+            "Modules",
+            "Externals",
+            "Events",
+            "Namespaces",
+            "Mixins",
+            "Tutorials",
+            "Interfaces"
+       ]
     }
 }
