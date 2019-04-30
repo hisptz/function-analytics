@@ -5,7 +5,6 @@
     "source": {
         "include": [
             "src/",
-            "tutorials/",
             "README.md"
         ],
         "includePattern": ".js$",
@@ -17,7 +16,8 @@
         "encoding": "utf8",
         "destination": "docs/",
         "recurse": true,
-        "verbose": true
+        "verbose": true,
+        "tutorials": "tutorials"
     },
     "templates": {
         "cleverLinks": false,
@@ -29,13 +29,13 @@
         "typedefs": true,
         "navLevel": 2, 
         "sectionOrder": [
+            "Tutorials",
             "Classes",
             "Modules",
             "Externals",
             "Events",
             "Namespaces",
             "Mixins",
-            "Tutorials",
             "Interfaces"
        ]
     }
