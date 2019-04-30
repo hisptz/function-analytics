@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>utilities/multi-fetcher.js - Documentation</title>
+    <title>Tutorial: Analytics - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -33,56 +33,90 @@
 
 <div id="main">
     
-    <h1 class="page-title">utilities/multi-fetcher.js</h1>
+    <h1 class="page-title">Tutorial: Analytics</h1>
     
 
-    
-
-
-
-    
     <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>import { Runner } from './runner';
-import { Fetcher } from './fetcher';
 
-/**
- * Represents the multiple fetcher process
- *@extends Fetcher
- */
-export class MultiFetcher extends Fetcher {
+<header>
+    
 
-  /**
-   * Creates a fethcer
-   * @constructor
-   */
-  constructor(fetchers) {
-    super();
-    this._fetchers = fetchers;
-  }
+    <h2>Analytics</h2>
+</header>
 
-  /**
-   * Gets the Fetchers
-   * @returns {array} fetchers - Array of Fetchers
-   */
-  get fetchers() {
-    return this._fetchers;
-  }
-
-  /**
-   * Gets the executed Promise
-   * @returns {ProgressPromise} progressPromise - Promise which alerts progresss
-   */
-  get() {
-    return (new Runner()).getAllResults(this);
-  }
+<article>
+    <h1>Analytics Model</h1><p>Analytics model is an extension of function analytics which serves to abstract fetching of data from analytics api end-point.</p>
+<h2>Features offered by analytics model includes:</h2><ol>
+<li>Eliminates need for jQuery library for manual fetching of analytics</li>
+<li>Handles success and error reponses internally and accordingly</li>
+<li>Removes a need to account for data structure of analytics api under operation.</li>
+<li>Minimize the boiler plate codes need for the function</li>
+<li>Impoves simplicity and readability of the codes</li>
+<li>Introduce room for maintenance of function through separation of business logic and analytics logics.</li>
+</ol>
+<h1>Analytics Use cases Examples</h1><p>Below are examples of analytics use cases using function analytics and when not done by standard methods, such as use of jQuery.</p>
+<h2>1. Limit completeness to 100% Use case.</h2><p>This example shows use of analytics model to write function function indicator and impose logic that limits completeness to 100%</p>
+<h3>1.1 Implementation with function analytics</h3><pre class="prettyprint source lang-javascript"><code>//Business Logic outside
+function capTo100(results) {
+    results.rows.forEach(function(resultRow,resultRowIndex){
+        resultRow.forEach(function(rowValue,valueIndex){
+            if(results.headers[valueIndex][&quot;name&quot;]==&quot;value&quot;) {
+                //Cap value to 100
+                if(rowValue>=100) results.rows[resultRowIndex][valueIndex]=100;
+            }
+        });
+    });
+    return results;
 }
-</code></pre>
-        </article>
-    </section>
 
+//Fetching analytics & applying business logic
+var analytics = new Fn.Analytics();
+analytics.setData(parameters.rule.json.data+'.REPORTING_RATE')
+    .setOrgUnit(parameters.ou).setPeriod(parameters.pe)
+    .setParameters({&quot;displayProperty&quot;:'SHORTNAME'}).postProcess(capTo100)
+    .get().then(function (results) {
+        parameters.success(results);
+    }).catch(function (error) {
+        parameters.error(error);
+    });</code></pre><h3>1.2 Implementation with jquery</h3><p>This is equivalent implementation with jquery, assuming jquery library exists and has been loaded into memory.
+Below are draw-backs:</p>
+<ol>
+<li>Requires jquery library to be imported into memory</li>
+<li>Broken promises can crash and bring entire page to a grinding halt</li>
+<li>Doesn't scale with more complex logics</li>
+<li>Lacks all other advancements and heavy lifting done by function analytics</li>
+</ol>
+<pre class="prettyprint source lang-javascript"><code>//Business logic
+function capTo100(results) {
+    results.rows.forEach(function(resultRow,resultRowIndex){
+        resultRow.forEach(function(rowValue,valueIndex){
+            if(results.headers[valueIndex][&quot;name&quot;]==&quot;value&quot;) {
+                //Cap value to 100
+                if(rowValue>=100) results.rows[resultRowIndex][valueIndex]=100;
+            }
+        });
+    });
+    return results;
+}
 
+$.ajax({
+    url: &quot;../../../api/analytics.json&quot;
+        +&quot;?dimension=dx:&quot;+ parameters.rule.json.data+&quot;.REPORTING_RATE&quot;
+        +&quot;&dimension=pe:&quot;+ parameters.pe 
+        +&quot;&dimension=ou:&quot;+ parameters.ou
+        +&quot;&displayProperty=shortname&quot;,
+    type: &quot;GET&quot;,
+    success: function(analyticsResults) {
+        analyticResults = capTo100(analyticsResults);
+        parameters.success(analyticsResults);
+    },
+    error:function(error){
+          parameters.error(error);
+    }
+});</code></pre>
+</article>
 
+</section>
 
     
     

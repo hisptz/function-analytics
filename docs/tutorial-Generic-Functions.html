@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>utilities/multi-fetcher.js - Documentation</title>
+    <title>Tutorial: Generic-Functions - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -33,56 +33,35 @@
 
 <div id="main">
     
-    <h1 class="page-title">utilities/multi-fetcher.js</h1>
+    <h1 class="page-title">Tutorial: Generic-Functions</h1>
     
 
-    
-
-
-
-    
     <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>import { Runner } from './runner';
-import { Fetcher } from './fetcher';
 
-/**
- * Represents the multiple fetcher process
- *@extends Fetcher
- */
-export class MultiFetcher extends Fetcher {
+<header>
+    
 
-  /**
-   * Creates a fethcer
-   * @constructor
-   */
-  constructor(fetchers) {
-    super();
-    this._fetchers = fetchers;
-  }
+    <h2>Generic-Functions</h2>
+</header>
 
-  /**
-   * Gets the Fetchers
-   * @returns {array} fetchers - Array of Fetchers
-   */
-  get fetchers() {
-    return this._fetchers;
-  }
+<article>
+    <h2>Generic Data Analytics Examples</h2><p>For every dhis2 instances, there will always exist analytics use cases that are very advanced or non-standard to be directly supported by standard analytics.</p>
+<p>The following and the standard analytics use cases that are not supported by analytics</p>
+<ol>
+<li><p>Predictors, producing runtime values. By accessing them via api allows function indicator to compute and visualizing preditor at client side, minizing analytics runtime, improve server performance, keep down significant database over long time, and exercise distributed computing where majority of work gets outsourced to client computers from servers)</p>
+</li>
+<li><p>Limiting reporting rates to 100% or spotting reporting rates that would have exceeded 100% (for cases where completeness may exceed 100% e.g. when last month 25 facilities all reported and this month only 24 are supposed to report, so when plotting chart, while this month completeness will be 24/24 last month will be 25/24 due to form un-assignment. limiting 100%, helps keep sanity in face of design limitations of dhis)</p>
+</li>
+<li><p>Dataset and Program Completeness by mandatory or all input fields or by skip logic rules (where completeness will be measured as percentage of cells expecting values against cells that do have them), this is every useful completeness measurement especially for tracker completeness and timeliness</p>
+</li>
+<li><p>Percent of facilities composition by certain criteria, this is organization unit analytics for measuring percentage distribution of facility with given criteria to all facilities. Example use case is percentage facilities with 100% completeness in dataset, I.e. when a facility doesn't have 100% completeness doesn't get counted. This logic is very common, it varies in the criterias used. Most common use case for this, is facility with entire package of tracer commodities, or facilities with half the entire package, or with stockout.</p>
+</li>
+<li><p>Reporting readiness time, Measure of readiness/sharpness of reporting, prior to reporting deadline. Where readiness is measured as number of days remained before deadline to total number of days available for data entry. Where the days from date when dataset was completed devided by total available days to deadline of the dataset, this helps challenge and incentivise sharpness and readiness beyond timeliness of data even further, improving guarantee for fresh and quality figures.</p>
+</li>
+</ol>
+</article>
 
-  /**
-   * Gets the executed Promise
-   * @returns {ProgressPromise} progressPromise - Promise which alerts progresss
-   */
-  get() {
-    return (new Runner()).getAllResults(this);
-  }
-}
-</code></pre>
-        </article>
-    </section>
-
-
-
+</section>
 
     
     
