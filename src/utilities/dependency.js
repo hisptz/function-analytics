@@ -1,6 +1,7 @@
 /**
  * This callback type is called `processCallback`.
  *
+ * @mixin
  * @callback processCallback
  * @param {Object} result
  */

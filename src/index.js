@@ -1,21 +1,22 @@
-import {Analytics} from './model/analytics.js';
-import {AnalyticsResult } from './result/analytics-result';
-import {EventAnalytics} from './model/event-analytics';
-import {SQLViewData} from './model/sql-view.js';
-import {ProgressPromise} from './utilities/progress-promise';
-import {Runner} from './utilities/runner.js';
-import {Dependency} from './utilities/dependency';
-import {MultiFetcher} from './utilities/multi-fetcher';
-import {IdentifiableObject} from './model/identifiable-object.js';
+import { Analytics } from './model/analytics.js';
+import { AnalyticsResult } from './result/analytics-result';
+import { EventAnalytics } from './model/event-analytics';
+import { SQLViewData } from './model/sql-view.js';
+import { ProgressPromise } from './utilities/progress-promise';
+import { Runner } from './utilities/runner.js';
+import { Dependency } from './utilities/dependency';
+import { MultiFetcher } from './utilities/multi-fetcher';
+import { IdentifiableObject } from './model/identifiable-object.js';
 
 /**
  * This is the main holder for the functionalities of the function
+ * @namespace
  * @type {{Promise: ProgressPromise, Analytics: Analytics,
-  *   AnalyticsResult: AnalyticsResult,
-  *   OrganisationUnit: OrganisationUnit, SQLViewData: SQLViewData,
-  *   Runner: Runner, Dependency: Dependency, MultiFetcher: MultiFetcher,
-  *   all: (function(Fetcher[])), init: (function(*=))}
-  * }
+ *   AnalyticsResult: AnalyticsResult,
+ *   OrganisationUnit: OrganisationUnit, SQLViewData: SQLViewData,
+ *   Runner: Runner, Dependency: Dependency, MultiFetcher: MultiFetcher,
+ *   all: (function(Fetcher[])), init: (function(*=))}
+ * }
  */
 let Fn = {
   Promise: ProgressPromise,

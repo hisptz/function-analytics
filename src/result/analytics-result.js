@@ -47,6 +47,52 @@ export class AnalyticsResult {
   }
 
   /**
+   * Gets the dimension details by name of the dimension
+   * 
+   * @param {string} id
+   *
+   * @returns {Object|{id,name,!path}}
+   */
+  getDimensionDetailsByName(name) {
+    var results = [];
+
+    if (this.metaData.names) {
+      name = this.metaData.names[id];
+    } else if (this.metaData.items) {
+      name = this.metaData.items[id] ? this.metaData.items[id].name : undefined;
+    }
+    return {
+      id: id,
+      name: name,
+      path:
+        this.metaData.ouHierarchy &&
+          this.metaData.ouHierarchy[id] !== undefined ? this.metaData.ouHierarchy[id] : undefined
+    };
+  }
+  /**
+   * Gets the dimension details of a given id
+   * 
+   * @param {string} id
+   *
+   * @returns {Object|{id,name,!path}}
+   */
+  getDimensionDetails(id) {
+    var name = '';
+
+    if (this.metaData.names) {
+      name = this.metaData.names[id];
+    } else if (this.metaData.items) {
+      name = this.metaData.items[id] ? this.metaData.items[id].name : undefined;
+    }
+    return {
+      id: id,
+      name: name,
+      path:
+        this.metaData.ouHierarchy &&
+          this.metaData.ouHierarchy[id] !== undefined ? this.metaData.ouHierarchy[id] : undefined
+    };
+  }
+  /**
    * Gets the Analytics height
    *
    * @returns {number} - The number of rows

@@ -67,7 +67,8 @@ export class Runner {
    */
   _fetch(fetcher, resolve, reject) {
     if (!_instance) {
-      let error = 'Configration not set please configre function ' +
+      let error =
+        'Configration not set please configre function ' +
         'analytics eg {baseUrl:"dhis_base_url", username:"username", ' +
         'password:"password"}';
 
@@ -85,11 +86,14 @@ export class Runner {
         password: _instance.config.password
       };
     }
-    axios.request(config).then((results) => {
-      resolve(fetcher.performPostProcess(results.data));
-    }, (err) => {
-      reject(err);
-    });
+    axios.request(config).then(
+      results => {
+        resolve(fetcher.performPostProcess(results.data));
+      },
+      err => {
+        reject(err);
+      }
+    );
   }
 
   /**
@@ -98,7 +102,8 @@ export class Runner {
    * @returns {ProgressPromise}
    */
   getResults(fetcher) {
-    if (fetcher._fetchers) { // If is a multifetcher
+    if (fetcher._fetchers) {
+      // If is a multifetcher
       return this.getAllResults(fetcher);
     }
     let hashed = fetcher.hash();
@@ -133,13 +138,17 @@ export class Runner {
    */
   getAllResults(multifetcher) {
     return new ProgressPromise((resolve, reject, progress) => {
-      const promises = multifetcher.fetchers.map((fetcher) => (new Runner()).getResults(fetcher));
+      const promises = multifetcher.fetchers.map(fetcher =>
+        new Runner().getResults(fetcher)
+      );
 
-      return ProgressPromise.all(promises).then((results) => {
-        resolve(multifetcher.performPostProcess(results));
-      }).catch((err) => {
-        reject(err);
-      });
+      return ProgressPromise.all(promises)
+        .then(results => {
+          resolve(multifetcher.performPostProcess(results));
+        })
+        .catch(err => {
+          reject(err);
+        });
     });
   }
 }
