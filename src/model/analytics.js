@@ -60,6 +60,37 @@ export class Analytics extends Fetcher {
   }
 
   /**
+   * Sets the data,period and organisation unit from function input parameters object for the fetching of the analytics
+   * @param {string} parameters - Rule parameters
+   * @returns {Analytics} Object with the analytics interaction properties
+   */
+  setSelections(parameters) {
+    this.setPeriod(parameters.pe);
+    this.setOrgUnit(parameters.ou);
+    //Set data Selection
+    if(parameters.rule.json.data!==undefined) {
+      // @TODO add support for only fetching 11char long uids, and joining them
+      // into a comma separated string, so in future, parameters.rule.json.data
+      // could simply be an indicator expresssion with unary operators and javascript
+      // functions inside to be executed the express parameters.rule.json.data
+      this.setData(parameters.rule.json.data);
+    }
+    //Set dynamic dimension
+    if(parameters.dimensions!==undefined && Array.isArray(parameters.dimensions)) {
+      parameters.dimensions.forEach(function(dimension){
+        if(Array.isArray(dimension.items)) {
+          let dimensionItems = '';
+          dimension.items.forEach(function(item){
+            dimensionItems.length>0 ? dimensionItems+=';'+item : dimensionItems+=item;
+          })
+        }
+        this.setDimension(dimension.id,dimensionItems);
+      })
+    }
+    return this;
+  }
+
+  /**
    * Sets the dimension for the fetching of the analytics
    * @param {string} dim - Dynamic Dimension identifier
    * @param {string} value - Dynamic dimension options identifiers
