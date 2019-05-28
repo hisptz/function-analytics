@@ -215,7 +215,11 @@ describe('When I get the analytics object', () => {
     expect(ouIdDetails.id).to.be.equal('lgZ6HfZaj3f');
     expect(ouIdDetails.name).to.be.equal('Arusha City Council');
 
-    
+    var resultDetails = standardizedAnalytics.getDimensionDetailsByName('ou');
+    expect(resultDetails.length).to.be.equal(1);
+
+    resultDetails = standardizedAnalytics.getDimensionDetailsByName('pe');
+    expect(resultDetails.length).to.be.equal(12);
   });
 });
 

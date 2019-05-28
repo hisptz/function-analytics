@@ -55,20 +55,30 @@ export class AnalyticsResult {
    */
   getDimensionDetailsByName(name) {
     var results = [];
-
-    if (this.metaData.names) {
-      name = this.metaData.names[id];
-    } else if (this.metaData.items) {
+    if (this.metaData.dimensions) {
+      this.metaData.dimensions[name].forEach((item) => {
+        results.push(this.getDimensionDetails(item));
+      })
+    } /*else if (this.metaData.items) {
       name = this.metaData.items[id] ? this.metaData.items[id].name : undefined;
-    }
-    return {
-      id: id,
-      name: name,
-      path:
-        this.metaData.ouHierarchy &&
-          this.metaData.ouHierarchy[id] !== undefined ? this.metaData.ouHierarchy[id] : undefined
-    };
+    }*/
+    return results;
   }
+
+  /**
+   * Gets the ou of the analytics object
+   *
+   * @returns {Array}
+   */
+  get rows() {
+    let rows = [];
+
+    this._data.rows.forEach((row) => {
+      rows.push(new Row(row, this.headers, this.metaData));
+    });
+    return rows;
+  }
+
   /**
    * Gets the dimension details of a given id
    * 
