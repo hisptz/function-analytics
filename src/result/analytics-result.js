@@ -48,20 +48,18 @@ export class AnalyticsResult {
 
   /**
    * Gets the dimension details by name of the dimension
-   * 
    * @param {string} id
    *
    * @returns {Object|{id,name,!path}}
    */
   getDimensionDetailsByName(name) {
     var results = [];
+
     if (this.metaData.dimensions) {
       this.metaData.dimensions[name].forEach((item) => {
         results.push(this.getDimensionDetails(item));
-      })
-    } /*else if (this.metaData.items) {
-      name = this.metaData.items[id] ? this.metaData.items[id].name : undefined;
-    }*/
+      });
+    }
     return results;
   }
 
@@ -81,7 +79,6 @@ export class AnalyticsResult {
 
   /**
    * Gets the dimension details of a given id
-   * 
    * @param {string} id
    *
    * @returns {Object|{id,name,!path}}

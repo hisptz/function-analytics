@@ -23,7 +23,7 @@ Function analytics makes it easy for developers to focus on the business logic o
 
 ### Install
 
-Start with adding d2 to your project:
+Start with adding fn-analytics to your project:
 
 `npm install @iapps/function-analytics`
 
@@ -39,7 +39,7 @@ var Fn = require('@iapps/function-analytics').Fn;
 
 ## Initializing the library
 
-To be able to use d2 you will first need to initialise the library. This is required to let the library know where it should load its data from.
+To be able to use fn-analytics you will first need to initialise the library. This is required to let the library know where it should load its data from.
 
 ```js
 Fn.init({

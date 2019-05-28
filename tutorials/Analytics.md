@@ -1,4 +1,4 @@
-# Analytics Model
+git # Analytics Model
 
 Analytics model is an extension of function analytics which serves to abstract fetching of data from analytics api end-point.
 
@@ -23,22 +23,24 @@ This example shows use of analytics model to write function function indicator a
 ```javascript
 //Business Logic outside
 function capTo100(results) {
-    results.rows.forEach(function(resultRow,resultRowIndex){
+    results._data.rows.forEach(function(resultRow,resultRowIndex){
         resultRow.forEach(function(rowValue,valueIndex){
-            if(results.headers[valueIndex]["name"]=="value") {
-                //Cap value to 100
-                if(rowValue>=100) results.rows[resultRowIndex][valueIndex]=100;
+            if(results._data.headers[valueIndex]["name"]=="value") {
+                //Cap value to 75
+                if(rowValue>=75) results._data.rows[resultRowIndex][valueIndex]=75;
             }
         });
     });
-    return results;
+    return results._data;
 }
 
 //Fetching analytics & applying business logic
-var analytics = new Fn.Analytics();
-analytics.setData(parameters.rule.json.data+'.REPORTING_RATE')
-    .setOrgUnit(parameters.ou).setPeriod(parameters.pe)
-    .setParameters({"displayProperty":'SHORTNAME'}).postProcess(capTo100)
+return (new Fn.Analytics())
+    .setData(parameters.rule.json.data+'.REPORTING_RATE')
+    .setOrgUnit(parameters.ou)
+    .setPeriod(parameters.pe)
+    .setParameters({"displayProperty":'SHORTNAME'})
+    .postProcess(capTo100)
     .get().then(function (results) {
         parameters.success(results);
     }).catch(function (error) {
@@ -57,7 +59,7 @@ Below are draw-backs:
 4. Lacks all other advancements and heavy lifting done by function analytics
 
 ```javascript
-//Business logic
+//Business Logic outside
 function capTo100(results) {
     results.rows.forEach(function(resultRow,resultRowIndex){
         resultRow.forEach(function(rowValue,valueIndex){
@@ -70,19 +72,20 @@ function capTo100(results) {
     return results;
 }
 
+//Fetching analytics & applying business logic
 $.ajax({
     url: "../../../api/analytics.json"
         +"?dimension=dx:"+ parameters.rule.json.data+".REPORTING_RATE"
         +"&dimension=pe:"+ parameters.pe 
         +"&dimension=ou:"+ parameters.ou
-        +"&displayProperty=shortname",
-	type: "GET",
-	success: function(analyticsResults) {
+        +"&displayProperty="+"SHORTNAME",
+    type: "GET",
+    success: function(analyticsResults) {
         analyticResults = capTo100(analyticsResults);
-		parameters.success(analyticsResults);
-	},
-	error:function(error){
-		  parameters.error(error);
-	}
+        parameters.success(analyticsResults);
+    },
+    error:function(error){
+          parameters.error(error);
+    }
 });
 ```
