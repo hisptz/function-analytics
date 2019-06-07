@@ -1,6 +1,6 @@
 {
   "name": "function-analytics",
-  "version": "1.0.0-beta.5",
+  "version": "1.0.0-beta.6",
   "description": "Produce universal library with webpack and es6",
   "main": "lib/function-analytics.js",
   "scripts": {
@@ -50,12 +50,12 @@
     "cross-env": "^5.2.0",
     "cz-conventional-changelog": "^2.1.0",
     "docdash": "^1.1.0",
-    "documentation": "^10.0.0",
+    "documentation": "^11.0.0",
     "eslint": "^5.0.1",
     "eslint-loader": "^2.0.0",
     "husky": "^2.1.0",
     "jsdoc": "^3.5.5",
-    "jsdom": "15.0.0",
+    "jsdom": "15.1.0",
     "jsdom-global": "3.0.2",
     "mocha": "^6.1.2",
     "nyc": "^14.0.0",

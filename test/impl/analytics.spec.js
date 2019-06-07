@@ -210,6 +210,16 @@ describe('When I get the analytics object', () => {
     expect(standardizedAnalytics.metaData.items.pe.name).to.be.equal('Period');
 
     expect(standardizedAnalytics.metaData.ou === undefined).to.be.equal(true);
+
+    var ouIdDetails = standardizedAnalytics.getDimensionDetails('lgZ6HfZaj3f');
+    expect(ouIdDetails.id).to.be.equal('lgZ6HfZaj3f');
+    expect(ouIdDetails.name).to.be.equal('Arusha City Council');
+
+    var resultDetails = standardizedAnalytics.getDimensionDetailsByName('ou');
+    expect(resultDetails.length).to.be.equal(1);
+
+    resultDetails = standardizedAnalytics.getDimensionDetailsByName('pe');
+    expect(resultDetails.length).to.be.equal(12);
   });
 });
 
