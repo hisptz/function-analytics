@@ -7,6 +7,7 @@ import { Runner } from './utilities/runner.js';
 import { Dependency } from './utilities/dependency';
 import { MultiFetcher } from './utilities/multi-fetcher';
 import { IdentifiableObject } from './model/identifiable-object.js';
+import { Period } from './model/period';
 
 /**
  * This is the main holder for the functionalities of the function
@@ -27,6 +28,7 @@ let Fn = {
   SQLViewData: SQLViewData,
   Runner: Runner,
   Dependency: Dependency,
+  Period,
   MultiFetcher: MultiFetcher,
   /**
    * Adds multiple fetchers in queue for execution.
