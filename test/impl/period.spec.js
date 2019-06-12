@@ -45,3 +45,17 @@ describe('Given I set monthly period type', () => {
 // TODO: Test to check if period instance can return future periods provided preference is set to do so
 // TODO: Test to check if period list returned matches the once anticipated given previous year is selected
 // TODO: Test to check if period list returned matches the once anticipated given current year is selected
+
+describe('Given I set quarterly period type', () => {
+  let periodResult;
+
+  before(() => {
+    period.setType('Quarterly').get();
+    periodResult = period.list;
+    console.log(JSON.stringify(periodResult));
+  });
+
+  it('should return quarterly period list for the current year', () => {
+    expect(periodResult.length > 0).to.be.equal(true);
+  });
+});

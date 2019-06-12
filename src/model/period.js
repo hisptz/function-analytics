@@ -32,6 +32,8 @@ export class Period {
     return this;
   }
 
+  setPeriod(id) {}
+
   get() {
     if (this._type) {
       const date = new Date();
@@ -44,7 +46,6 @@ export class Period {
         this._preferences
       ).reverse();
     }
-    return this;
   }
 
   get type() {

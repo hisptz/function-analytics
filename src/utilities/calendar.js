@@ -1,3 +1,4 @@
+import { getQuarter, getMonth, getYear } from 'date-fns';
 const calendarMonths = {
   gregorian: [
     'January',
@@ -21,14 +22,14 @@ export class Calendar {
   }
 
   static getCurrentYear(calendarId = 'gregorian') {
-    const date = new Date();
-
-    return date.getFullYear();
+    return getYear(new Date());
   }
 
   static getCurrentMonth(calendarId = 'gregorian') {
-    const date = new Date();
+    return getMonth(new Date());
+  }
 
-    return date.getMonth() + 1;
+  static getCurrentQuarter(calendarId = 'gregorian') {
+    return getQuarter(new Date());
   }
 }
