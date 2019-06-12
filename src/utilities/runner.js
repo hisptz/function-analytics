@@ -96,9 +96,9 @@ export class Runner {
       axios.request(config).then(
         results => {
           _instance.cache[hashed].data = results.data;
-          resolve(fetcher.performPostProcess(_instance.cache[hashed].data));
+          resolve(fetcher.performPostProcess(JSON.parse(JSON.stringify(_instance.cache[hashed].data))));
           _instance.cache[hashed].resolutions.forEach(function (resolution) {
-            resolution(fetcher.performPostProcess(_instance.cache[hashed].data));
+            resolution(fetcher.performPostProcess(JSON.parse(JSON.stringify(_instance.cache[hashed].data))));
           });
           _instance.cache[hashed].finished = true;
         },
@@ -110,7 +110,7 @@ export class Runner {
       if (!_instance.cache[hashed].finished) {
         _instance.cache[hashed].resolutions.push(resolve);
       } else {
-        resolve(fetcher.performPostProcess(_instance.cache[hashed].data));
+        resolve(fetcher.performPostProcess(JSON.parse(JSON.stringify(_instance.cache[hashed].data))));
       }
     }
   }
