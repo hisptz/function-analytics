@@ -52,10 +52,24 @@ describe('Given I set quarterly period type', () => {
   before(() => {
     period.setType('Quarterly').get();
     periodResult = period.list;
-    console.log(JSON.stringify(periodResult));
   });
 
   it('should return quarterly period list for the current year', () => {
     expect(periodResult.length > 0).to.be.equal(true);
   });
 });
+
+describe('Given I set yearly period type', () => {
+  let periodResult;
+
+  before(() => {
+    period.setType('Yearly').get();
+    periodResult = period.list;
+  });
+
+  it('should return yearly period list listing 9 years excluding current', () => {
+    expect(periodResult.length === 9).to.be.equal(true);
+  });
+});
+
+// TODO: Write test to check if quarter period is selected then it should return valid number of months as children period

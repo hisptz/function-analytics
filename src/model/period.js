@@ -1,4 +1,6 @@
 import { PeriodUtil } from '../utilities/period-util';
+import { Calendar } from '../utilities/calendar';
+import { PeriodResult } from '../result/period-result';
 /**
  * @description
  * Period class offers capabilities to get periods for different period types
@@ -36,12 +38,9 @@ export class Period {
 
   get() {
     if (this._type) {
-      const date = new Date();
-      const year = this._year || date.getFullYear();
-
       this._periods = PeriodUtil.getPeriods(
         this._type,
-        year,
+        this._year || Calendar.getCurrentYear(this._calendarId),
         this._calendarId,
         this._preferences
       ).reverse();
@@ -53,6 +52,13 @@ export class Period {
   }
 
   get list() {
-    return this._periods;
+    return this._periods.map(
+      period =>
+        new PeriodResult({
+          period,
+          calendarId: this._calendarId,
+          preferences: this._preferences
+        })
+    );
   }
 }
