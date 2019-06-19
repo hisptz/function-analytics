@@ -55,6 +55,10 @@ export class GregorianCalendar extends BaseCalender {
     this._isRTL = false;
   }
 
+  monthNames() {
+    return this._monthNames;
+  }
+
   leapYear(a) {
     const b = this._validate(
       a,

@@ -35,6 +35,7 @@ describe('Given I set monthly period type', () => {
   before(() => {
     period.setType('Monthly').get();
     periodResult = period.list;
+    console.log(periodResult);
   });
 
   it('should return monthly period list for the current year', () => {
@@ -65,8 +66,6 @@ describe('Given I set yearly period type', () => {
   before(() => {
     period.setType('Yearly').get();
     periodResult = period.list;
-
-    console.log(JSON.stringify(periodResult));
   });
 
   it('should return yearly period list listing 9 years excluding current', () => {

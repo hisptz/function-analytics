@@ -1,4 +1,5 @@
 import { getQuarter, getMonth, getYear } from 'date-fns';
+import { GregorianCalendar } from './gregorian-calendar';
 const calendarMonths = {
   gregorian: [
     'January',
@@ -19,21 +20,37 @@ const calendarMonths = {
 export class Calendar {
   constructor(calendarId) {
     this._calendarId = calendarId;
+    this._calendar = {};
+
+    this.getInstance();
+  }
+
+  getInstance() {
+    switch (this.calendarId) {
+      default:
+        this._calendar = new GregorianCalendar();
+
+        if (!this._calendar) {
+          throw new Error('Calendar could not be instantiated');
+        }
+
+        return this;
+    }
   }
 
   getMonths() {
-    return calendarMonths[this._calendarId];
+    return this._calendar.monthNames();
   }
 
   getCurrentYear() {
-    return getYear(new Date());
+    return this._calendar.today().year();
   }
 
   getCurrentMonth() {
-    return getMonth(new Date());
+    return this._calendar.today().month();
   }
 
   getCurrentQuarter() {
-    return getQuarter(new Date());
+    return getQuarter(this._calendar.today());
   }
 }
