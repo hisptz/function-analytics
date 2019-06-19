@@ -6,8 +6,7 @@ import { PeriodUtil } from '../utilities/period-util';
  */
 export class Period {
   constructor() {
-    // TODO: Need to fetch system period type from server
-    this._calendarId = 'ethiopian';
+    this._calendarId = 'gregorian';
     this._validTypes = [
       'Monthly',
       'BiMonthly',
@@ -45,6 +44,11 @@ export class Period {
     return this;
   }
 
+  setCalendar(calendarId) {
+    this._calendarId = calendarId;
+    return this;
+  }
+
   setPreferences(preferences) {
     this._preferences = preferences;
     return this;
@@ -53,7 +57,6 @@ export class Period {
   setPeriod(id) {}
 
   get() {
-    // TODO: Support to fetch list for default period type if not set
     if (this._type) {
       const periodInstance = new PeriodUtil(
         this._calendarId,
