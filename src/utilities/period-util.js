@@ -1,5 +1,7 @@
 import { Calendar } from './calendar';
 import { chunk, head, last, range } from 'lodash';
+import { GregorianCalendar } from './gregorian-calendar';
+import $ from 'jquery';
 
 const _validTypes = [
   'Monthly',
@@ -29,6 +31,8 @@ export class PeriodUtil {
   }
 
   static getPeriods(type, year, calendarId, preferences) {
+    const greg = new GregorianCalendar();
+
     let periods;
 
     switch (type) {
