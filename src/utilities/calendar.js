@@ -17,19 +17,23 @@ const calendarMonths = {
 };
 
 export class Calendar {
-  static getMonths(calendarId = 'gregorian') {
-    return calendarMonths[calendarId];
+  constructor(calendarId) {
+    this._calendarId = calendarId;
   }
 
-  static getCurrentYear(calendarId = 'gregorian') {
+  getMonths() {
+    return calendarMonths[this._calendarId];
+  }
+
+  getCurrentYear() {
     return getYear(new Date());
   }
 
-  static getCurrentMonth(calendarId = 'gregorian') {
+  getCurrentMonth() {
     return getMonth(new Date());
   }
 
-  static getCurrentQuarter(calendarId = 'gregorian') {
+  getCurrentQuarter() {
     return getQuarter(new Date());
   }
 }

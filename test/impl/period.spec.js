@@ -66,7 +66,7 @@ describe('Given I set yearly period type', () => {
     period.setType('Yearly').get();
     periodResult = period.list;
 
-    // console.log(periodResult);
+    console.log(JSON.stringify(periodResult));
   });
 
   it('should return yearly period list listing 9 years excluding current', () => {

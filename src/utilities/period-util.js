@@ -1,53 +1,47 @@
-import { Calendar } from './calendar';
 import { chunk, head, last, range } from 'lodash';
-import { GregorianCalendar } from './gregorian-calendar';
-import $ from 'jquery';
 
-const _validTypes = [
-  'Monthly',
-  'BiMonthly',
-  'Quarterly',
-  'SixMonthly',
-  'SixMonthlyApril',
-  'Yearly',
-  'FinancialApril',
-  'FinancialJuly',
-  'FinancialOctober',
-  'RelativeWeek',
-  'RelativeMonth',
-  'RelativeBiMonth',
-  'RelativeQuarter',
-  'RelativeYear',
-  'RelativeFinancialYear'
-];
+import { Calendar } from './calendar';
 
 export class PeriodUtil {
-  /**
-   * Check if period type is valid
-   * @param {*} type
-   */
-  static isValid(type) {
-    return _validTypes.includes(type);
+  constructor(calendarId, type, preferences, year) {
+    this._calendarId = calendarId || 'gregorian';
+    this._type = type;
+    this._preferences = preferences;
+    this._periods = [];
+
+    this._calendar = new Calendar(calendarId);
+
+    if (!this._calendar) {
+      throw new Error('Calendar could not be set');
+    }
+
+    this._year = year || this._calendar.getCurrentYear();
+    this._month = this._calendar.getCurrentMonth();
+    this._quarter = this._calendar.getCurrentQuarter();
+    this._monthNames = this._calendar.getMonths();
   }
 
-  static getPeriods(type, year, calendarId, preferences) {
-    const greg = new GregorianCalendar();
+  get() {
+    this._periods = this.getPeriods(this._type, this._year);
+    return this._periods.reverse();
+  }
 
+  getPeriods(type, year) {
     let periods;
 
     switch (type) {
       case 'Monthly': {
-        periods = PeriodUtil.getMonthlyPeriods(year, calendarId);
+        periods = this.getMonthlyPeriods(year);
         break;
       }
 
       case 'Quarterly': {
-        periods = PeriodUtil.getQuarterlyPeriods(year, calendarId);
+        periods = this.getQuarterlyPeriods(year);
         break;
       }
 
       case 'Yearly': {
-        periods = PeriodUtil.getYearlyPeriods(year);
+        periods = this.getYearlyPeriods(year);
         break;
       }
       default:
@@ -55,14 +49,14 @@ export class PeriodUtil {
         break;
     }
 
-    if (preferences && preferences.allowFuturePeriods) {
+    if (this._preferences && this._preferences.allowFuturePeriods) {
       return periods;
     }
 
-    return PeriodUtil.omitFuturePeriods(periods, type, calendarId);
+    return this.omitFuturePeriods(periods, type);
   }
 
-  static deducePeriodType(periodId) {
+  deducePeriodType(periodId) {
     let periodType;
 
     const numberLikePeriod = parseInt(periodId, 10);
@@ -112,72 +106,84 @@ export class PeriodUtil {
 
     return periodType;
   }
-  static getMonthlyPeriods(year, calendarId) {
-    // TODO: Plan to support other calendar systems eg Ethiopian, Persian, Hijri etc
-    return (Calendar.getMonths(calendarId) || []).map(
-      (monthName, monthIndex) => {
-        return {
-          id: PeriodUtil.getMonthPeriodId(year, monthIndex + 1),
-          type: 'Monthly',
-          name: `${monthName} ${year}`
-        };
-      }
-    );
+  getMonthlyPeriods(year) {
+    return (this._monthNames || []).map((monthName, monthIndex) => {
+      const id = this.getMonthPeriodId(year, monthIndex + 1);
+
+      return {
+        id,
+        type: 'Monthly',
+        name: `${monthName} ${year}`,
+        dailyPeriods: this.getChildrenPeriods(id, 'Monthly', 'Daily'),
+        weeklyPeriods: this.getChildrenPeriods(id, 'Monthly', 'Weekly')
+      };
+    });
   }
 
-  static getQuarterlyPeriods(year, calendarId) {
-    // TODO: Plan to support other calendar systems eg Ethiopian, Persian, Hijri etc
-    return (chunk(Calendar.getMonths(calendarId), 3) || []).map(
+  getQuarterlyPeriods(year) {
+    return (chunk(this._monthNames || [], 3) || []).map(
       (quarterMonths, quarterIndex) => {
+        const id = this.getQuarterPeriodId(year, quarterIndex + 1);
+
         return {
-          id: PeriodUtil.getQuarterPeriodId(year, quarterIndex + 1),
+          id,
           type: 'Quarterly',
           name: `${[head(quarterMonths || []), last(quarterMonths || [])].join(
             ' - '
-          )} ${year}`
+          )} ${year}`,
+          dailyPeriods: this.getChildrenPeriods(id, 'Quarterly', 'Daily'),
+          weeklyPeriods: this.getChildrenPeriods(id, 'Quarterly', 'Weekly'),
+          monthPeriods: this.getChildrenPeriods(id, 'Quarterly', 'Monthly')
         };
       }
     );
   }
 
-  static getYearlyPeriods(year) {
-    // TODO: Plan to support other calendar systems eg Ethiopian, Persian, Hijri etc
+  getYearlyPeriods(year) {
     return range(10)
       .map(yearIndex => {
-        const yearPeriod = parseInt(year, 10) - yearIndex;
+        const yearPeriod = (parseInt(year, 10) - yearIndex).toString();
 
         return {
           id: yearPeriod,
           type: 'Yearly',
-          name: yearPeriod
+          name: yearPeriod,
+          dailyPeriods: this.getChildrenPeriods(yearPeriod, 'Yearly', 'Daily'),
+          weeklyPeriods: this.getChildrenPeriods(
+            yearPeriod,
+            'Yearly',
+            'Weekly'
+          ),
+          monthPeriods: this.getChildrenPeriods(
+            yearPeriod,
+            'Yearly',
+            'Monthly'
+          ),
+          quarterPeriods: this.getChildrenPeriods(
+            yearPeriod,
+            'Yearly',
+            'Quarterly'
+          )
         };
       })
       .reverse();
   }
 
-  static omitFuturePeriods(periods, type, calendarId) {
-    return periods.filter(
-      period => period.id < PeriodUtil.getCurrentPeriodId(type, calendarId)
-    );
+  omitFuturePeriods(periods, type) {
+    return periods.filter(period => period.id < this.getCurrentPeriodId(type));
   }
 
-  static getCurrentPeriodId(type, calendarId) {
+  getCurrentPeriodId(type) {
     switch (type) {
       case 'Monthly': {
-        return PeriodUtil.getMonthPeriodId(
-          Calendar.getCurrentYear(calendarId),
-          Calendar.getCurrentMonth(calendarId)
-        );
+        return this.getMonthPeriodId(this._year, this._month);
       }
       case 'Quarterly': {
-        return PeriodUtil.getQuarterPeriodId(
-          Calendar.getCurrentYear(calendarId),
-          Calendar.getCurrentQuarter(calendarId)
-        );
+        return this.getQuarterPeriodId(this._year, this._quarter);
       }
 
       case 'Yearly': {
-        return Calendar.getCurrentYear();
+        return this._year;
       }
 
       default:
@@ -185,34 +191,23 @@ export class PeriodUtil {
     }
   }
 
-  static getMonthPeriodId(year, monthNumber) {
+  getMonthPeriodId(year, monthNumber) {
     return (
       year + (monthNumber < 10 ? `0${monthNumber}` : monthNumber).toString()
     );
   }
 
-  static getQuarterPeriodId(year, quarterNumber) {
+  getQuarterPeriodId(year, quarterNumber) {
     return `${year}Q${quarterNumber}`;
   }
 
-  static getChildrenPeriods(
-    parentId,
-    parentType,
-    childrenType,
-    calendarId,
-    preferences
-  ) {
+  getChildrenPeriods(parentId, parentType, childrenType) {
     switch (parentType) {
       case 'Yearly': {
         const year = parseInt(parentId.slice(0, 4), 10);
 
         if (!isNaN(year)) {
-          return PeriodUtil.getPeriods(
-            childrenType,
-            year,
-            calendarId,
-            preferences
-          ).reverse();
+          return this.getPeriods(childrenType, year).reverse();
         }
         return undefined;
       }
@@ -225,12 +220,7 @@ export class PeriodUtil {
             case 'Monthly': {
               const quarterNumber = parseInt(parentId.slice(-1), 10);
 
-              const monthPeriods = PeriodUtil.getPeriods(
-                childrenType,
-                year,
-                calendarId,
-                preferences
-              );
+              const monthPeriods = this.getPeriods(childrenType, year);
 
               return (monthPeriods || [])
                 .filter(

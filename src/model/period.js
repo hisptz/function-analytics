@@ -1,6 +1,6 @@
-import { PeriodUtil } from '../utilities/period-util';
-import { Calendar } from '../utilities/calendar';
 import { PeriodResult } from '../result/period-result';
+import { PeriodUtil } from '../utilities/period-util';
+
 /**
  * @description
  * Period class offers capabilities to get periods for different period types
@@ -9,6 +9,23 @@ export class Period {
   constructor() {
     // TODO: Need to fetch system period type from server
     this._calendarId = 'gregorian';
+    this._validTypes = [
+      'Monthly',
+      'BiMonthly',
+      'Quarterly',
+      'SixMonthly',
+      'SixMonthlyApril',
+      'Yearly',
+      'FinancialApril',
+      'FinancialJuly',
+      'FinancialOctober',
+      'RelativeWeek',
+      'RelativeMonth',
+      'RelativeBiMonth',
+      'RelativeQuarter',
+      'RelativeYear',
+      'RelativeFinancialYear'
+    ];
   }
 
   /**
@@ -16,7 +33,7 @@ export class Period {
    * @param {string} type
    */
   setType(type) {
-    if (!PeriodUtil.isValid(type)) {
+    if (!this._isValid(type)) {
       throw new Error('Not a valid period type');
     }
 
@@ -37,14 +54,18 @@ export class Period {
   setPeriod(id) {}
 
   get() {
+    // TODO: Support to fetch list for default period type if not set
     if (this._type) {
-      this._periods = PeriodUtil.getPeriods(
-        this._type,
-        this._year || Calendar.getCurrentYear(this._calendarId),
+      const periodInstance = new PeriodUtil(
         this._calendarId,
-        this._preferences
-      ).reverse();
+        this._type,
+        this._preferences,
+        this._year
+      );
+
+      this._periods = periodInstance.get();
     }
+    return this;
   }
 
   get type() {
@@ -52,13 +73,10 @@ export class Period {
   }
 
   get list() {
-    return this._periods.map(
-      period =>
-        new PeriodResult({
-          period,
-          calendarId: this._calendarId,
-          preferences: this._preferences
-        })
-    );
+    return this._periods;
+  }
+
+  _isValid(type) {
+    return this._validTypes.includes(type);
   }
 }
