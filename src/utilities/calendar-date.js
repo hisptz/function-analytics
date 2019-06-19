@@ -1,4 +1,4 @@
-export class CDate {
+export class CalendarDate {
   constructor(calendar, year, month, day) {
     this._calendar = calendar;
     this._year = year;

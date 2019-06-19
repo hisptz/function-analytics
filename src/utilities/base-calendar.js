@@ -1,4 +1,4 @@
-import { CDate } from './calendar-date';
+import { CalendarDate } from './calendar-date';
 
 export class BaseCalender {
   constructor() {
@@ -65,7 +65,7 @@ export class BaseCalender {
       yearOrDate = yearOrDate.year();
     }
 
-    return new CDate(this, yearOrDate, month, day);
+    return new CalendarDate(this, yearOrDate, month, day);
   }
 
   today() {

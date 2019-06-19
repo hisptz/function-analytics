@@ -1,21 +1,7 @@
-import { getQuarter, getMonth, getYear } from 'date-fns';
+import { getQuarter } from 'date-fns';
+
 import { GregorianCalendar } from './gregorian-calendar';
-const calendarMonths = {
-  gregorian: [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December'
-  ]
-};
+import { EthiopianCalendar } from './ethiopian-calender';
 
 export class Calendar {
   constructor(calendarId) {
@@ -26,7 +12,10 @@ export class Calendar {
   }
 
   getInstance() {
-    switch (this.calendarId) {
+    switch (this._calendarId) {
+      case 'ethiopian':
+        this._calendar = new EthiopianCalendar();
+        return this;
       default:
         this._calendar = new GregorianCalendar();
 

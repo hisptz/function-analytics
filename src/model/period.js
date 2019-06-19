@@ -1,4 +1,3 @@
-import { PeriodResult } from '../result/period-result';
 import { PeriodUtil } from '../utilities/period-util';
 
 /**
@@ -8,7 +7,7 @@ import { PeriodUtil } from '../utilities/period-util';
 export class Period {
   constructor() {
     // TODO: Need to fetch system period type from server
-    this._calendarId = 'gregorian';
+    this._calendarId = 'ethiopian';
     this._validTypes = [
       'Monthly',
       'BiMonthly',
