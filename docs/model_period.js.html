@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>utilities/progress-promise.js - Documentation</title>
+    <title>model/period.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -33,7 +33,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">utilities/progress-promise.js</h1>
+    <h1 class="page-title">model/period.js</h1>
     
 
     
@@ -43,90 +43,86 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>// Fallback for engines that don't support Symbol
-const LISTENERS = Symbol ? Symbol() : '__listeners';
+            <pre class="prettyprint source linenums"><code>import { PeriodUtil } from '../utilities/period-util';
+import { PeriodType } from './period-type';
 
 /**
- * Represents Progress Promise
- * @extends Promise
+ * @description
+ * Period class offers capabilities to get periods for different period types
  */
-export class ProgressPromise extends Promise {
-  constructor(executor) {
-    super((resolve, reject) =>
-      executor(
-        resolve,
-        reject,
-        // Pass method for passing progress to listener
-        value => {
-          try {
-            return this[LISTENERS].forEach(listener => listener(value));
-          } catch (error) {
-            reject(error);
-          }
-          return undefined;
-        }
-      )
-    );
-    this[LISTENERS] = [];
-  }
-  /**
-   *
-   * @param {callback} handler
-   */
-  progress(handler) {
-    if (typeof handler !== 'function') {
-      throw new Error('PROGRESS_REQUIRES_FUNCTION');
+export class Period {
+  constructor() {
+    this._calendarId = 'gregorian';
+
+    this._periodType = new PeriodType();
+
+    if (!this._periodType) {
+      throw new Error('Could not instantiate period type');
     }
-    this[LISTENERS].push(handler);
+  }
+
+  /**
+   * Set period type
+   * @param {string} type
+   */
+  setType(type) {
+    if (!this._periodType.isValid(type)) {
+      throw new Error('Not a valid period type');
+    }
+
+    this._type = type;
     return this;
   }
-  /**
-   *
-   * @param {*} promises
-   */
-  static all(promises) {
-    const results = new Array(promises.length);
-    const length = promises.length;
-    let resolveCount = 0;
 
-    return new ProgressPromise((resolve, reject, progress) => {
-      promises.forEach((promise, index) => {
-        promise
-          .then(result => {
-            results[index] = result;
-            results.proportion = ++resolveCount / length;
-            progress(results);
-            if (resolveCount === length) resolve(results);
-          })
-          .catch(reject);
-      });
-    });
+  setYear(year) {
+    this._year = year;
+    return this;
   }
-  /**
-   *
-   * @param {*} inputs
-   * @param {*} handler
-   */
-  static sequence(inputs, handler) {
-    const results = [];
-    const length = inputs.length;
-    let resolveCount = 0;
 
-    return new ProgressPromise((resolve, reject, progress) => {
-      function invokeNext() {
-        handler
-          .call(null, inputs[results.length])
-          .then(result => {
-            results.push(result);
-            results.proportion = ++resolveCount / length;
-            progress(results);
-            if (results.length === length) resolve(results);
-            else invokeNext();
-          })
-          .catch(reject);
-      }
-      invokeNext();
-    });
+  setCalendar(calendarId) {
+    this._calendarId = calendarId;
+    return this;
+  }
+
+  setPreferences(preferences) {
+    this._preferences = preferences;
+    return this;
+  }
+
+  setPeriod(id) {}
+
+  get() {
+    if (this._type) {
+      const periodInstance = new PeriodUtil(
+        this._calendarId,
+        this._type,
+        this._preferences,
+        this._year
+      );
+
+      this._periods = periodInstance.get();
+
+      this._year = periodInstance.year();
+
+      this._currentYear = periodInstance.currentYear();
+    }
+    return this;
+  }
+
+  type() {
+    return this._type;
+  }
+
+  list() {
+    return this._periods;
+  }
+
+  year() {
+    return this._year;
+  }
+
+  currentYear() {
+    return this._currentYear;
   }
 }
 </code></pre>
