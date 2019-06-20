@@ -56,15 +56,21 @@ export class Period {
       );
 
       this._periods = periodInstance.get();
+
+      this._year = periodInstance.year();
     }
     return this;
   }
 
-  get type() {
+  type() {
     return this._type;
   }
 
-  get list() {
+  list() {
     return this._periods;
+  }
+
+  year() {
+    return this._year;
   }
 }

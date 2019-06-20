@@ -25,7 +25,7 @@ describe('Geven I set period type', () => {
   });
 
   it('should return set period type', () => {
-    expect(period.type).to.be.equal('Monthly');
+    expect(period.type()).to.be.equal('Monthly');
   });
 });
 
@@ -34,7 +34,7 @@ describe('Given I set monthly period type', () => {
 
   before(() => {
     period.setType('Monthly').get();
-    periodResult = period.list;
+    periodResult = period.list();
   });
 
   it('should return monthly period list for the current year', () => {
@@ -51,7 +51,7 @@ describe('Given I set quarterly period type', () => {
 
   before(() => {
     period.setType('Quarterly').get();
-    periodResult = period.list;
+    periodResult = period.list();
   });
 
   it('should return quarterly period list for the current year', () => {
@@ -64,7 +64,7 @@ describe('Given I set yearly period type', () => {
 
   before(() => {
     period.setType('Yearly').get();
-    periodResult = period.list;
+    periodResult = period.list();
   });
 
   it('should return yearly period list listing 9 years excluding current', () => {

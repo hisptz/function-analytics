@@ -26,6 +26,10 @@ export class PeriodUtil {
     return this._periods.reverse();
   }
 
+  year() {
+    return this._year;
+  }
+
   getPeriods(type, year) {
     let periods;
 
