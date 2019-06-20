@@ -1,18 +1,9 @@
 {
   "name": "@iapps/function-analytics",
-  "version": "1.0.0-beta.9",
+  "version": "1.0.0-beta.10",
   "description": "Produce universal library with webpack and es6",
   "main": "lib/function-analytics.js",
-  "scripts": {
-    "build": "npm run test && webpack --env dev && webpack --env build --fix && npm run docs",
-    "dev": "webpack --progress --colors --watch --env dev",
-    "test": "mocha --require babel-register --colors test/**/**/*.spec.js",
-    "test:watch": "mocha --require babel-register --colors -w ./test/*.spec.js",
-    "test:cover": "cross-env NODE_ENV=test nyc mocha --require babel-register --colors test/**/**/*.js",
-    "repl": "node -i -e \"$(< ./lib/webpack-library-starter.js)\"",
-    "publish": "npm run build && cd lib && npm publish --access public",
-    "docs": "node_modules/.bin/jsdoc -c jsdoc.json"
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "https://github.com/hisptz/function-analytics.git"
