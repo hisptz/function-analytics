@@ -26,12 +26,12 @@
     "umd",
     "commonjs"
   ],
-  "author": "Interactive Apps",
-  "license": "MIT",
+  "author": "HISP Tanzania",
+  "license": "LGPL-3.0",
   "bugs": {
-    "url": "https://github.com/interactive-apps/function-analytics/issues"
+    "url": "https://github.com/hisptz/function-analytics/issues"
   },
-  "homepage": "https://github.com/interactive-apps/function-analytics",
+  "homepage": "https://github.com/hisptz/function-analytics",
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.51",
     "@babel/core": "^7.0.0-beta.51",
