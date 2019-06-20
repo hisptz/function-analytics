@@ -1,6 +1,6 @@
 import { chunk, head, last, range } from 'lodash';
 
-import { Calendar } from './calendar';
+import { Calendar } from './calendars/calendar';
 
 export class PeriodUtil {
   constructor(calendarId, type, preferences, year) {

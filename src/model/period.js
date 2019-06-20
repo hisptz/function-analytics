@@ -1,4 +1,5 @@
 import { PeriodUtil } from '../utilities/period-util';
+import { PeriodType } from './period-type';
 
 /**
  * @description
@@ -7,23 +8,12 @@ import { PeriodUtil } from '../utilities/period-util';
 export class Period {
   constructor() {
     this._calendarId = 'gregorian';
-    this._validTypes = [
-      'Monthly',
-      'BiMonthly',
-      'Quarterly',
-      'SixMonthly',
-      'SixMonthlyApril',
-      'Yearly',
-      'FinancialApril',
-      'FinancialJuly',
-      'FinancialOctober',
-      'RelativeWeek',
-      'RelativeMonth',
-      'RelativeBiMonth',
-      'RelativeQuarter',
-      'RelativeYear',
-      'RelativeFinancialYear'
-    ];
+
+    this._periodType = new PeriodType();
+
+    if (!this._periodType) {
+      throw new Error('Could not instantiate period type');
+    }
   }
 
   /**
@@ -31,7 +21,7 @@ export class Period {
    * @param {string} type
    */
   setType(type) {
-    if (!this._isValid(type)) {
+    if (!this._periodType.isValid(type)) {
       throw new Error('Not a valid period type');
     }
 
@@ -76,9 +66,5 @@ export class Period {
 
   get list() {
     return this._periods;
-  }
-
-  _isValid(type) {
-    return this._validTypes.includes(type);
   }
 }
