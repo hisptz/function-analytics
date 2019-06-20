@@ -1,1 +1,1 @@
-echo "export * from 'function-analytics.min';" > lib/index.js
+echo "import {Fn} from './function-analytics.min';\nexport {Fn};" > lib/index.js
