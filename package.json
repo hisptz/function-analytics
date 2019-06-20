@@ -1,6 +1,6 @@
 {
   "name": "function-analytics",
-  "version": "1.0.0-beta.8",
+  "version": "1.0.0-beta.9",
   "description": "Produce universal library with webpack and es6",
   "main": "lib/function-analytics.js",
   "scripts": {
