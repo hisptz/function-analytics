@@ -1,10 +1,10 @@
 {
-  "name": "function-analytics",
+  "name": "@iapps/function-analytics",
   "version": "1.0.0-beta.6",
   "description": "Produce universal library with webpack and es6",
   "main": "lib/function-analytics.js",
   "scripts": {
-    "build": "npm run test && webpack --env dev && webpack --env build --fix && sh export-lib.sh && npm run docs",
+    "build": "npm run test && webpack --env dev && webpack --env build --fix && npm run docs",
     "dev": "webpack --progress --colors --watch --env dev",
     "test": "mocha --require babel-register --colors test/**/**/*.spec.js",
     "test:watch": "mocha --require babel-register --colors -w ./test/*.spec.js",
@@ -63,7 +63,7 @@
     "uglifyjs-webpack-plugin": "^2.1.2",
     "webpack": "^4.33.0",
     "webpack-cli": "^3.3.1",
-    "yargs": "13.2.2"
+    "yargs": "^13.2.2"
   },
   "nyc": {
     "sourceMap": false,
@@ -71,8 +71,6 @@
   },
   "dependencies": {
     "axios": "^0.19.0",
-    "date-fns": "^1.30.1",
-    "lodash": "^4.17.11",
     "progress-promise": "0.0.6"
   },
   "config": {

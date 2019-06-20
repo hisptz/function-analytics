@@ -54,12 +54,14 @@ export class CalendarDate {
   }
 
   compareTo(instance) {
-    var comparer =
-      this._year !== instance._year
-        ? this._year - instance._year
-        : this._month !== instance._month
-        ? this.monthOfYear() - instance.monthOfYear()
-        : this._day - instance._day;
+    let comparer = this._year - instance._year;
+
+    if (this._year === instance._year) {
+      comparer = this._day - instance._day;
+      if (this._month !== instance._month) {
+        comparer = this.monthOfYear() - instance.monthOfYear();
+      }
+    }
 
     if (this._calendar.name !== instance._calendar.name) {
       throw this._calendar.invalids.differentCalendars
