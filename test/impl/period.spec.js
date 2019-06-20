@@ -42,15 +42,33 @@ describe('Given I set monthly period type', () => {
   });
 });
 
-// TODO: Test to check if period instance can return future periods provided preference is set to do so
-// TODO: Test to check if period list returned matches the once anticipated given previous year is selected
-// TODO: Test to check if period list returned matches the once anticipated given current year is selected
+describe('Given I set monthly period type and previous year', () => {
+  let periodResult;
+
+  before(() => {
+    const previousYear = period.currentYear() - 1;
+
+    period
+      .setType('Monthly')
+      .setYear(previousYear)
+      .get();
+
+    periodResult = period.list();
+  });
+
+  it('should return monthly period list for 12 months', () => {
+    expect(periodResult.length === 12).to.be.equal(true);
+  });
+});
 
 describe('Given I set quarterly period type', () => {
   let periodResult;
 
   before(() => {
-    period.setType('Quarterly').get();
+    period
+      .setType('Quarterly')
+      .setYear(period.currentYear())
+      .get();
     periodResult = period.list();
   });
 
@@ -59,11 +77,32 @@ describe('Given I set quarterly period type', () => {
   });
 });
 
+describe('Given I set quarterly period type and previous year', () => {
+  let periodResult;
+
+  before(() => {
+    const previousYear = period.currentYear() - 1;
+
+    period
+      .setType('Quarterly')
+      .setYear(previousYear)
+      .get();
+    periodResult = period.list();
+  });
+
+  it('should return quarterly period list of 4 quarters', () => {
+    expect(periodResult.length === 4).to.be.equal(true);
+  });
+});
+
 describe('Given I set yearly period type', () => {
   let periodResult;
 
   before(() => {
-    period.setType('Yearly').get();
+    period
+      .setType('Yearly')
+      .setYear(period.currentYear())
+      .get();
     periodResult = period.list();
   });
 
@@ -72,4 +111,23 @@ describe('Given I set yearly period type', () => {
   });
 });
 
+describe('Given I set yearly period type and previous year', () => {
+  let periodResult;
+
+  before(() => {
+    const previousYear = period.currentYear() - 1;
+
+    period
+      .setType('Yearly')
+      .setYear(previousYear)
+      .get();
+    periodResult = period.list();
+  });
+
+  it('should return yearly period list listing 10 years', () => {
+    expect(periodResult.length === 10).to.be.equal(true);
+  });
+});
+
 // TODO: Write test to check if quarter period is selected then it should return valid number of months as children period
+// TODO: Test to check if period instance can return future periods provided preference is set to do so

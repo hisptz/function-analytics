@@ -58,6 +58,8 @@ export class Period {
       this._periods = periodInstance.get();
 
       this._year = periodInstance.year();
+
+      this._currentYear = periodInstance.currentYear();
     }
     return this;
   }
@@ -72,5 +74,9 @@ export class Period {
 
   year() {
     return this._year;
+  }
+
+  currentYear() {
+    return this._currentYear;
   }
 }

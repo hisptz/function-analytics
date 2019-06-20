@@ -30,6 +30,10 @@ export class PeriodUtil {
     return this._year;
   }
 
+  currentYear() {
+    return this._calendar.getCurrentYear();
+  }
+
   getPeriods(type, year) {
     let periods;
 
@@ -177,17 +181,23 @@ export class PeriodUtil {
     return periods.filter(period => period.id < this.getCurrentPeriodId(type));
   }
 
-  getCurrentPeriodId(type) {
+  getCurrentPeriodId(type, useCurrentYear = false) {
     switch (type) {
       case 'Monthly': {
-        return this.getMonthPeriodId(this._year, this._month);
+        return this.getMonthPeriodId(
+          this._calendar.getCurrentYear(),
+          this._month
+        );
       }
       case 'Quarterly': {
-        return this.getQuarterPeriodId(this._year, this._quarter);
+        return this.getQuarterPeriodId(
+          this._calendar.getCurrentYear(),
+          this._quarter
+        );
       }
 
       case 'Yearly': {
-        return this._year;
+        return this._calendar.getCurrentYear();
       }
 
       default:
