@@ -237,9 +237,12 @@ export class PeriodUtil {
               const monthPeriods = this.getPeriods(childrenType, year);
 
               return (monthPeriods || [])
-                .filter(
-                  (period, periodIndex) => periodIndex < quarterNumber * 3
-                )
+                .filter((period, periodIndex) => {
+                  const max = quarterNumber * 3;
+                  const min = max - 3;
+
+                  return periodIndex >= min && periodIndex < max;
+                })
                 .reverse();
             }
 
