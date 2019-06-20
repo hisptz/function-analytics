@@ -24,6 +24,11 @@ export class PeriodType {
   }
 
   get() {
-    return this._validTypes;
+    return this._validTypes.map(periodType => {
+      return {
+        id: periodType,
+        name: periodType
+      };
+    });
   }
 }
