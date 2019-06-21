@@ -18,7 +18,11 @@ export class PeriodUtil {
     this._year = year || this._calendar.getCurrentYear();
     this._month = this._calendar.getCurrentMonth();
     this._quarter = this._calendar.getCurrentQuarter();
-    this._monthNames = this._calendar.getMonths();
+
+    const monthsNames = this._calendar.getMonths();
+
+    this._monthNames =
+      monthsNames.length === 13 ? monthsNames.slice(0, -1) : monthsNames;
   }
 
   get() {

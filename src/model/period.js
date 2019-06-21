@@ -7,7 +7,7 @@ import { PeriodType } from './period-type';
  */
 export class Period {
   constructor() {
-    this._calendarId = 'gregorian';
+    this._calendarId = 'ethiopian';
 
     this._periodType = new PeriodType();
 
