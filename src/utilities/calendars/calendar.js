@@ -46,4 +46,8 @@ export class Calendar {
   getCurrentBiMonth() {
     return Math.ceil(this.getCurrentMonth() / 2);
   }
+
+  getCurrentSixMonth() {
+    return Math.ceil(this.getCurrentMonth() / 6);
+  }
 }

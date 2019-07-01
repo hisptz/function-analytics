@@ -19,6 +19,7 @@ export class PeriodUtil {
     this._month = this._calendar.getCurrentMonth();
     this._quarter = this._calendar.getCurrentQuarter();
     this._biMonth = this._calendar.getCurrentBiMonth();
+    this._sixmonth = this._calendar.getCurrentSixMonth();
 
     const monthsNames = this._calendar.getMonths();
 
@@ -55,6 +56,11 @@ export class PeriodUtil {
 
       case 'BiMonthly': {
         periods = this.getBiMonthlyPeriods(year);
+        break;
+      }
+
+      case 'SixMonthly': {
+        periods = this.getSixMonthlyPeriods(year);
         break;
       }
 
@@ -176,6 +182,25 @@ export class PeriodUtil {
     );
   }
 
+  getSixMonthlyPeriods(year) {
+    return (chunk(this._monthNames || [], 6) || []).map(
+      (sixMonths, sixMonthIndex) => {
+        const id = this.getSixMonthlyPeriodId(year, sixMonthIndex + 1);
+
+        return {
+          id,
+          type: 'SixMonthly',
+          name: `${[head(sixMonths || []), last(sixMonths || [])].join(
+            ' - '
+          )} ${year}`,
+          dailyPeriods: this.getChildrenPeriods(id, 'SixMonthly', 'Daily'),
+          weeklyPeriods: this.getChildrenPeriods(id, 'SixMonthly', 'Weekly'),
+          monthPeriods: this.getChildrenPeriods(id, 'SixMonthly', 'Monthly')
+        };
+      }
+    );
+  }
+
   getYearlyPeriods(year) {
     return range(10)
       .map(yearIndex => {
@@ -232,6 +257,13 @@ export class PeriodUtil {
         );
       }
 
+      case 'SixMonthly': {
+        return this.getSixMonthlyPeriodId(
+          this._calendar.getCurrentYear(),
+          this._sixmonth
+        );
+      }
+
       case 'Yearly': {
         return this._calendar.getCurrentYear();
       }
@@ -253,6 +285,10 @@ export class PeriodUtil {
 
   getBiMonthlyPeriodId(year, biMonthNumber) {
     return `${year}0${biMonthNumber}B`;
+  }
+
+  getSixMonthlyPeriodId(year, sixMonthNumber) {
+    return `${year}S${sixMonthNumber}`;
   }
 
   getChildrenPeriods(parentId, parentType, childrenType) {
