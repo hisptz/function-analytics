@@ -20,6 +20,7 @@ export class PeriodUtil {
     this._quarter = this._calendar.getCurrentQuarter();
     this._biMonth = this._calendar.getCurrentBiMonth();
     this._sixmonth = this._calendar.getCurrentSixMonth();
+    this._sixmonthApril = this._calendar.getCurrentSixMonthApril();
 
     const monthsNames = this._calendar.getMonths();
 
@@ -61,6 +62,11 @@ export class PeriodUtil {
 
       case 'SixMonthly': {
         periods = this.getSixMonthlyPeriods(year);
+        break;
+      }
+
+      case 'SixMonthlyApril': {
+        periods = this.getSixMonthlyAprilPeriods(year);
         break;
       }
 
@@ -201,6 +207,27 @@ export class PeriodUtil {
     );
   }
 
+  getSixMonthlyAprilPeriods(year) {
+    const monthNames = this._monthNames || [];
+
+    return (
+      chunk([...monthNames.slice(4), ...monthNames.slice(0, 4)] || [], 6) || []
+    ).map((sixMonthApril, sixMonthAprilIndex) => {
+      const id = this.getSixMonthlyAprilPeriodId(year, sixMonthAprilIndex + 1);
+
+      return {
+        id,
+        type: 'SixMonthlyApril',
+        name: `${[head(sixMonthApril || []), last(sixMonthApril || [])].join(
+          ' - '
+        )} ${year}`,
+        dailyPeriods: this.getChildrenPeriods(id, 'SixMonthlyApril', 'Daily'),
+        weeklyPeriods: this.getChildrenPeriods(id, 'SixMonthlyApril', 'Weekly'),
+        monthPeriods: this.getChildrenPeriods(id, 'SixMonthlyApril', 'Monthly')
+      };
+    });
+  }
+
   getYearlyPeriods(year) {
     return range(10)
       .map(yearIndex => {
@@ -264,6 +291,13 @@ export class PeriodUtil {
         );
       }
 
+      case 'SixMonthlyApril': {
+        return this.getSixMonthlyAprilPeriodId(
+          this._calendar.getCurrentYear(),
+          this._sixmonthApril
+        );
+      }
+
       case 'Yearly': {
         return this._calendar.getCurrentYear();
       }
@@ -289,6 +323,10 @@ export class PeriodUtil {
 
   getSixMonthlyPeriodId(year, sixMonthNumber) {
     return `${year}S${sixMonthNumber}`;
+  }
+
+  getSixMonthlyAprilPeriodId(year, sixMonthAprilNumber) {
+    return `${year}AprilS${sixMonthAprilNumber}`;
   }
 
   getChildrenPeriods(parentId, parentType, childrenType) {

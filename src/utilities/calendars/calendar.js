@@ -50,4 +50,10 @@ export class Calendar {
   getCurrentSixMonth() {
     return Math.ceil(this.getCurrentMonth() / 6);
   }
+
+  getCurrentSixMonthApril() {
+    const currentMonth = this.getCurrentMonth();
+
+    return currentMonth >= 4 && currentMonth <= 9 ? 1 : 2;
+  }
 }

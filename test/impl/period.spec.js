@@ -102,10 +102,25 @@ describe('Given I set six monthly period type', () => {
       .setYear(period.currentYear())
       .get();
     periodResult = period.list();
-    console.log(periodResult);
   });
 
   it('should return six monthly period list for the current year', () => {
+    expect(periodResult.length > 0).to.be.equal(true);
+  });
+});
+
+describe('Given I set six monthly april period type', () => {
+  let periodResult;
+
+  before(() => {
+    period
+      .setType('SixMonthlyApril')
+      .setYear(period.currentYear())
+      .get();
+    periodResult = period.list();
+  });
+
+  it('should return six monthly april period list for the current year', () => {
     expect(periodResult.length > 0).to.be.equal(true);
   });
 });
