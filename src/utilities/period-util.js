@@ -19,8 +19,9 @@ export class PeriodUtil {
     this._month = this._calendar.getCurrentMonth();
     this._quarter = this._calendar.getCurrentQuarter();
     this._biMonth = this._calendar.getCurrentBiMonth();
-    this._sixmonth = this._calendar.getCurrentSixMonth();
+    this._sixMonth = this._calendar.getCurrentSixMonth();
     this._sixmonthApril = this._calendar.getCurrentSixMonthApril();
+    this._sixMonthNovember = this._calendar.getCurrentSixMonthNovember();
 
     const monthsNames = this._calendar.getMonths();
 
@@ -70,10 +71,31 @@ export class PeriodUtil {
         break;
       }
 
-      case 'Yearly': {
-        periods = this.getYearlyPeriods(year);
+      case 'SixMonthlyNovember': {
+        periods = this.getSixMonthlyNovemberPeriods(year);
         break;
       }
+
+      case 'Yearly': {
+        periods = this.getYearlyPeriods(year, 'Yearly');
+        break;
+      }
+
+      case 'FinancialApril': {
+        periods = this.getYearlyPeriods(year, 'FinancialApril');
+        break;
+      }
+
+      case 'FinancialJuly': {
+        periods = this.getYearlyPeriods(year, 'FinancialJuly');
+        break;
+      }
+
+      case 'FinancialOctober': {
+        periods = this.getYearlyPeriods(year, 'FinancialOctober');
+        break;
+      }
+
       default:
         periods = [];
         break;
@@ -211,9 +233,13 @@ export class PeriodUtil {
     const monthNames = this._monthNames || [];
 
     return (
-      chunk([...monthNames.slice(4), ...monthNames.slice(0, 4)] || [], 6) || []
+      chunk([...monthNames.slice(3), ...monthNames.slice(0, 3)] || [], 6) || []
     ).map((sixMonthApril, sixMonthAprilIndex) => {
-      const id = this.getSixMonthlyAprilPeriodId(year, sixMonthAprilIndex + 1);
+      const id = this.getSixMonthlyPeriodId(
+        year,
+        sixMonthAprilIndex + 1,
+        'April'
+      );
 
       return {
         id,
@@ -228,38 +254,69 @@ export class PeriodUtil {
     });
   }
 
-  getYearlyPeriods(year) {
+  getSixMonthlyNovemberPeriods(year) {
+    const monthNames = this._monthNames || [];
+
+    return (
+      chunk([...monthNames.slice(10), ...monthNames.slice(0, 10)] || [], 6) ||
+      []
+    ).map((sixMonthNovember, sixMonthNovemberIndex) => {
+      const id = this.getSixMonthlyPeriodId(
+        year,
+        sixMonthNovemberIndex + 1,
+        'Nov'
+      );
+
+      return {
+        id,
+        type: 'SixMonthlyNovember',
+        name: `${[
+          head(sixMonthNovember || []),
+          last(sixMonthNovember || [])
+        ].join(' - ')} ${year}`,
+        dailyPeriods: this.getChildrenPeriods(
+          id,
+          'SixMonthlyNovember',
+          'Daily'
+        ),
+        weeklyPeriods: this.getChildrenPeriods(
+          id,
+          'SixMonthlyNovember',
+          'Weekly'
+        ),
+        monthPeriods: this.getChildrenPeriods(
+          id,
+          'SixMonthlyNovember',
+          'Monthly'
+        )
+      };
+    });
+  }
+
+  getYearlyPeriods(year, type) {
     return range(10)
       .map(yearIndex => {
-        const yearPeriod = (parseInt(year, 10) - yearIndex).toString();
+        const periodYear = parseInt(year, 10) - yearIndex;
+        const id = this.getYearlyPeriodId(periodYear, type);
+        const name = this.getYearlyPeriodName(periodYear, type);
 
         return {
-          id: yearPeriod,
-          type: 'Yearly',
-          name: yearPeriod,
-          dailyPeriods: this.getChildrenPeriods(yearPeriod, 'Yearly', 'Daily'),
-          weeklyPeriods: this.getChildrenPeriods(
-            yearPeriod,
-            'Yearly',
-            'Weekly'
-          ),
-          monthPeriods: this.getChildrenPeriods(
-            yearPeriod,
-            'Yearly',
-            'Monthly'
-          ),
-          quarterPeriods: this.getChildrenPeriods(
-            yearPeriod,
-            'Yearly',
-            'Quarterly'
-          )
+          id,
+          type,
+          name,
+          dailyPeriods: this.getChildrenPeriods(id, type, 'Daily'),
+          weeklyPeriods: this.getChildrenPeriods(id, type, 'Weekly'),
+          monthPeriods: this.getChildrenPeriods(id, type, 'Monthly'),
+          quarterPeriods: this.getChildrenPeriods(id, type, 'Quarterly')
         };
       })
       .reverse();
   }
 
   omitFuturePeriods(periods, type) {
-    return periods.filter(period => period.id < this.getCurrentPeriodId(type));
+    const currentPeriodId = this.getCurrentPeriodId(type);
+
+    return periods.filter(period => period.id < currentPeriodId);
   }
 
   getCurrentPeriodId(type, useCurrentYear = false) {
@@ -280,26 +337,62 @@ export class PeriodUtil {
       case 'BiMonthly': {
         return this.getBiMonthlyPeriodId(
           this._calendar.getCurrentYear(),
-          this._bimonth
+          this._biMonth
         );
       }
 
       case 'SixMonthly': {
         return this.getSixMonthlyPeriodId(
           this._calendar.getCurrentYear(),
-          this._sixmonth
+          this._sixMonth
         );
       }
 
       case 'SixMonthlyApril': {
-        return this.getSixMonthlyAprilPeriodId(
+        return this.getSixMonthlyPeriodId(
           this._calendar.getCurrentYear(),
-          this._sixmonthApril
+          this._sixmonthApril,
+          'April'
+        );
+      }
+
+      case 'SixMonthlyNovember': {
+        return this.getSixMonthlyPeriodId(
+          this._calendar.getCurrentYear(),
+          this._sixMonthNovember,
+          'Nov'
         );
       }
 
       case 'Yearly': {
         return this._calendar.getCurrentYear();
+      }
+
+      case 'FinancialApril': {
+        const currentYear = this._calendar.getCurrentYear();
+
+        return this.getYearlyPeriodId(
+          this._month >= 4 ? currentYear : currentYear - 1,
+          'FinancialApril'
+        );
+      }
+
+      case 'FinancialJuly': {
+        const currentYear = this._calendar.getCurrentYear();
+
+        return this.getYearlyPeriodId(
+          this._month >= 7 ? currentYear : currentYear - 1,
+          'FinancialJuly'
+        );
+      }
+
+      case 'FinancialOctober': {
+        const currentYear = this._calendar.getCurrentYear();
+
+        return this.getYearlyPeriodId(
+          this._month >= 10 ? currentYear : currentYear - 1,
+          'FinancialOctober'
+        );
       }
 
       default:
@@ -321,12 +414,45 @@ export class PeriodUtil {
     return `${year}0${biMonthNumber}B`;
   }
 
-  getSixMonthlyPeriodId(year, sixMonthNumber) {
-    return `${year}S${sixMonthNumber}`;
+  getSixMonthlyPeriodId(year, sixMonthNumber, sixMonthType = '') {
+    return `${year}${sixMonthType}S${sixMonthNumber}`;
   }
 
-  getSixMonthlyAprilPeriodId(year, sixMonthAprilNumber) {
-    return `${year}AprilS${sixMonthAprilNumber}`;
+  getYearlyPeriodId(year, type) {
+    switch (type) {
+      case 'FinancialApril': {
+        return `${year}April`;
+      }
+      case 'FinancialJuly': {
+        return `${year}July`;
+      }
+      case 'FinancialOctober': {
+        return `${year}Oct`;
+      }
+
+      default:
+        return year.toString();
+    }
+  }
+
+  getYearlyPeriodName(year, type) {
+    switch (type) {
+      case 'FinancialApril': {
+        return `${this._monthNames[3]} ${year} - ${this._monthNames[2]} ${year +
+          1}`;
+      }
+      case 'FinancialJuly': {
+        return `${this._monthNames[6]} ${year} - ${this._monthNames[5]} ${year +
+          1}`;
+      }
+      case 'FinancialOctober': {
+        return `${this._monthNames[9]} ${year} - ${this._monthNames[8]} ${year +
+          1}`;
+      }
+
+      default:
+        return year.toString();
+    }
   }
 
   getChildrenPeriods(parentId, parentType, childrenType) {

@@ -6,6 +6,7 @@ export class PeriodType {
       'Quarterly',
       'SixMonthly',
       'SixMonthlyApril',
+      'SixMonthlyNovember',
       'Yearly',
       'FinancialApril',
       'FinancialJuly',

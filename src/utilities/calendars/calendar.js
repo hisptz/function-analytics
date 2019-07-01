@@ -56,4 +56,10 @@ export class Calendar {
 
     return currentMonth >= 4 && currentMonth <= 9 ? 1 : 2;
   }
+
+  getCurrentSixMonthNovember() {
+    const currentMonth = this.getCurrentMonth();
+
+    return currentMonth >= 5 && currentMonth <= 10 ? 2 : 1;
+  }
 }

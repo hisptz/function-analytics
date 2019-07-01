@@ -118,9 +118,74 @@ describe('Given I set six monthly april period type', () => {
       .setYear(period.currentYear())
       .get();
     periodResult = period.list();
+    console.log(periodResult);
   });
 
   it('should return six monthly april period list for the current year', () => {
+    expect(periodResult.length > 0).to.be.equal(true);
+  });
+});
+
+describe('Given I set six monthly november period type', () => {
+  let periodResult;
+
+  before(() => {
+    period
+      .setType('SixMonthlyNovember')
+      .setYear(period.currentYear())
+      .get();
+    periodResult = period.list();
+  });
+
+  it('should return six monthly november period list for the current year', () => {
+    expect(periodResult.length > 0).to.be.equal(true);
+  });
+});
+
+describe('Given I set financial april period type', () => {
+  let periodResult;
+
+  before(() => {
+    period
+      .setType('FinancialApril')
+      .setYear(period.currentYear())
+      .get();
+    periodResult = period.list();
+  });
+
+  it('should return Financial April period list for the current year', () => {
+    expect(periodResult.length > 0).to.be.equal(true);
+  });
+});
+
+describe('Given I set financial july period type', () => {
+  let periodResult;
+
+  before(() => {
+    period
+      .setType('FinancialJuly')
+      .setYear(period.currentYear())
+      .get();
+    periodResult = period.list();
+  });
+
+  it('should return Financial July period list for the current year', () => {
+    expect(periodResult.length > 0).to.be.equal(true);
+  });
+});
+
+describe('Given I set financial october period type', () => {
+  let periodResult;
+
+  before(() => {
+    period
+      .setType('FinancialOctober')
+      .setYear(period.currentYear())
+      .get();
+    periodResult = period.list();
+  });
+
+  it('should return Financial October period list for the current year', () => {
     expect(periodResult.length > 0).to.be.equal(true);
   });
 });
