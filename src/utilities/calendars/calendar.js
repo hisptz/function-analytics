@@ -42,4 +42,8 @@ export class Calendar {
   getCurrentQuarter() {
     return getQuarter(this._calendar.today());
   }
+
+  getCurrentBiMonth() {
+    return Math.ceil(this.getCurrentMonth() / 2);
+  }
 }

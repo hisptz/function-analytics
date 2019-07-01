@@ -77,6 +77,23 @@ describe('Given I set quarterly period type', () => {
   });
 });
 
+describe('Given I set bi monthly period type', () => {
+  let periodResult;
+
+  before(() => {
+    period
+      .setType('BiMonthly')
+      .setYear(period.currentYear())
+      .get();
+    periodResult = period.list();
+    console.log(period);
+  });
+
+  it('should return bi monthly period list for the current year', () => {
+    expect(periodResult.length > 0).to.be.equal(true);
+  });
+});
+
 describe('Given I set quarterly period type and previous year', () => {
   let periodResult;
 

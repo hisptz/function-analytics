@@ -18,6 +18,7 @@ export class PeriodUtil {
     this._year = year || this._calendar.getCurrentYear();
     this._month = this._calendar.getCurrentMonth();
     this._quarter = this._calendar.getCurrentQuarter();
+    this._biMonth = this._calendar.getCurrentBiMonth();
 
     const monthsNames = this._calendar.getMonths();
 
@@ -49,6 +50,11 @@ export class PeriodUtil {
 
       case 'Quarterly': {
         periods = this.getQuarterlyPeriods(year);
+        break;
+      }
+
+      case 'BiMonthly': {
+        periods = this.getBiMonthlyPeriods(year);
         break;
       }
 
@@ -151,6 +157,25 @@ export class PeriodUtil {
     );
   }
 
+  getBiMonthlyPeriods(year) {
+    return (chunk(this._monthNames || [], 2) || []).map(
+      (biMonths, biMonthIndex) => {
+        const id = this.getBiMonthlyPeriodId(year, biMonthIndex + 1);
+
+        return {
+          id,
+          type: 'BiMonthly',
+          name: `${[head(biMonths || []), last(biMonths || [])].join(
+            ' - '
+          )} ${year}`,
+          dailyPeriods: this.getChildrenPeriods(id, 'BiMonthly', 'Daily'),
+          weeklyPeriods: this.getChildrenPeriods(id, 'BiMonthly', 'Weekly'),
+          monthPeriods: this.getChildrenPeriods(id, 'BiMonthly', 'Monthly')
+        };
+      }
+    );
+  }
+
   getYearlyPeriods(year) {
     return range(10)
       .map(yearIndex => {
@@ -200,6 +225,13 @@ export class PeriodUtil {
         );
       }
 
+      case 'BiMonthly': {
+        return this.getBiMonthlyPeriodId(
+          this._calendar.getCurrentYear(),
+          this._bimonth
+        );
+      }
+
       case 'Yearly': {
         return this._calendar.getCurrentYear();
       }
@@ -217,6 +249,10 @@ export class PeriodUtil {
 
   getQuarterPeriodId(year, quarterNumber) {
     return `${year}Q${quarterNumber}`;
+  }
+
+  getBiMonthlyPeriodId(year, biMonthNumber) {
+    return `${year}0${biMonthNumber}B`;
   }
 
   getChildrenPeriods(parentId, parentType, childrenType) {
