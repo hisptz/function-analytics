@@ -10,6 +10,7 @@ export class EthiopianCalendar extends BaseCalender {
     this._hasYearZero = false;
     this._minMonth = 1;
     this._firstMonth = 1;
+    this._quarterMonthOffset = -2;
     this._minDay = 1;
     this._epochs = ['BEE', 'EE'];
     this._monthNames = [
@@ -106,6 +107,10 @@ export class EthiopianCalendar extends BaseCalender {
   }
   weekDay(a, b, c) {
     return (this.dayOfWeek(a, b, c) || 7) < 6;
+  }
+
+  quarterMonthOffset() {
+    return this._quarterMonthOffset;
   }
 
   fromJSDate(date) {

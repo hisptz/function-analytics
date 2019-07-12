@@ -68,6 +68,7 @@ describe('Given I set quarterly period type', () => {
     period
       .setType('Quarterly')
       .setYear(period.currentYear())
+      .setCalendar('ethiopian')
       .get();
     periodResult = period.list();
   });
@@ -201,6 +202,7 @@ describe('Given I set quarterly period type and previous year', () => {
       .setYear(previousYear)
       .get();
     periodResult = period.list();
+    console.log(JSON.stringify(periodResult));
   });
 
   it('should return quarterly period list of 4 quarters', () => {

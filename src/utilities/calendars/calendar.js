@@ -1,7 +1,5 @@
-import { getQuarter } from 'date-fns';
-
-import { GregorianCalendar } from './gregorian-calendar';
 import { EthiopianCalendar } from './ethiopian-calender';
+import { GregorianCalendar } from './gregorian-calendar';
 
 export class Calendar {
   constructor(calendarId) {
@@ -28,7 +26,9 @@ export class Calendar {
   }
 
   getMonths() {
-    return this._calendar.monthNames();
+    const monthsNames = this._calendar.monthNames();
+
+    return monthsNames.length === 13 ? monthsNames.slice(0, -1) : monthsNames;
   }
 
   getCurrentYear() {
@@ -39,8 +39,18 @@ export class Calendar {
     return this._calendar.today().month();
   }
 
+  getCurrentDay() {
+    return this._calendar.today().day();
+  }
+
+  getQuarterMonthOffset() {
+    return this._calendar.quarterMonthOffset();
+  }
+
   getCurrentQuarter() {
-    return getQuarter(this._calendar.today());
+    const difference = this.getCurrentMonth() - this.getQuarterMonthOffset();
+
+    return Math.ceil((difference > 12 ? 1 : difference) / 3);
   }
 
   getCurrentBiMonth() {

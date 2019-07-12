@@ -9,7 +9,7 @@ export class CalendarDate {
       this._calendar._validateLevel === 0 &&
       !this._calendar.isValid(this._year, this._month, this._day)
     ) {
-      throw this._calendar.invalids.invalidDate.replace(
+      throw this._calendar._invalids.invalidDate.replace(
         /\{0\}/,
         this._calendar.name
       );
@@ -34,7 +34,7 @@ export class CalendarDate {
 
   date(year, month, day) {
     if (!this._calendar.isValid(year, month, day)) {
-      throw this._calendar.invalids.invalidDate.replace(
+      throw this._calendar._invalids.invalidDate.replace(
         /\{0\}/,
         this._calendar.name
       );
@@ -64,7 +64,7 @@ export class CalendarDate {
     }
 
     if (this._calendar.name !== instance._calendar.name) {
-      throw this._calendar.invalids.differentCalendars
+      throw this._calendar._invalids.differentCalendars
         .replace(/\{0\}/, this._calendar.name)
         .replace(/\{1\}/, instance._calendar.name);
     }

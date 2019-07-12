@@ -1,6 +1,7 @@
 import { chunk, head, last, range } from 'lodash';
 
 import { Calendar } from './calendars/calendar';
+import { CalendarDate } from './calendars/calendar-date';
 
 export class PeriodUtil {
   constructor(calendarId, type, preferences, year) {
@@ -22,11 +23,8 @@ export class PeriodUtil {
     this._sixMonth = this._calendar.getCurrentSixMonth();
     this._sixmonthApril = this._calendar.getCurrentSixMonthApril();
     this._sixMonthNovember = this._calendar.getCurrentSixMonthNovember();
-
-    const monthsNames = this._calendar.getMonths();
-
-    this._monthNames =
-      monthsNames.length === 13 ? monthsNames.slice(0, -1) : monthsNames;
+    this._monthNames = this._calendar.getMonths();
+    this._quarterMonthOffset = this._calendar.getQuarterMonthOffset();
   }
 
   get() {
@@ -42,12 +40,12 @@ export class PeriodUtil {
     return this._calendar.getCurrentYear();
   }
 
-  getPeriods(type, year) {
+  getPeriods(type, year, offset = 0) {
     let periods;
 
     switch (type) {
       case 'Monthly': {
-        periods = this.getMonthlyPeriods(year);
+        periods = this.getMonthlyPeriods(year, offset);
         break;
       }
 
@@ -158,37 +156,63 @@ export class PeriodUtil {
 
     return periodType;
   }
-  getMonthlyPeriods(year) {
-    return (this._monthNames || []).map((monthName, monthIndex) => {
-      const id = this.getMonthPeriodId(year, monthIndex + 1);
+  getMonthlyPeriods(year, offset = 0) {
+    const monthPeriods = (this._monthNames || []).map(
+      (monthName, monthIndex) => {
+        const monthOffset = monthIndex + 1 - this._quarterMonthOffset;
+        const monthYear = monthOffset > 12 ? year - 1 : year;
+        const id = this.getMonthPeriodId(monthYear, monthIndex + 1);
+
+        return {
+          id,
+          type: 'Monthly',
+          name: `${monthName} ${monthYear}`,
+          dailyPeriods: this.getChildrenPeriods(id, 'Monthly', 'Daily'),
+          weeklyPeriods: this.getChildrenPeriods(id, 'Monthly', 'Weekly')
+        };
+      }
+    );
+
+    return this.getMonthsByOffset(monthPeriods, offset);
+  }
+
+  getQuarterlyPeriods(year) {
+    const months = this._monthNames.map((name, index) => {
+      const monthOffset = index + 1 - this._quarterMonthOffset;
+
+      return { name, index, year: monthOffset > 12 ? year - 1 : year };
+    });
+
+    return chunk(
+      this.getMonthsByOffset(months, this._quarterMonthOffset),
+      3
+    ).map((quarterMonths, quarterIndex) => {
+      const id = this.getQuarterPeriodId(year, quarterIndex + 1);
+      const startMonth = head(quarterMonths || []);
+      const endMonth = last(quarterMonths || []);
 
       return {
         id,
-        type: 'Monthly',
-        name: `${monthName} ${year}`,
-        dailyPeriods: this.getChildrenPeriods(id, 'Monthly', 'Daily'),
-        weeklyPeriods: this.getChildrenPeriods(id, 'Monthly', 'Weekly')
+        type: 'Quarterly',
+        name: this.getQuarterlyPeriodName(startMonth, endMonth, year),
+        dailyPeriods: this.getChildrenPeriods(id, 'Quarterly', 'Daily'),
+        weeklyPeriods: this.getChildrenPeriods(id, 'Quarterly', 'Weekly'),
+        monthPeriods: this.getChildrenPeriods(id, 'Quarterly', 'Monthly')
       };
     });
   }
 
-  getQuarterlyPeriods(year) {
-    return (chunk(this._monthNames || [], 3) || []).map(
-      (quarterMonths, quarterIndex) => {
-        const id = this.getQuarterPeriodId(year, quarterIndex + 1);
+  getQuarterlyPeriodName(startMonth, endMonth, year) {
+    return `${[startMonth.name + ` ${startMonth.year}`, endMonth.name].join(
+      ' - '
+    )} ${year}`;
+  }
 
-        return {
-          id,
-          type: 'Quarterly',
-          name: `${[head(quarterMonths || []), last(quarterMonths || [])].join(
-            ' - '
-          )} ${year}`,
-          dailyPeriods: this.getChildrenPeriods(id, 'Quarterly', 'Daily'),
-          weeklyPeriods: this.getChildrenPeriods(id, 'Quarterly', 'Weekly'),
-          monthPeriods: this.getChildrenPeriods(id, 'Quarterly', 'Monthly')
-        };
-      }
-    );
+  getMonthsByOffset(months, offset) {
+    return [
+      ...months.slice(offset),
+      ...months.slice(0, months.length + offset)
+    ];
   }
 
   getBiMonthlyPeriods(year) {
@@ -474,7 +498,11 @@ export class PeriodUtil {
             case 'Monthly': {
               const quarterNumber = parseInt(parentId.slice(-1), 10);
 
-              const monthPeriods = this.getPeriods(childrenType, year);
+              const monthPeriods = this.getPeriods(
+                childrenType,
+                year,
+                this._quarterMonthOffset
+              );
 
               return (monthPeriods || [])
                 .filter((period, periodIndex) => {

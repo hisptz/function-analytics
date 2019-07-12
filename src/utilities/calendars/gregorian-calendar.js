@@ -91,6 +91,10 @@ export class GregorianCalendar extends BaseCalender {
     return (this.dayOfWeek(a, b, c) || 7) < 6;
   }
 
+  quarterMonthOffset() {
+    return 0;
+  }
+
   toJD(c, d, e) {
     const f = this._validate(c, d, e, this._invalids.invalidDate);
 
