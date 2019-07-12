@@ -177,14 +177,15 @@ export class PeriodUtil {
   }
 
   getQuarterlyPeriods(year) {
-    const months = this._monthNames.map((name, index) => {
-      const monthOffset = index + 1 - this._quarterMonthOffset;
-
-      return { name, index, year: monthOffset > 12 ? year - 1 : year };
-    });
-
     return chunk(
-      this.getMonthsByOffset(months, this._quarterMonthOffset),
+      this.getMonthsByOffset(
+        this.getMonthWithYears(
+          this._monthNames,
+          year,
+          this._quarterMonthOffset
+        ),
+        this._quarterMonthOffset
+      ),
       3
     ).map((quarterMonths, quarterIndex) => {
       const id = this.getQuarterPeriodId(year, quarterIndex + 1);
@@ -194,7 +195,7 @@ export class PeriodUtil {
       return {
         id,
         type: 'Quarterly',
-        name: this.getQuarterlyPeriodName(startMonth, endMonth, year),
+        name: this.getPeriodNameByRange(startMonth, endMonth, year),
         dailyPeriods: this.getChildrenPeriods(id, 'Quarterly', 'Daily'),
         weeklyPeriods: this.getChildrenPeriods(id, 'Quarterly', 'Weekly'),
         monthPeriods: this.getChildrenPeriods(id, 'Quarterly', 'Monthly')
@@ -202,7 +203,7 @@ export class PeriodUtil {
     });
   }
 
-  getQuarterlyPeriodName(startMonth, endMonth, year) {
+  getPeriodNameByRange(startMonth, endMonth, year) {
     return `${[startMonth.name + ` ${startMonth.year}`, endMonth.name].join(
       ' - '
     )} ${year}`;
@@ -213,6 +214,14 @@ export class PeriodUtil {
       ...months.slice(offset),
       ...months.slice(0, months.length + offset)
     ];
+  }
+
+  getMonthWithYears(monthNames, year, offset) {
+    return (monthNames || []).map((name, index) => {
+      const monthOffset = index + 1 - offset;
+
+      return { name, index, year: monthOffset > 12 ? year - 1 : year };
+    });
   }
 
   getBiMonthlyPeriods(year) {
@@ -279,11 +288,12 @@ export class PeriodUtil {
   }
 
   getSixMonthlyNovemberPeriods(year) {
-    const monthNames = this._monthNames || [];
-
-    return (
-      chunk([...monthNames.slice(10), ...monthNames.slice(0, 10)] || [], 6) ||
-      []
+    return chunk(
+      this.getMonthsByOffset(
+        this.getMonthWithYears(this._monthNames, year, -2),
+        this._quarterMonthOffset
+      ),
+      6
     ).map((sixMonthNovember, sixMonthNovemberIndex) => {
       const id = this.getSixMonthlyPeriodId(
         year,
@@ -294,10 +304,11 @@ export class PeriodUtil {
       return {
         id,
         type: 'SixMonthlyNovember',
-        name: `${[
+        name: this.getPeriodNameByRange(
           head(sixMonthNovember || []),
-          last(sixMonthNovember || [])
-        ].join(' - ')} ${year}`,
+          last(sixMonthNovember || []),
+          year
+        ),
         dailyPeriods: this.getChildrenPeriods(
           id,
           'SixMonthlyNovember',

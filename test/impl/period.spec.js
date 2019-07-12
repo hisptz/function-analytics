@@ -143,6 +143,23 @@ describe('Given I set six monthly november period type', () => {
   });
 });
 
+describe('Given I set six monthly november period type and previous year', () => {
+  let periodResult;
+
+  before(() => {
+    period
+      .setType('SixMonthlyNovember')
+      .setYear(period.currentYear() - 1)
+      .get();
+    periodResult = period.list();
+    console.log(JSON.stringify(periodResult));
+  });
+
+  it('should return six monthly november period list for the previous year', () => {
+    expect(periodResult.length > 0).to.be.equal(true);
+  });
+});
+
 describe('Given I set financial april period type', () => {
   let periodResult;
 
@@ -202,7 +219,6 @@ describe('Given I set quarterly period type and previous year', () => {
       .setYear(previousYear)
       .get();
     periodResult = period.list();
-    console.log(JSON.stringify(periodResult));
   });
 
   it('should return quarterly period list of 4 quarters', () => {
