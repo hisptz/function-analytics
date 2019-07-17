@@ -79,22 +79,22 @@ export class PeriodUtil {
       }
 
       case 'FinancialApril': {
-        periods = this.getYearlyPeriods(year, 'FinancialApril');
+        periods = this.getYearlyPeriods(year, 'FinancialApril', 'April', 3);
         break;
       }
 
       case 'FinancialJuly': {
-        periods = this.getYearlyPeriods(year, 'FinancialJuly');
+        periods = this.getYearlyPeriods(year, 'FinancialJuly', 'July', 6);
         break;
       }
 
       case 'FinancialOctober': {
-        periods = this.getYearlyPeriods(year, 'FinancialOctober');
+        periods = this.getYearlyPeriods(year, 'FinancialOctober', 'Oct', 9);
         break;
       }
 
       case 'FinancialNovember': {
-        periods = this.getYearlyPeriods(year, 'FinancialNovember');
+        periods = this.getYearlyPeriods(year, 'FinancialNovember', 'Nov', 10);
         break;
       }
 
@@ -334,12 +334,12 @@ export class PeriodUtil {
     });
   }
 
-  getYearlyPeriods(year, type) {
+  getYearlyPeriods(year, type, idSuffix = '', monthIndex = -1) {
     return range(10)
       .map(yearIndex => {
         const periodYear = parseInt(year, 10) - yearIndex;
-        const id = this.getYearlyPeriodId(periodYear, type);
-        const name = this.getYearlyPeriodName(periodYear, type);
+        const id = this.getYearlyPeriodId(periodYear, idSuffix);
+        const name = this.getYearlyPeriodName(periodYear, monthIndex);
 
         return {
           id,
@@ -468,52 +468,21 @@ export class PeriodUtil {
     return `${year}${sixMonthType}S${sixMonthNumber}`;
   }
 
-  getYearlyPeriodId(year, type) {
-    switch (type) {
-      case 'FinancialApril': {
-        return `${year}April`;
-      }
-      case 'FinancialJuly': {
-        return `${year}July`;
-      }
-      case 'FinancialOctober': {
-        return `${year}Oct`;
-      }
-
-      case 'FinancialNovember': {
-        return `${year}Nov`;
-      }
-
-      default:
-        return year.toString();
-    }
+  getYearlyPeriodId(year, suffix = '') {
+    return `${year}${suffix}`;
   }
 
-  getYearlyPeriodName(year, type) {
-    switch (type) {
-      case 'FinancialApril': {
-        return `${this._monthNames[3]} ${year} - ${this._monthNames[2]} ${year +
-          1}`;
-      }
-      case 'FinancialJuly': {
-        return `${this._monthNames[6]} ${year} - ${this._monthNames[5]} ${year +
-          1}`;
-      }
-      case 'FinancialOctober': {
-        return `${this._monthNames[9]} ${year} - ${this._monthNames[8]} ${year +
-          1}`;
-      }
-
-      case 'FinancialNovember': {
-        return `${this._monthNames[10]} ${year} - ${
-          this._monthNames[9]
-        } ${year + 1}`;
-      }
-
-      default:
-        return year.toString();
+  getYearlyPeriodName(year, monthIndex = -1) {
+    if (monthIndex === -1) {
+      return year.toString();
     }
+
+    return `${this._monthNames[monthIndex]} ${year} - ${
+      this._monthNames[monthIndex - 1]
+    } ${year + 1}`;
   }
+
+  getYearlyMonthIndex(type) {}
 
   getChildrenPeriods(parentId, parentType, childrenType) {
     switch (parentType) {
