@@ -256,6 +256,113 @@ describe('Given I set relative month period type', () => {
   });
 });
 
+describe('Given I set relative bi month period type', () => {
+  let periodResult;
+
+  before(() => {
+    period
+      .setType('RelativeBiMonth')
+      .setYear(period.currentYear())
+      .get();
+
+    periodResult = period.list();
+    console.log(periodResult);
+  });
+
+  it('should return Relative bi month period list', () => {
+    expect(periodResult.length > 0).to.be.equal(true);
+  });
+});
+
+describe('Given I set relative quarter period type', () => {
+  let periodResult;
+
+  before(() => {
+    period
+      .setType('RelativeQuarter')
+      .setYear(period.currentYear())
+      .get();
+
+    periodResult = period.list();
+    console.log(periodResult);
+  });
+
+  it('should return Relative quarter period list', () => {
+    expect(periodResult.length > 0).to.be.equal(true);
+  });
+});
+
+describe('Given I set relative year period type', () => {
+  let periodResult;
+
+  before(() => {
+    period
+      .setType('RelativeYear')
+      .setYear(period.currentYear())
+      .get();
+
+    periodResult = period.list();
+    console.log(periodResult);
+  });
+
+  it('should return Relative year period list', () => {
+    expect(periodResult.length > 0).to.be.equal(true);
+  });
+});
+
+describe('Given I set relative six month period type', () => {
+  let periodResult;
+
+  before(() => {
+    period
+      .setType('RelativeSixMonth')
+      .setYear(period.currentYear())
+      .get();
+
+    periodResult = period.list();
+    console.log(periodResult);
+  });
+
+  it('should return Relative six month period list', () => {
+    expect(periodResult.length > 0).to.be.equal(true);
+  });
+});
+
+describe('Given I set relative financial year period type', () => {
+  let periodResult;
+
+  before(() => {
+    period
+      .setType('RelativeFinancialYear')
+      .setYear(period.currentYear())
+      .get();
+
+    periodResult = period.list();
+    console.log(periodResult);
+  });
+
+  it('should return Relative financial year period list', () => {
+    expect(periodResult.length > 0).to.be.equal(true);
+  });
+});
+
+describe('Given I set relative weekly period type', () => {
+  let periodResult;
+
+  before(() => {
+    period
+      .setType('RelativeWeek')
+      .setYear(period.currentYear())
+      .get();
+
+    periodResult = period.list();
+    console.log(periodResult);
+  });
+
+  it('should return Relative week period list', () => {
+    expect(periodResult.length > 0).to.be.equal(true);
+  });
+});
 describe('Given I set quarterly period type and previous year', () => {
   let periodResult;
 

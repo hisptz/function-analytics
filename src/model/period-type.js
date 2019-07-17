@@ -15,6 +15,7 @@ export class PeriodType {
       'RelativeWeek',
       'RelativeMonth',
       'RelativeBiMonth',
+      'RelativeSixMonth',
       'RelativeQuarter',
       'RelativeYear',
       'RelativeFinancialYear'
