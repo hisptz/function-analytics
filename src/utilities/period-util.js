@@ -18,7 +18,12 @@ export class PeriodUtil {
     this._year = year || this._calendar.getCurrentYear();
     this._month = this._calendar.getCurrentMonth();
     this._quarter = this._calendar.getCurrentQuarter();
+    this._biMonth = this._calendar.getCurrentBiMonth();
+    this._sixMonth = this._calendar.getCurrentSixMonth();
+    this._sixmonthApril = this._calendar.getCurrentSixMonthApril();
+    this._sixMonthNovember = this._calendar.getCurrentSixMonthNovember();
     this._monthNames = this._calendar.getMonths();
+    this._quarterMonthOffset = this._calendar.getQuarterMonthOffset();
   }
 
   get() {
@@ -34,12 +39,12 @@ export class PeriodUtil {
     return this._calendar.getCurrentYear();
   }
 
-  getPeriods(type, year) {
+  getPeriods(type, year, offset = 0) {
     let periods;
 
     switch (type) {
       case 'Monthly': {
-        periods = this.getMonthlyPeriods(year);
+        periods = this.getMonthlyPeriods(year, offset);
         break;
       }
 
@@ -48,16 +53,71 @@ export class PeriodUtil {
         break;
       }
 
-      case 'Yearly': {
-        periods = this.getYearlyPeriods(year);
+      case 'BiMonthly': {
+        periods = this.getBiMonthlyPeriods(year);
         break;
       }
+
+      case 'SixMonthly': {
+        periods = this.getSixMonthlyPeriods(year);
+        break;
+      }
+
+      case 'SixMonthlyApril': {
+        periods = this.getSixMonthlyAprilPeriods(year);
+        break;
+      }
+
+      case 'SixMonthlyNovember': {
+        periods = this.getSixMonthlyNovemberPeriods(year);
+        break;
+      }
+
+      case 'Yearly': {
+        periods = this.getYearlyPeriods(year, 'Yearly');
+        break;
+      }
+
+      case 'FinancialApril': {
+        periods = this.getYearlyPeriods(year, 'FinancialApril', 'April', 3);
+        break;
+      }
+
+      case 'FinancialJuly': {
+        periods = this.getYearlyPeriods(year, 'FinancialJuly', 'July', 6);
+        break;
+      }
+
+      case 'FinancialOctober': {
+        periods = this.getYearlyPeriods(year, 'FinancialOctober', 'Oct', 9);
+        break;
+      }
+
+      case 'FinancialNovember': {
+        periods = this.getYearlyPeriods(year, 'FinancialNovember', 'Nov', 10);
+        break;
+      }
+
+      case 'RelativeMonth':
+      case 'RelativeBiMonth':
+      case 'RelativeQuarter':
+      case 'RelativeSixMonth':
+      case 'RelativeYear':
+      case 'RelativeFinancialYear':
+      case 'RelativeWeek': {
+        periods = this.getRelativePeriods(type);
+        break;
+      }
+
       default:
         periods = [];
         break;
     }
 
-    if (this._preferences && this._preferences.allowFuturePeriods) {
+    if (
+      (this._preferences && this._preferences.allowFuturePeriods) ||
+      type.indexOf('Relative') !== -1
+    ) {
       return periods;
     }
 
@@ -114,71 +174,299 @@ export class PeriodUtil {
 
     return periodType;
   }
-  getMonthlyPeriods(year) {
-    return (this._monthNames || []).map((monthName, monthIndex) => {
-      const id = this.getMonthPeriodId(year, monthIndex + 1);
+
+  getRelativePeriods(type) {
+    switch (type) {
+      case 'RelativeBiMonth': {
+        return [
+          { id: 'THIS_BIMONTH', type, name: 'This Bi-month' },
+          {
+            id: 'LAST_BIMONTH',
+            type,
+            name: 'Last Bi-month'
+          },
+          { id: 'LAST_6_BIMONTHS', type, name: 'Last 6 bi-month' }
+        ];
+      }
+
+      case 'RelativeMonth': {
+        return [
+          { id: 'THIS_MONTH', type, name: 'This Month' },
+          { id: 'LAST_MONTH', type, name: 'Last Month' },
+          {
+            id: 'LAST_3_MONTHS',
+            type,
+            name: 'Last 3 Months'
+          },
+          { id: 'LAST_6_MONTHS', type, name: 'Last 6 Months' },
+          { id: 'LAST_12_MONTHS', type, name: 'Last 12 Months' }
+        ];
+      }
+
+      case 'RelativeQuarter': {
+        return [
+          { id: 'THIS_QUARTER', type, name: 'This Quarter' },
+          {
+            id: 'LAST_QUARTER',
+            type,
+            name: 'Last Quarter'
+          },
+          { id: 'LAST_4_QUARTERS', type, name: 'Last 4 Quarters' }
+        ];
+      }
+
+      case 'RelativeSixMonth': {
+        return [
+          { id: 'THIS_SIX_MONTH', type, name: 'This Six-month' },
+          {
+            id: 'LAST_SIX_MONTH',
+            type,
+            name: 'Last Six-month'
+          },
+          { id: 'LAST_2_SIXMONTHS', type, name: 'Last 2 Six-month' }
+        ];
+      }
+
+      case 'RelativeYear': {
+        return [
+          { id: 'THIS_YEAR', type, name: 'This Year' },
+          {
+            id: 'LAST_YEAR',
+            type,
+            name: 'Last Year'
+          },
+          { id: 'LAST_5_YEARS', type, name: 'Last 5 Years' }
+        ];
+      }
+
+      case 'RelativeFinancialYear': {
+        return [
+          { id: 'THIS_FINANCIAL_YEAR', type, name: 'This Financial Year' },
+          {
+            id: 'LAST_FINANCIAL_YEAR',
+            type,
+            name: 'Last Financial Year'
+          },
+          { id: 'LAST_5_FINANCIAL_YEARS', type, name: 'Last 5 Financial Years' }
+        ];
+      }
+
+      case 'RelativeWeek': {
+        return [
+          { id: 'THIS_WEEK', type, name: 'This Week' },
+          { id: 'LAST_WEEK', type, name: 'Last Week' },
+          {
+            id: 'LAST_4_WEEKS',
+            type,
+            name: 'Last 4 Weeks'
+          },
+          { id: 'LAST_12_WEEKS', type, name: 'last 12 Weeks' },
+          { id: 'LAST_52_WEEKS', type, name: 'Last 52 weeks' }
+        ];
+      }
+
+      default:
+        return [];
+    }
+  }
+  getMonthlyPeriods(year, offset = 0) {
+    const monthPeriods = (this._monthNames || []).map(
+      (monthName, monthIndex) => {
+        const monthOffset = monthIndex + 1 - this._quarterMonthOffset;
+        const monthYear = monthOffset > 12 ? year - 1 : year;
+        const id = this.getMonthPeriodId(monthYear, monthIndex + 1);
+
+        return {
+          id,
+          type: 'Monthly',
+          name: `${monthName} ${monthYear}`,
+          dailyPeriods: this.getChildrenPeriods(id, 'Monthly', 'Daily'),
+          weeklyPeriods: this.getChildrenPeriods(id, 'Monthly', 'Weekly')
+        };
+      }
+    );
+
+    return this.getMonthsByOffset(monthPeriods, offset);
+  }
+
+  getQuarterlyPeriods(year) {
+    return chunk(
+      this.getMonthsByOffset(
+        this.getMonthWithYears(
+          this._monthNames,
+          year,
+          this._quarterMonthOffset
+        ),
+        this._quarterMonthOffset
+      ),
+      3
+    ).map((quarterMonths, quarterIndex) => {
+      const id = this.getQuarterPeriodId(year, quarterIndex + 1);
+      const startMonth = head(quarterMonths || []);
+      const endMonth = last(quarterMonths || []);
 
       return {
         id,
-        type: 'Monthly',
-        name: `${monthName} ${year}`,
-        dailyPeriods: this.getChildrenPeriods(id, 'Monthly', 'Daily'),
-        weeklyPeriods: this.getChildrenPeriods(id, 'Monthly', 'Weekly')
+        type: 'Quarterly',
+        name: this.getPeriodNameByRange(startMonth, endMonth, year),
+        dailyPeriods: this.getChildrenPeriods(id, 'Quarterly', 'Daily'),
+        weeklyPeriods: this.getChildrenPeriods(id, 'Quarterly', 'Weekly'),
+        monthPeriods: this.getChildrenPeriods(id, 'Quarterly', 'Monthly')
       };
     });
   }
 
-  getQuarterlyPeriods(year) {
-    return (chunk(this._monthNames || [], 3) || []).map(
-      (quarterMonths, quarterIndex) => {
-        const id = this.getQuarterPeriodId(year, quarterIndex + 1);
+  getPeriodNameByRange(startMonth, endMonth, year) {
+    return `${[startMonth.name + ` ${startMonth.year}`, endMonth.name].join(
+      ' - '
+    )} ${endMonth.year}`;
+  }
+
+  getMonthsByOffset(months, offset) {
+    return [
+      ...months.slice(offset),
+      ...months.slice(0, months.length + offset)
+    ];
+  }
+
+  getMonthWithYears(monthNames, year, offset) {
+    return (monthNames || []).map((name, index) => {
+      const monthOffset = index + 1 - offset;
+
+      return { name, index, year: monthOffset > 12 ? year - 1 : year };
+    });
+  }
+
+  getBiMonthlyPeriods(year) {
+    return (chunk(this._monthNames || [], 2) || []).map(
+      (biMonths, biMonthIndex) => {
+        const id = this.getBiMonthlyPeriodId(year, biMonthIndex + 1);
 
         return {
           id,
-          type: 'Quarterly',
-          name: `${[head(quarterMonths || []), last(quarterMonths || [])].join(
+          type: 'BiMonthly',
+          name: `${[head(biMonths || []), last(biMonths || [])].join(
             ' - '
           )} ${year}`,
-          dailyPeriods: this.getChildrenPeriods(id, 'Quarterly', 'Daily'),
-          weeklyPeriods: this.getChildrenPeriods(id, 'Quarterly', 'Weekly'),
-          monthPeriods: this.getChildrenPeriods(id, 'Quarterly', 'Monthly')
+          dailyPeriods: this.getChildrenPeriods(id, 'BiMonthly', 'Daily'),
+          weeklyPeriods: this.getChildrenPeriods(id, 'BiMonthly', 'Weekly'),
+          monthPeriods: this.getChildrenPeriods(id, 'BiMonthly', 'Monthly')
         };
       }
     );
   }
 
-  getYearlyPeriods(year) {
-    return range(10)
-      .map(yearIndex => {
-        const yearPeriod = (parseInt(year, 10) - yearIndex).toString();
+  getSixMonthlyPeriods(year) {
+    return (chunk(this._monthNames || [], 6) || []).map(
+      (sixMonths, sixMonthIndex) => {
+        const id = this.getSixMonthlyPeriodId(year, sixMonthIndex + 1);
 
         return {
-          id: yearPeriod,
-          type: 'Yearly',
-          name: yearPeriod,
-          dailyPeriods: this.getChildrenPeriods(yearPeriod, 'Yearly', 'Daily'),
-          weeklyPeriods: this.getChildrenPeriods(
-            yearPeriod,
-            'Yearly',
-            'Weekly'
-          ),
-          monthPeriods: this.getChildrenPeriods(
-            yearPeriod,
-            'Yearly',
-            'Monthly'
-          ),
-          quarterPeriods: this.getChildrenPeriods(
-            yearPeriod,
-            'Yearly',
-            'Quarterly'
-          )
+          id,
+          type: 'SixMonthly',
+          name: `${[head(sixMonths || []), last(sixMonths || [])].join(
+            ' - '
+          )} ${year}`,
+          dailyPeriods: this.getChildrenPeriods(id, 'SixMonthly', 'Daily'),
+          weeklyPeriods: this.getChildrenPeriods(id, 'SixMonthly', 'Weekly'),
+          monthPeriods: this.getChildrenPeriods(id, 'SixMonthly', 'Monthly')
+        };
+      }
+    );
+  }
+
+  getSixMonthlyAprilPeriods(year) {
+    const months = this.getMonthWithYears(this._monthNames, year + 1, -9);
+
+    return (
+      chunk([...months.slice(3), ...months.slice(0, 3)] || [], 6) || []
+    ).map((sixMonthApril, sixMonthAprilIndex) => {
+      const id = this.getSixMonthlyPeriodId(
+        year,
+        sixMonthAprilIndex + 1,
+        'April'
+      );
+
+      return {
+        id,
+        type: 'SixMonthlyApril',
+        name: this.getPeriodNameByRange(
+          head(sixMonthApril || []),
+          last(sixMonthApril || []),
+          year
+        ),
+        dailyPeriods: this.getChildrenPeriods(id, 'SixMonthlyApril', 'Daily'),
+        weeklyPeriods: this.getChildrenPeriods(id, 'SixMonthlyApril', 'Weekly'),
+        monthPeriods: this.getChildrenPeriods(id, 'SixMonthlyApril', 'Monthly')
+      };
+    });
+  }
+
+  getSixMonthlyNovemberPeriods(year) {
+    return chunk(
+      this.getMonthsByOffset(
+        this.getMonthWithYears(this._monthNames, year, -2),
+        this._quarterMonthOffset
+      ),
+      6
+    ).map((sixMonthNovember, sixMonthNovemberIndex) => {
+      const id = this.getSixMonthlyPeriodId(
+        year,
+        sixMonthNovemberIndex + 1,
+        'Nov'
+      );
+
+      return {
+        id,
+        type: 'SixMonthlyNovember',
+        name: this.getPeriodNameByRange(
+          head(sixMonthNovember || []),
+          last(sixMonthNovember || []),
+          year
+        ),
+        dailyPeriods: this.getChildrenPeriods(
+          id,
+          'SixMonthlyNovember',
+          'Daily'
+        ),
+        weeklyPeriods: this.getChildrenPeriods(
+          id,
+          'SixMonthlyNovember',
+          'Weekly'
+        ),
+        monthPeriods: this.getChildrenPeriods(
+          id,
+          'SixMonthlyNovember',
+          'Monthly'
+        )
+      };
+    });
+  }
+
+  getYearlyPeriods(year, type, idSuffix = '', monthIndex = -1) {
+    return range(10)
+      .map(yearIndex => {
+        const periodYear = parseInt(year, 10) - yearIndex;
+        const id = this.getYearlyPeriodId(periodYear, idSuffix);
+        const name = this.getYearlyPeriodName(periodYear, monthIndex);
+
+        return {
+          id,
+          type,
+          name,
+          dailyPeriods: this.getChildrenPeriods(id, type, 'Daily'),
+          weeklyPeriods: this.getChildrenPeriods(id, type, 'Weekly'),
+          monthPeriods: this.getChildrenPeriods(id, type, 'Monthly'),
+          quarterPeriods: this.getChildrenPeriods(id, type, 'Quarterly')
         };
       })
       .reverse();
   }
 
   omitFuturePeriods(periods, type) {
-    return periods.filter(period => period.id < this.getCurrentPeriodId(type));
+    const currentPeriodId = this.getCurrentPeriodId(type);
+
+    return periods.filter(period => period.id < currentPeriodId);
   }
 
   getCurrentPeriodId(type, useCurrentYear = false) {
@@ -196,8 +484,74 @@ export class PeriodUtil {
         );
       }
 
+      case 'BiMonthly': {
+        return this.getBiMonthlyPeriodId(
+          this._calendar.getCurrentYear(),
+          this._biMonth
+        );
+      }
+
+      case 'SixMonthly': {
+        return this.getSixMonthlyPeriodId(
+          this._calendar.getCurrentYear(),
+          this._sixMonth
+        );
+      }
+
+      case 'SixMonthlyApril': {
+        return this.getSixMonthlyPeriodId(
+          this._calendar.getCurrentYear(),
+          this._sixmonthApril,
+          'April'
+        );
+      }
+
+      case 'SixMonthlyNovember': {
+        return this.getSixMonthlyPeriodId(
+          this._calendar.getCurrentYear(),
+          this._sixMonthNovember,
+          'Nov'
+        );
+      }
+
       case 'Yearly': {
         return this._calendar.getCurrentYear();
+      }
+
+      case 'FinancialApril': {
+        const currentYear = this._calendar.getCurrentYear();
+
+        return this.getYearlyPeriodId(
+          this._month >= 4 ? currentYear : currentYear - 1,
+          'FinancialApril'
+        );
+      }
+
+      case 'FinancialJuly': {
+        const currentYear = this._calendar.getCurrentYear();
+
+        return this.getYearlyPeriodId(
+          this._month >= 7 ? currentYear : currentYear - 1,
+          'FinancialJuly'
+        );
+      }
+
+      case 'FinancialOctober': {
+        const currentYear = this._calendar.getCurrentYear();
+
+        return this.getYearlyPeriodId(
+          this._month >= 10 ? currentYear : currentYear - 1,
+          'FinancialOctober'
+        );
+      }
+
+      case 'FinancialNovember': {
+        const currentYear = this._calendar.getCurrentYear();
+
+        return this.getYearlyPeriodId(
+          this._month >= 11 ? currentYear : currentYear - 1,
+          'FinancialNovember'
+        );
       }
 
       default:
@@ -214,6 +568,30 @@ export class PeriodUtil {
   getQuarterPeriodId(year, quarterNumber) {
     return `${year}Q${quarterNumber}`;
   }
+
+  getBiMonthlyPeriodId(year, biMonthNumber) {
+    return `${year}0${biMonthNumber}B`;
+  }
+
+  getSixMonthlyPeriodId(year, sixMonthNumber, sixMonthType = '') {
+    return `${year}${sixMonthType}S${sixMonthNumber}`;
+  }
+
+  getYearlyPeriodId(year, suffix = '') {
+    return `${year}${suffix}`;
+  }
+
+  getYearlyPeriodName(year, monthIndex = -1) {
+    if (monthIndex === -1) {
+      return year.toString();
+    }
+
+    return `${this._monthNames[monthIndex]} ${year} - ${
+      this._monthNames[monthIndex - 1]
+    } ${year + 1}`;
+  }
+
+  getYearlyMonthIndex(type) {}
 
   getChildrenPeriods(parentId, parentType, childrenType) {
     switch (parentType) {
@@ -234,7 +612,11 @@ export class PeriodUtil {
             case 'Monthly': {
               const quarterNumber = parseInt(parentId.slice(-1), 10);
 
-              const monthPeriods = this.getPeriods(childrenType, year);
+              const monthPeriods = this.getPeriods(
+                childrenType,
+                year,
+                this._quarterMonthOffset
+              );
 
               return (monthPeriods || [])
                 .filter((period, periodIndex) => {
