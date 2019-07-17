@@ -280,8 +280,8 @@ export class PeriodUtil {
           id,
           type: 'Monthly',
           name: `${monthName} ${monthYear}`,
-          dailyPeriods: this.getChildrenPeriods(id, 'Monthly', 'Daily'),
-          weeklyPeriods: this.getChildrenPeriods(id, 'Monthly', 'Weekly')
+          daily: this.getChildrenPeriods(id, 'Monthly', 'Daily'),
+          weekly: this.getChildrenPeriods(id, 'Monthly', 'Weekly')
         };
       }
     );
@@ -309,9 +309,9 @@ export class PeriodUtil {
         id,
         type: 'Quarterly',
         name: this.getPeriodNameByRange(startMonth, endMonth, year),
-        dailyPeriods: this.getChildrenPeriods(id, 'Quarterly', 'Daily'),
-        weeklyPeriods: this.getChildrenPeriods(id, 'Quarterly', 'Weekly'),
-        monthPeriods: this.getChildrenPeriods(id, 'Quarterly', 'Monthly')
+        daily: this.getChildrenPeriods(id, 'Quarterly', 'Daily'),
+        weekly: this.getChildrenPeriods(id, 'Quarterly', 'Weekly'),
+        monthly: this.getChildrenPeriods(id, 'Quarterly', 'Monthly')
       };
     });
   }
@@ -348,9 +348,9 @@ export class PeriodUtil {
           name: `${[head(biMonths || []), last(biMonths || [])].join(
             ' - '
           )} ${year}`,
-          dailyPeriods: this.getChildrenPeriods(id, 'BiMonthly', 'Daily'),
-          weeklyPeriods: this.getChildrenPeriods(id, 'BiMonthly', 'Weekly'),
-          monthPeriods: this.getChildrenPeriods(id, 'BiMonthly', 'Monthly')
+          daily: this.getChildrenPeriods(id, 'BiMonthly', 'Daily'),
+          weekly: this.getChildrenPeriods(id, 'BiMonthly', 'Weekly'),
+          monthly: this.getChildrenPeriods(id, 'BiMonthly', 'Monthly')
         };
       }
     );
@@ -367,9 +367,9 @@ export class PeriodUtil {
           name: `${[head(sixMonths || []), last(sixMonths || [])].join(
             ' - '
           )} ${year}`,
-          dailyPeriods: this.getChildrenPeriods(id, 'SixMonthly', 'Daily'),
-          weeklyPeriods: this.getChildrenPeriods(id, 'SixMonthly', 'Weekly'),
-          monthPeriods: this.getChildrenPeriods(id, 'SixMonthly', 'Monthly')
+          daily: this.getChildrenPeriods(id, 'SixMonthly', 'Daily'),
+          weekly: this.getChildrenPeriods(id, 'SixMonthly', 'Weekly'),
+          monthly: this.getChildrenPeriods(id, 'SixMonthly', 'Monthly')
         };
       }
     );
@@ -395,9 +395,9 @@ export class PeriodUtil {
           last(sixMonthApril || []),
           year
         ),
-        dailyPeriods: this.getChildrenPeriods(id, 'SixMonthlyApril', 'Daily'),
-        weeklyPeriods: this.getChildrenPeriods(id, 'SixMonthlyApril', 'Weekly'),
-        monthPeriods: this.getChildrenPeriods(id, 'SixMonthlyApril', 'Monthly')
+        daily: this.getChildrenPeriods(id, 'SixMonthlyApril', 'Daily'),
+        weekly: this.getChildrenPeriods(id, 'SixMonthlyApril', 'Weekly'),
+        monthly: this.getChildrenPeriods(id, 'SixMonthlyApril', 'Monthly')
       };
     });
   }
@@ -424,21 +424,9 @@ export class PeriodUtil {
           last(sixMonthNovember || []),
           year
         ),
-        dailyPeriods: this.getChildrenPeriods(
-          id,
-          'SixMonthlyNovember',
-          'Daily'
-        ),
-        weeklyPeriods: this.getChildrenPeriods(
-          id,
-          'SixMonthlyNovember',
-          'Weekly'
-        ),
-        monthPeriods: this.getChildrenPeriods(
-          id,
-          'SixMonthlyNovember',
-          'Monthly'
-        )
+        daily: this.getChildrenPeriods(id, 'SixMonthlyNovember', 'Daily'),
+        weekly: this.getChildrenPeriods(id, 'SixMonthlyNovember', 'Weekly'),
+        monthly: this.getChildrenPeriods(id, 'SixMonthlyNovember', 'Monthly')
       };
     });
   }
@@ -454,10 +442,10 @@ export class PeriodUtil {
           id,
           type,
           name,
-          dailyPeriods: this.getChildrenPeriods(id, type, 'Daily'),
-          weeklyPeriods: this.getChildrenPeriods(id, type, 'Weekly'),
-          monthPeriods: this.getChildrenPeriods(id, type, 'Monthly'),
-          quarterPeriods: this.getChildrenPeriods(id, type, 'Quarterly')
+          daily: this.getChildrenPeriods(id, type, 'Daily'),
+          weekly: this.getChildrenPeriods(id, type, 'Weekly'),
+          monthly: this.getChildrenPeriods(id, type, 'Monthly'),
+          quarterly: this.getChildrenPeriods(id, type, 'Quarterly')
         };
       })
       .reverse();
