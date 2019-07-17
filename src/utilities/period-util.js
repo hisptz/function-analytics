@@ -98,12 +98,26 @@ export class PeriodUtil {
         break;
       }
 
+      case 'RelativeMonth':
+      case 'RelativeBiMonth':
+      case 'RelativeQuarter':
+      case 'RelativeSixMonth':
+      case 'RelativeYear':
+      case 'RelativeFinancialYear':
+      case 'RelativeWeek': {
+        periods = this.getRelativePeriods(type);
+        break;
+      }
+
       default:
         periods = [];
         break;
     }
 
-    if (this._preferences && this._preferences.allowFuturePeriods) {
+    if (
+      (this._preferences && this._preferences.allowFuturePeriods) ||
+      type.indexOf('Relative') !== -1
+    ) {
       return periods;
     }
 
@@ -159,6 +173,101 @@ export class PeriodUtil {
     }
 
     return periodType;
+  }
+
+  getRelativePeriods(type) {
+    switch (type) {
+      case 'RelativeBiMonth': {
+        return [
+          { id: 'THIS_BIMONTH', type, name: 'This Bi-month' },
+          {
+            id: 'LAST_BIMONTH',
+            type,
+            name: 'Last Bi-month'
+          },
+          { id: 'LAST_6_BIMONTHS', type, name: 'Last 6 bi-month' }
+        ];
+      }
+
+      case 'RelativeMonth': {
+        return [
+          { id: 'THIS_MONTH', type, name: 'This Month' },
+          { id: 'LAST_MONTH', type, name: 'Last Month' },
+          {
+            id: 'LAST_3_MONTHS',
+            type,
+            name: 'Last 3 Months'
+          },
+          { id: 'LAST_6_MONTHS', type, name: 'Last 6 Months' },
+          { id: 'LAST_12_MONTHS', type, name: 'Last 12 Months' }
+        ];
+      }
+
+      case 'RelativeQuarter': {
+        return [
+          { id: 'THIS_QUARTER', type, name: 'This Quarter' },
+          {
+            id: 'LAST_QUARTER',
+            type,
+            name: 'Last Quarter'
+          },
+          { id: 'LAST_4_QUARTERS', type, name: 'Last 4 Quarters' }
+        ];
+      }
+
+      case 'RelativeSixMonth': {
+        return [
+          { id: 'THIS_SIX_MONTH', type, name: 'This Six-month' },
+          {
+            id: 'LAST_SIX_MONTH',
+            type,
+            name: 'Last Six-month'
+          },
+          { id: 'LAST_2_SIXMONTHS', type, name: 'Last 2 Six-month' }
+        ];
+      }
+
+      case 'RelativeYear': {
+        return [
+          { id: 'THIS_YEAR', type, name: 'This Year' },
+          {
+            id: 'LAST_YEAR',
+            type,
+            name: 'Last Year'
+          },
+          { id: 'LAST_5_YEARS', type, name: 'Last 5 Years' }
+        ];
+      }
+
+      case 'RelativeFinancialYear': {
+        return [
+          { id: 'THIS_FINANCIAL_YEAR', type, name: 'This Financial Year' },
+          {
+            id: 'LAST_FINANCIAL_YEAR',
+            type,
+            name: 'Last Financial Year'
+          },
+          { id: 'LAST_5_FINANCIAL_YEARS', type, name: 'Last 5 Financial Years' }
+        ];
+      }
+
+      case 'RelativeWeek': {
+        return [
+          { id: 'THIS_WEEK', type, name: 'This Week' },
+          { id: 'LAST_WEEK', type, name: 'Last Week' },
+          {
+            id: 'LAST_4_WEEKS',
+            type,
+            name: 'Last 4 Weeks'
+          },
+          { id: 'LAST_12_WEEKS', type, name: 'last 12 Weeks' },
+          { id: 'LAST_52_WEEKS', type, name: 'Last 52 weeks' }
+        ];
+      }
+
+      default:
+        return [];
+    }
   }
   getMonthlyPeriods(year, offset = 0) {
     const monthPeriods = (this._monthNames || []).map(
