@@ -206,7 +206,7 @@ export class PeriodUtil {
   getPeriodNameByRange(startMonth, endMonth, year) {
     return `${[startMonth.name + ` ${startMonth.year}`, endMonth.name].join(
       ' - '
-    )} ${year}`;
+    )} ${endMonth.year}`;
   }
 
   getMonthsByOffset(months, offset) {
@@ -263,10 +263,10 @@ export class PeriodUtil {
   }
 
   getSixMonthlyAprilPeriods(year) {
-    const monthNames = this._monthNames || [];
+    const months = this.getMonthWithYears(this._monthNames, year + 1, -9);
 
     return (
-      chunk([...monthNames.slice(3), ...monthNames.slice(0, 3)] || [], 6) || []
+      chunk([...months.slice(3), ...months.slice(0, 3)] || [], 6) || []
     ).map((sixMonthApril, sixMonthAprilIndex) => {
       const id = this.getSixMonthlyPeriodId(
         year,
@@ -277,9 +277,11 @@ export class PeriodUtil {
       return {
         id,
         type: 'SixMonthlyApril',
-        name: `${[head(sixMonthApril || []), last(sixMonthApril || [])].join(
-          ' - '
-        )} ${year}`,
+        name: this.getPeriodNameByRange(
+          head(sixMonthApril || []),
+          last(sixMonthApril || []),
+          year
+        ),
         dailyPeriods: this.getChildrenPeriods(id, 'SixMonthlyApril', 'Daily'),
         weeklyPeriods: this.getChildrenPeriods(id, 'SixMonthlyApril', 'Weekly'),
         monthPeriods: this.getChildrenPeriods(id, 'SixMonthlyApril', 'Monthly')

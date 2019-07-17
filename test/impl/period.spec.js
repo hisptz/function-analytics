@@ -110,22 +110,37 @@ describe('Given I set bi monthly period type', () => {
 //   });
 // });
 
-// describe('Given I set six monthly april period type', () => {
-//   let periodResult;
+describe('Given I set six monthly april period type', () => {
+  let periodResult;
 
-//   before(() => {
-//     period
-//       .setType('SixMonthlyApril')
-//       .setYear(period.currentYear())
-//       .get();
-//     periodResult = period.list();
-//     console.log(periodResult);
-//   });
+  before(() => {
+    period
+      .setType('SixMonthlyApril')
+      .setYear(period.currentYear())
+      .get();
+    periodResult = period.list();
+  });
 
-//   it('should return six monthly april period list for the current year', () => {
-//     expect(periodResult.length > 0).to.be.equal(true);
-//   });
-// });
+  it('should return six monthly april period list for the current year', () => {
+    expect(periodResult.length > 0).to.be.equal(true);
+  });
+});
+
+describe('Given I set six monthly april period type and previous year', () => {
+  let periodResult;
+
+  before(() => {
+    period
+      .setType('SixMonthlyApril')
+      .setYear(period.currentYear() - 1)
+      .get();
+    periodResult = period.list();
+  });
+
+  it('should return six monthly april period list for the previous year', () => {
+    expect(periodResult.length > 0).to.be.equal(true);
+  });
+});
 
 describe('Given I set six monthly november period type', () => {
   let periodResult;
@@ -152,7 +167,6 @@ describe('Given I set six monthly november period type and previous year', () =>
       .setYear(period.currentYear() - 1)
       .get();
     periodResult = period.list();
-    console.log(JSON.stringify(periodResult));
   });
 
   it('should return six monthly november period list for the previous year', () => {
@@ -219,6 +233,7 @@ describe('Given I set quarterly period type and previous year', () => {
       .setYear(previousYear)
       .get();
     periodResult = period.list();
+    console.log(periodResult);
   });
 
   it('should return quarterly period list of 4 quarters', () => {
