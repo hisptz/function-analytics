@@ -42,41 +42,41 @@ describe('Given I set monthly period type', () => {
   });
 });
 
-describe('Given I set monthly period type and previous year', () => {
-  let periodResult;
+// describe('Given I set monthly period type and previous year', () => {
+//   let periodResult;
 
-  before(() => {
-    const previousYear = period.currentYear() - 1;
+//   before(() => {
+//     const previousYear = period.currentYear() - 1;
 
-    period
-      .setType('Monthly')
-      .setYear(previousYear)
-      .get();
+//     period
+//       .setType('Monthly')
+//       .setYear(previousYear)
+//       .get();
 
-    periodResult = period.list();
-  });
+//     periodResult = period.list();
+//   });
 
-  it('should return monthly period list for 12 months', () => {
-    expect(periodResult.length === 12).to.be.equal(true);
-  });
-});
+//   it('should return monthly period list for 12 months', () => {
+//     expect(periodResult.length === 12).to.be.equal(true);
+//   });
+// });
 
-describe('Given I set quarterly period type', () => {
-  let periodResult;
+// describe('Given I set quarterly period type', () => {
+//   let periodResult;
 
-  before(() => {
-    period
-      .setType('Quarterly')
-      .setYear(period.currentYear())
-      .setCalendar('ethiopian')
-      .get();
-    periodResult = period.list();
-  });
+//   before(() => {
+//     period
+//       .setType('Quarterly')
+//       .setYear(period.currentYear())
+//       .setCalendar('ethiopian')
+//       .get();
+//     periodResult = period.list();
+//   });
 
-  it('should return quarterly period list for the current year', () => {
-    expect(periodResult.length > 0).to.be.equal(true);
-  });
-});
+//   it('should return quarterly period list for the current year', () => {
+//     expect(periodResult.length > 0).to.be.equal(true);
+//   });
+// });
 
 describe('Given I set bi monthly period type', () => {
   let periodResult;
@@ -110,21 +110,21 @@ describe('Given I set bi monthly period type', () => {
 //   });
 // });
 
-describe('Given I set six monthly april period type', () => {
-  let periodResult;
+// describe('Given I set six monthly april period type', () => {
+//   let periodResult;
 
-  before(() => {
-    period
-      .setType('SixMonthlyApril')
-      .setYear(period.currentYear())
-      .get();
-    periodResult = period.list();
-  });
+//   before(() => {
+//     period
+//       .setType('SixMonthlyApril')
+//       .setYear(period.currentYear())
+//       .get();
+//     periodResult = period.list();
+//   });
 
-  it('should return six monthly april period list for the current year', () => {
-    expect(periodResult.length > 0).to.be.equal(true);
-  });
-});
+//   it('should return six monthly april period list for the current year', () => {
+//     expect(periodResult.length > 0).to.be.equal(true);
+//   });
+// });
 
 describe('Given I set six monthly april period type and previous year', () => {
   let periodResult;
@@ -363,23 +363,23 @@ describe('Given I set relative weekly period type', () => {
     expect(periodResult.length > 0).to.be.equal(true);
   });
 });
-describe('Given I set quarterly period type and previous year', () => {
-  let periodResult;
+// describe('Given I set quarterly period type and previous year', () => {
+//   let periodResult;
 
-  before(() => {
-    const previousYear = period.currentYear() - 1;
+//   before(() => {
+//     const previousYear = period.currentYear() - 1;
 
-    period
-      .setType('Quarterly')
-      .setYear(previousYear)
-      .get();
-    periodResult = period.list();
-  });
+//     period
+//       .setType('Quarterly')
+//       .setYear(previousYear)
+//       .get();
+//     periodResult = period.list();
+//   });
 
-  it('should return quarterly period list of 4 quarters', () => {
-    expect(periodResult.length === 4).to.be.equal(true);
-  });
-});
+//   it('should return quarterly period list of 4 quarters', () => {
+//     expect(periodResult.length === 4).to.be.equal(true);
+//   });
+// });
 
 describe('Given I set yearly period type', () => {
   let periodResult;
