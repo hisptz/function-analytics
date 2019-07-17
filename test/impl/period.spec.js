@@ -231,10 +231,27 @@ describe('Given I set financial november period type', () => {
       .setYear(period.currentYear())
       .get();
     periodResult = period.list();
-    console.log(periodResult);
   });
 
   it('should return Financial November period list for the current year', () => {
+    expect(periodResult.length > 0).to.be.equal(true);
+  });
+});
+
+describe('Given I set relative month period type', () => {
+  let periodResult;
+
+  before(() => {
+    period
+      .setType('RelativeMonth')
+      .setYear(period.currentYear())
+      .get();
+
+    periodResult = period.list();
+    console.log(periodResult);
+  });
+
+  it('should return Relative month period list', () => {
     expect(periodResult.length > 0).to.be.equal(true);
   });
 });
