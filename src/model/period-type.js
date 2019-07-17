@@ -11,6 +11,7 @@ export class PeriodType {
       'FinancialApril',
       'FinancialJuly',
       'FinancialOctober',
+      'FinancialNovember',
       'RelativeWeek',
       'RelativeMonth',
       'RelativeBiMonth',

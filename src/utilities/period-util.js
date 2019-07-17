@@ -1,7 +1,6 @@
 import { chunk, head, last, range } from 'lodash';
 
 import { Calendar } from './calendars/calendar';
-import { CalendarDate } from './calendars/calendar-date';
 
 export class PeriodUtil {
   constructor(calendarId, type, preferences, year) {
@@ -91,6 +90,11 @@ export class PeriodUtil {
 
       case 'FinancialOctober': {
         periods = this.getYearlyPeriods(year, 'FinancialOctober');
+        break;
+      }
+
+      case 'FinancialNovember': {
+        periods = this.getYearlyPeriods(year, 'FinancialNovember');
         break;
       }
 
@@ -432,6 +436,15 @@ export class PeriodUtil {
         );
       }
 
+      case 'FinancialNovember': {
+        const currentYear = this._calendar.getCurrentYear();
+
+        return this.getYearlyPeriodId(
+          this._month >= 11 ? currentYear : currentYear - 1,
+          'FinancialNovember'
+        );
+      }
+
       default:
         return undefined;
     }
@@ -467,6 +480,10 @@ export class PeriodUtil {
         return `${year}Oct`;
       }
 
+      case 'FinancialNovember': {
+        return `${year}Nov`;
+      }
+
       default:
         return year.toString();
     }
@@ -485,6 +502,12 @@ export class PeriodUtil {
       case 'FinancialOctober': {
         return `${this._monthNames[9]} ${year} - ${this._monthNames[8]} ${year +
           1}`;
+      }
+
+      case 'FinancialNovember': {
+        return `${this._monthNames[10]} ${year} - ${
+          this._monthNames[9]
+        } ${year + 1}`;
       }
 
       default:
