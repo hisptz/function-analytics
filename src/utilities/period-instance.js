@@ -129,11 +129,19 @@ export class PeriodInstance {
   }
 
   includeLastPeriods(periods, type, year) {
+    const lastYearPeriods = this.getPeriods(type, year - 1);
+    const currentPeriods = periods;
+
     return (periods || []).map((period, periodIndex) => {
       const lastPeriod =
-        periods[periodIndex - 1] || last(this.getPeriods(type, year - 1));
+        currentPeriods[periodIndex - 1] || last(lastYearPeriods);
 
-      period.lastPeriod = lastPeriod;
+      const newLastPeriod = {
+        id: lastPeriod.id,
+        name: lastPeriod.name
+      };
+
+      period.lastPeriod = newLastPeriod;
 
       return period;
     });
