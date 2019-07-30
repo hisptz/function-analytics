@@ -33,8 +33,12 @@ describe('Given I set monthly period type', () => {
   let periodResult;
 
   before(() => {
-    period.setType('Monthly').get();
+    period
+      .setCalendar('ethiopian')
+      .setType('Monthly')
+      .get();
     periodResult = period.list();
+    console.log(periodResult);
   });
 
   it('should return monthly period list for the current year', () => {
@@ -61,22 +65,23 @@ describe('Given I set monthly period type', () => {
 //   });
 // });
 
-// describe('Given I set quarterly period type', () => {
-//   let periodResult;
+describe('Given I set quarterly period type', () => {
+  let periodResult;
 
-//   before(() => {
-//     period
-//       .setType('Quarterly')
-//       .setYear(period.currentYear())
-//       .setCalendar('ethiopian')
-//       .get();
-//     periodResult = period.list();
-//   });
+  before(() => {
+    period = new Fn.Period();
 
-//   it('should return quarterly period list for the current year', () => {
-//     expect(periodResult.length > 0).to.be.equal(true);
-//   });
-// });
+    period
+      .setType('Quarterly')
+      .setCalendar('ethiopian')
+      .get();
+    periodResult = period.list();
+  });
+
+  it('should return quarterly period list for the current year', () => {
+    expect(periodResult.length > 0).to.be.equal(true);
+  });
+});
 
 describe('Given I set bi monthly period type', () => {
   let periodResult;
@@ -248,7 +253,6 @@ describe('Given I set relative month period type', () => {
       .get();
 
     periodResult = period.list();
-    console.log(periodResult);
   });
 
   it('should return Relative month period list', () => {
@@ -256,23 +260,22 @@ describe('Given I set relative month period type', () => {
   });
 });
 
-describe('Given I set relative bi month period type', () => {
-  let periodResult;
+// describe('Given I set relative bi month period type', () => {
+//   let periodResult;
 
-  before(() => {
-    period
-      .setType('RelativeBiMonth')
-      .setYear(period.currentYear())
-      .get();
+//   before(() => {
+//     period
+//       .setType('RelativeBiMonth')
+//       .setYear(period.currentYear())
+//       .get();
 
-    periodResult = period.list();
-    console.log(periodResult);
-  });
+//     periodResult = period.list();
+//   });
 
-  it('should return Relative bi month period list', () => {
-    expect(periodResult.length > 0).to.be.equal(true);
-  });
-});
+//   it('should return Relative bi month period list', () => {
+//     expect(periodResult.length > 0).to.be.equal(true);
+//   });
+// });
 
 describe('Given I set relative quarter period type', () => {
   let periodResult;
@@ -282,9 +285,7 @@ describe('Given I set relative quarter period type', () => {
       .setType('RelativeQuarter')
       .setYear(period.currentYear())
       .get();
-
     periodResult = period.list();
-    console.log(periodResult);
   });
 
   it('should return Relative quarter period list', () => {
@@ -302,7 +303,6 @@ describe('Given I set relative year period type', () => {
       .get();
 
     periodResult = period.list();
-    console.log(periodResult);
   });
 
   it('should return Relative year period list', () => {
@@ -320,7 +320,6 @@ describe('Given I set relative six month period type', () => {
       .get();
 
     periodResult = period.list();
-    console.log(periodResult);
   });
 
   it('should return Relative six month period list', () => {
@@ -338,7 +337,6 @@ describe('Given I set relative financial year period type', () => {
       .get();
 
     periodResult = period.list();
-    console.log(periodResult);
   });
 
   it('should return Relative financial year period list', () => {
@@ -356,7 +354,6 @@ describe('Given I set relative weekly period type', () => {
       .get();
 
     periodResult = period.list();
-    console.log(periodResult);
   });
 
   it('should return Relative week period list', () => {
@@ -381,21 +378,21 @@ describe('Given I set relative weekly period type', () => {
 //   });
 // });
 
-describe('Given I set yearly period type', () => {
-  let periodResult;
+// describe('Given I set yearly period type', () => {
+//   let periodResult;
 
-  before(() => {
-    period
-      .setType('Yearly')
-      .setYear(period.currentYear())
-      .get();
-    periodResult = period.list();
-  });
+//   before(() => {
+//     period
+//       .setType('Yearly')
+//       .setYear(period.currentYear())
+//       .get();
+//     periodResult = period.list();
+//   });
 
-  it('should return yearly period list listing 9 years excluding current', () => {
-    expect(periodResult.length === 9).to.be.equal(true);
-  });
-});
+//   it('should return yearly period list listing 9 years excluding current', () => {
+//     expect(periodResult.length === 9).to.be.equal(true);
+//   });
+// });
 
 describe('Given I set yearly period type and previous year', () => {
   let periodResult;
