@@ -1,4 +1,4 @@
-import { PeriodUtil } from '../utilities/period-util';
+import { PeriodInstance } from '../utilities/period-instance';
 import { PeriodType } from './period-type';
 
 /**
@@ -48,7 +48,7 @@ export class Period {
 
   get() {
     if (this._type) {
-      const periodInstance = new PeriodUtil(
+      const periodInstance = new PeriodInstance(
         this._calendarId,
         this._type,
         this._preferences,
