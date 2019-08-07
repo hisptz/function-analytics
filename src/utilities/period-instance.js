@@ -244,7 +244,7 @@ export class PeriodInstance {
   getMonthlyPeriods(year, offset = 0) {
     const monthPeriods = (this._monthNames || []).map(
       (monthName, monthIndex) => {
-        const monthOffset = monthIndex + 1 - this._quarterMonthOffset;
+        const monthOffset = monthIndex + 1 - offset;
         const monthYear = monthOffset > 12 ? year - 1 : year;
         const id = this.getMonthPeriodId(monthYear, monthIndex + 1);
 
@@ -295,6 +295,10 @@ export class PeriodInstance {
   }
 
   getMonthsByOffset(months, offset) {
+    if (offset === 0) {
+      return months;
+    }
+
     return [
       ...months.slice(offset),
       ...months.slice(0, months.length + offset)

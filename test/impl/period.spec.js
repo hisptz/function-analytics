@@ -38,11 +38,11 @@ describe('Given I set monthly period type', () => {
       .setType('Monthly')
       .get();
     periodResult = period.list();
-    console.log(periodResult);
+    console.log(JSON.stringify(periodResult));
   });
 
   it('should return monthly period list for the current year', () => {
-    expect(periodResult.length > 0).to.be.equal(true);
+    expect(periodResult.length <= 12).to.be.equal(true);
   });
 });
 
