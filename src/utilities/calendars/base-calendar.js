@@ -1,4 +1,6 @@
-import { CalendarDate } from './calendar-date';
+import {
+  CalendarDate
+} from './calendar-date';
 
 export class BaseCalender {
   constructor() {
@@ -47,7 +49,7 @@ export class BaseCalender {
       valid =
         month >= this._minMonth &&
         month - this._minMonth < this.monthsInYear(e) &&
-        (day >= this._minDay && day - this._minDay < this.daysInMonth(e));
+        (day >= this._minDay && day - this._minDay <= this.daysInMonth(e));
     }
     this._validateLevel--;
     return valid;
@@ -277,7 +279,7 @@ export class BaseCalender {
           m: [1, this.monthsInYear(-1), 'm'],
           w: [this.daysInWeek(), this.daysInYear(-1), 'd'],
           d: [1, this.daysInYear(-1), 'd']
-        }[d];
+        } [d];
 
         const f = c < 0 ? -1 : +1;
 
