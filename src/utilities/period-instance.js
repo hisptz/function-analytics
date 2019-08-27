@@ -20,7 +20,7 @@ export class PeriodInstance {
     this._quarter = this._calendar.getCurrentQuarter();
     this._biMonth = this._calendar.getCurrentBiMonth();
     this._sixMonth = this._calendar.getCurrentSixMonth();
-    this._sixmonthApril = this._calendar.getCurrentSixMonthApril();
+    this._sixMonthApril = this._calendar.getCurrentSixMonthApril();
     this._sixMonthNovember = this._calendar.getCurrentSixMonthNovember();
     this._monthNames = this._calendar.getMonths();
     this._quarterMonthOffset = this._calendar.getQuarterMonthOffset();
@@ -33,7 +33,7 @@ export class PeriodInstance {
       (this._preferences && this._preferences.allowFuturePeriods) ||
       this._type.indexOf('Relative') !== -1
     ) {
-      return this._periods;
+      return this._periods.reverse();
     }
 
     return this.omitFuturePeriods(
@@ -252,8 +252,18 @@ export class PeriodInstance {
           id,
           type: 'Monthly',
           name: `${monthName} ${monthYear}`,
-          daily: this.getChildrenPeriods(id, 'Monthly', 'Daily'),
-          weekly: this.getChildrenPeriods(id, 'Monthly', 'Weekly')
+          daily: this.getChildrenPeriods(
+            id,
+            'Monthly',
+            'Daily',
+            this._preferences
+          ),
+          weekly: this.getChildrenPeriods(
+            id,
+            'Monthly',
+            'Weekly',
+            this._preferences
+          )
         };
       }
     );
@@ -281,9 +291,24 @@ export class PeriodInstance {
         id,
         type: 'Quarterly',
         name: this.getPeriodNameByRange(startMonth, endMonth, year),
-        daily: this.getChildrenPeriods(id, 'Quarterly', 'Daily'),
-        weekly: this.getChildrenPeriods(id, 'Quarterly', 'Weekly'),
-        monthly: this.getChildrenPeriods(id, 'Quarterly', 'Monthly')
+        daily: this.getChildrenPeriods(
+          id,
+          'Quarterly',
+          'Daily',
+          this._preferences
+        ),
+        weekly: this.getChildrenPeriods(
+          id,
+          'Quarterly',
+          'Weekly',
+          this._preferences
+        ),
+        monthly: this.getChildrenPeriods(
+          id,
+          'Quarterly',
+          'Monthly',
+          this._preferences
+        )
       };
     });
   }
@@ -324,9 +349,24 @@ export class PeriodInstance {
           name: `${[head(biMonths || []), last(biMonths || [])].join(
             ' - '
           )} ${year}`,
-          daily: this.getChildrenPeriods(id, 'BiMonthly', 'Daily'),
-          weekly: this.getChildrenPeriods(id, 'BiMonthly', 'Weekly'),
-          monthly: this.getChildrenPeriods(id, 'BiMonthly', 'Monthly')
+          daily: this.getChildrenPeriods(
+            id,
+            'BiMonthly',
+            'Daily',
+            this._preferences
+          ),
+          weekly: this.getChildrenPeriods(
+            id,
+            'BiMonthly',
+            'Weekly',
+            this._preferences
+          ),
+          monthly: this.getChildrenPeriods(
+            id,
+            'BiMonthly',
+            'Monthly',
+            this._preferences
+          )
         };
       }
     );
@@ -343,9 +383,24 @@ export class PeriodInstance {
           name: `${[head(sixMonths || []), last(sixMonths || [])].join(
             ' - '
           )} ${year}`,
-          daily: this.getChildrenPeriods(id, 'SixMonthly', 'Daily'),
-          weekly: this.getChildrenPeriods(id, 'SixMonthly', 'Weekly'),
-          monthly: this.getChildrenPeriods(id, 'SixMonthly', 'Monthly')
+          daily: this.getChildrenPeriods(
+            id,
+            'SixMonthly',
+            'Daily',
+            this._preferences
+          ),
+          weekly: this.getChildrenPeriods(
+            id,
+            'SixMonthly',
+            'Weekly',
+            this._preferences
+          ),
+          monthly: this.getChildrenPeriods(
+            id,
+            'SixMonthly',
+            'Monthly',
+            this._preferences
+          )
         };
       }
     );
@@ -371,9 +426,24 @@ export class PeriodInstance {
           last(sixMonthApril || []),
           year
         ),
-        daily: this.getChildrenPeriods(id, 'SixMonthlyApril', 'Daily'),
-        weekly: this.getChildrenPeriods(id, 'SixMonthlyApril', 'Weekly'),
-        monthly: this.getChildrenPeriods(id, 'SixMonthlyApril', 'Monthly')
+        daily: this.getChildrenPeriods(
+          id,
+          'SixMonthlyApril',
+          'Daily',
+          this._preferences
+        ),
+        weekly: this.getChildrenPeriods(
+          id,
+          'SixMonthlyApril',
+          'Weekly',
+          this._preferences
+        ),
+        monthly: this.getChildrenPeriods(
+          id,
+          'SixMonthlyApril',
+          'Monthly',
+          this._preferences
+        )
       };
     });
   }
@@ -400,9 +470,24 @@ export class PeriodInstance {
           last(sixMonthNovember || []),
           year
         ),
-        daily: this.getChildrenPeriods(id, 'SixMonthlyNovember', 'Daily'),
-        weekly: this.getChildrenPeriods(id, 'SixMonthlyNovember', 'Weekly'),
-        monthly: this.getChildrenPeriods(id, 'SixMonthlyNovember', 'Monthly')
+        daily: this.getChildrenPeriods(
+          id,
+          'SixMonthlyNovember',
+          'Daily',
+          this._preferences
+        ),
+        weekly: this.getChildrenPeriods(
+          id,
+          'SixMonthlyNovember',
+          'Weekly',
+          this._preferences
+        ),
+        monthly: this.getChildrenPeriods(
+          id,
+          'SixMonthlyNovember',
+          'Monthly',
+          this._preferences
+        )
       };
     });
   }
@@ -418,24 +503,35 @@ export class PeriodInstance {
           id,
           type,
           name,
-          daily: this.getChildrenPeriods(id, type, 'Daily'),
-          weekly: this.getChildrenPeriods(id, type, 'Weekly'),
-          monthly: this.getChildrenPeriods(id, type, 'Monthly'),
-          quarterly: this.getChildrenPeriods(id, type, 'Quarterly')
+          daily: this.getChildrenPeriods(id, type, 'Daily', this._preferences),
+          weekly: this.getChildrenPeriods(
+            id,
+            type,
+            'Weekly',
+            this._preferences
+          ),
+          monthly: this.getChildrenPeriods(
+            id,
+            type,
+            'Monthly',
+            this._preferences
+          ),
+          quarterly: this.getChildrenPeriods(
+            id,
+            type,
+            'Quarterly',
+            this._preferences
+          )
         };
       })
       .reverse();
   }
 
   omitFuturePeriods(periods, type) {
-    // TODO Find a way to handle future periods
-    // const currentPeriodId = this.getCurrentPeriodId(type);
-
-    // return periods.filter(period => period.id < currentPeriodId);
-    return periods;
+    return periods.filter(period => period.id < this.getCurrentPeriodId(type));
   }
 
-  getCurrentPeriodId(type, useCurrentYear = false) {
+  getCurrentPeriodId(type) {
     switch (type) {
       case 'Monthly': {
         return this.getMonthPeriodId(
@@ -559,15 +655,17 @@ export class PeriodInstance {
 
   getYearlyMonthIndex(type) {}
 
-  getChildrenPeriods(parentId, parentType, childrenType) {
+  getChildrenPeriods(parentId, parentType, childrenType, preferences) {
+    let periods = [];
+
     switch (parentType) {
       case 'Yearly': {
         const year = parseInt(parentId.slice(0, 4), 10);
 
         if (!isNaN(year)) {
-          return this.getPeriods(childrenType, year).reverse();
+          periods = this.getPeriods(childrenType, year).reverse();
         }
-        return undefined;
+        break;
       }
 
       case 'Quarterly': {
@@ -584,25 +682,32 @@ export class PeriodInstance {
                 this._quarterMonthOffset
               );
 
-              return (monthPeriods || [])
-                .filter((period, periodIndex) => {
+              periods = (monthPeriods || [])
+                .filter(({}, periodIndex) => {
                   const max = quarterNumber * 3;
                   const min = max - 3;
 
                   return periodIndex >= min && periodIndex < max;
                 })
                 .reverse();
+              break;
             }
 
             default:
-              return undefined;
+              break;
           }
         }
 
-        return undefined;
+        break;
       }
       default:
-        return undefined;
+        break;
     }
+
+    if (preferences && preferences.childrenPeriodSortOrder === 'ASC') {
+      return periods.reverse();
+    }
+
+    return periods;
   }
 }

@@ -72,9 +72,14 @@ describe('Given I set quarterly period type', () => {
 
     period
       .setType('Quarterly')
-      .setCalendar('ethiopian')
+      .setCalendar('gregorian')
+      .setPreferences({
+        allowFuturePeriods: false,
+        childrenPeriodSortOrder: 'ASC'
+      })
       .get();
     periodResult = period.list();
+    console.log(JSON.stringify(periodResult));
   });
 
   it('should return quarterly period list for the current year', () => {
