@@ -668,7 +668,7 @@ export class PeriodInstance {
         break;
       }
 
-      // TODO Have a common method to handle chidlren generation for combined periods
+      // TODO Have a common method to handle children generation for combined periods
       case 'Quarterly': {
         const year = parseInt(parentId.slice(0, 4), 10);
 
